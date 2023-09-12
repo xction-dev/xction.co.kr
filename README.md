@@ -1,11 +1,11 @@
-# 작품 제목
-> 여기에 **작품**를 간단하게 소개해주세요.
+# Xction! 홈페이지
+> Xction의 홈페이지를 만들고 있습니다
 > 
-> 배포 주소:
+> 배포 주소: ~~https://xction.co.kr~~
 
 | ver | deployment URL | Start Date | PO |
 |---|---|---|---|
-| pre-release | [미정](./README.md) | YYYY-MM-DD | |
+| pre-release | [미정](./README.md) | 2023-09-12 | @designdefined |
 
 
 ## 목차
@@ -22,7 +22,6 @@
 ## 작품 설명
 
 ## 참여자 및 역할
-
-## 레포지토리 구조
+- PM: `@designdefined`
 
 ## 참고
