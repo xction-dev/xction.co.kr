@@ -62,10 +62,10 @@ dist-ssr
 # yarn #
 # https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 
+.pnp.*
 .yarn/*
-!.yarn/releases
 !.yarn/patches
 !.yarn/plugins
+!.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-!.yarn/cache
