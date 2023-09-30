@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  S3_BUCKET_NAME: xcion.co.kr
+  S3_BUCKET_NAME: xcion-homepage
   CODE_DEPLOY_APPLICATION_NAME: xction.co.kr
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: xction.co.kr-deploy
 
