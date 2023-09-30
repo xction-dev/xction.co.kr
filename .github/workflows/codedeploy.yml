@@ -1,36 +1,50 @@
-name: xction.co.kr Deploy
+name: xction.co.kr CI/CD
 
 on:
-    push:
-        branches:
-            - feature/CodeDeploy
+  push:
+    branches:
+      - main
+
+env:
+  S3_BUCKET_NAME: xcion.co.kr
+  CODE_DEPLOY_APPLICATION_NAME: xction.co.kr
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: xction.co.kr-deploy
 
 jobs:
-    build:
-        
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        steps:
-        - name: feat/CodeDeploy 브랜치 체크아웃
-          uses: actions/checkout@v2
-          with:
-            ref: feature/CodeDeploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
 
-        - name: yarn 설치
-          run: yarn install
+      - name: Install dependencies
+        run: yarn install
 
-        - name: yarn 빌드
-          run: yarn build
+      - name: Build next app
+        run: yarn build
 
-        - name: AWS 설정
-          uses: aws-actions/configure-aws-credentials@v1
-          with:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: ${{ secrets.AWS_REGION }}
-        
-        - name: S3 버킷에 빌드파일 업로드
-          run: aws s3 sync ./build s3://xction.co.kr --delete
+      - name: Make zip file
+        run: zip -qq -r ./$GITHUB_SHA.zip . -x "node_modules/*"
+        shell: bash
 
-        - name: CodeDeploy 배포
-          run: aws deploy create-deployment --application-name xction.co.kr --deployment-group-name xction.co.kr-deploy --s3-location bucket=xction.co.kr,bundleType=zip,key=build.zip
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+
+      - name: Code Deploy
+        run: |
+          aws deploy create-deployment \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+          --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
