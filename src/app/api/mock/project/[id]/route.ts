@@ -37,7 +37,7 @@ export async function GET(
       errorResponse.data = {
         error_type: 2,
         error_fields: e.issues.map((issue) => ({
-          path: [...issue.path, "id"],
+          path: issue.path.length < 1 ? "path_parameter" : issue.path,
           error_message: issue.message,
         })),
       };
