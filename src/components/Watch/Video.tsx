@@ -19,18 +19,7 @@ function Video({ src }: VideoProps) {
     if (videoRef.current && videoRef.current.paused) {
       videoRef.current.play();
       setIsPlaying(true);
-      console.log(duration);
-      console.log(currentTime);
-      console.log(progressBarWidth);
-
-      // Check if duration is available (metadata loaded)
-      if (
-        videoRef.current.duration !== Infinity &&
-        !isNaN(videoRef.current.duration)
-      ) {
-        // Duration is available, set it
-        setDuration(videoRef.current.duration);
-      }
+      setDuration(videoRef.current.duration); // 처음 play부터 duration을 가져오기 위해
     } else if (videoRef.current) {
       videoRef.current.pause();
       setIsPlaying(false);

@@ -1,4 +1,4 @@
-import Video from "@/components/Video/Video";
+import Video from "@/components/Watch/Video";
 
 export default function Watch() {
   return (
