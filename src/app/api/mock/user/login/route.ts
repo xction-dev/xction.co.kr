@@ -1,19 +1,65 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ZodError, unknown, z } from "zod";
+
+const Body = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
 
 export async function POST(request: NextRequest) {
   try {
-  } catch (e) {}
+    // parse body
+    const body = await request.json();
+    const validBody = Body.parse(body);
 
-  // parse body
-  const body = await request.json();
+    // parse query
+    const { searchParams } = new URL(request.url);
+    const successQueryParam = searchParams.get("success");
 
-  const { searchParams } = new URL(request.url);
-  const success = searchParams.get("success");
+    // send requested error response
+    if (successQueryParam === "false") {
+      return NextResponse.json(
+        {
+          error_type: 3,
+          error_message: "이메일이나 비밀번호가 잘못되었습니다.",
+        },
+        { status: 404 },
+      );
+    }
 
-  if (success === "fail") {
-    return NextResponse.json(
-      { error_code: 1, error_message: "결과 쿼리를 찾을 수 없습니다." },
-      { status: 401 },
-    );
+    // send success response
+    return NextResponse.json({ success: true, user: validBody.email });
+  } catch (e) {
+    // default: unknown error
+    const errorResponse: { status: number; data: unknown } = {
+      status: 500,
+      data: { error_type: 0, error_message: "unknown error" },
+    };
+
+    // handle JSON error
+    if (e instanceof SyntaxError && e.message.includes("JSON")) {
+      errorResponse.status = 402;
+      errorResponse.data = {
+        error_type: 1,
+        error_message: "Body should be a valid JSON object",
+      };
+    }
+
+    // handle zod error
+    if (e instanceof ZodError) {
+      errorResponse.status = 402;
+      errorResponse.data = {
+        error_type: 2,
+        error_fields: e.issues.map((issue) => ({
+          path: issue.path,
+          error_message: issue.message,
+        })),
+      };
+    }
+
+    // send error response
+    return NextResponse.json(errorResponse.data, {
+      status: errorResponse.status,
+    });
   }
 }
