@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ZodError, z } from "zod";
 
 const Body = z.object({
-  name: z.string(),
+  name: z.string().min(1),
   email: z.string().email(),
   password: z.string().min(8),
 });
