@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ZodError, unknown, z } from "zod";
+import { ZodError, z } from "zod";
 
 const Body = z.object({
   email: z.string().email(),
