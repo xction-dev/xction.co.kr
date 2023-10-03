@@ -14,7 +14,6 @@ function Video({ src }: VideoProps) {
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [isMetadataLoaded, setIsMetadataLoaded] = useState(false);
 
   const togglePlay = () => {
     if (videoRef.current && videoRef.current.paused) {
@@ -97,7 +96,6 @@ function Video({ src }: VideoProps) {
       // Update currentTime and duration when the video can play
       videoRef.current.addEventListener("canplay", () => {
         setDuration(videoRef.current.duration);
-        setIsMetadataLoaded(true);
       });
 
       // Update currentTime while the video is playing
@@ -152,10 +150,6 @@ function Video({ src }: VideoProps) {
       };
     }
   }, []);
-
-  // const progressBarWidth = isMetadataLoaded
-  //   ? (currentTime / duration) * 100 + "%"
-  //   : "0%";
 
   const progressBarWidth = (currentTime / duration) * 100 + "%";
 
