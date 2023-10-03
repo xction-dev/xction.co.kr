@@ -28,7 +28,7 @@ export async function GET(
     // default: unknown error
     const errorResponse: { status: number; data: unknown } = {
       status: 500,
-      data: { error_type: 0, error_message: "unknown error" },
+      data: { error_type: 0, error_message: "Unknown error" },
     };
 
     // handle zod error

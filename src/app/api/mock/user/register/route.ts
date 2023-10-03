@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     // default: unknown error
     const errorResponse: { status: number; data: unknown } = {
       status: 500,
-      data: { error_type: 0, error_message: "unknown error" },
+      data: { error_type: 0, error_message: "Unknown error" },
     };
 
     // handle JSON error
