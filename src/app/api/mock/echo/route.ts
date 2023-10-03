@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     // handle JSON error
     if (e instanceof SyntaxError && e.message.includes("JSON")) {
-      errorResponse.status = 402;
+      errorResponse.status = 400;
       errorResponse.data = {
         error_type: 1,
         error_message: "Body should be a valid JSON object",

@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     // handle JSON error
     if (e instanceof SyntaxError && e.message.includes("JSON")) {
-      errorResponse.status = 402;
+      errorResponse.status = 400;
       errorResponse.data = {
         error_type: 1,
         error_message: "Body should be a valid JSON object",
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
 
     // handle zod error
     if (e instanceof ZodError) {
-      errorResponse.status = 402;
+      errorResponse.status = 400;
       errorResponse.data = {
         error_type: 2,
         error_fields: e.issues.map((issue) => ({
