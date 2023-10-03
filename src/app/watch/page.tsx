@@ -1,9 +1,9 @@
-import Video from "@/components/Watch/Video";
+import Player from "@/components/Watch/Player/Player";
 
 export default function Watch() {
   return (
     <>
-      <Video src="assets/ETA.mp4" />
+      <Player src="assets/ETA.mp4" />
     </>
   );
 }
