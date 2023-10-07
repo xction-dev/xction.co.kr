@@ -3,7 +3,7 @@ name: xction.co.kr CI/CD
 on:
   push:
     branches:
-      - feat/CodeDeploy
+      - main
 
 env:
   S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
