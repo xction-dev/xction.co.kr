@@ -2,26 +2,18 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/build/
+    destination: /home/ubuntu/build
     overwrite: true
 file_exist_behavior: OVERWRITE
 
 permissions:
-  - object: /home/ec2-user/build/
+  - object: /home/ubuntu/build
     pattern: "**"
-    owner: root
-    group: root
+    owner: ubuntu
+    group: ubuntu
 
 hooks:
-  BeforeInstall:
-    - location: scripts/before-install.sh
-      timeout: 300
-      runas: root
   AfterInstall:
     - location: scripts/after-install.sh
-      timeout: 300
-      runas: root
-  ApplicationStart:
-    - location: scripts/application-start.sh
       timeout: 300
       runas: root

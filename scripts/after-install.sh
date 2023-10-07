@@ -1,3 +1,8 @@
-#!/bin/sh
-cd /home/ec2-user/build/
-yarn install
+#!/bin/bash
+REPOSITORY=/home/ubuntu/build
+
+cd $REPOSITORY
+
+sudo yarn
+
+sudo pm2 start dist
