@@ -6,7 +6,7 @@ on:
       - feat/CodeDeploy
 
 env:
-  S3_BUCKET_NAME: xcion-homepage
+  S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
   CODE_DEPLOY_APPLICATION_NAME: xction.co.kr
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: xction.co.kr-deploy
 
@@ -39,7 +39,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://xction-homepage/$GITHUB_SHA.zip
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://${{ env.S3_BUCKET_NAME }}/$GITHUB_SHA.zip --delete
 
       - name: Code Deploy
         run: |
