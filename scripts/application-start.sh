@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 pm2 describe app > /dev/null
 RUNNING=$?
 
