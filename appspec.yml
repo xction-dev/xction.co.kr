@@ -2,12 +2,12 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/build/
+    destination: /var/frontend/
     overwrite: true
 file_exist_behavior: OVERWRITE
 
 permissions:
-  - object: /home/ec2-user/build/
+  - object: /var/frontend/
     pattern: "**"
     owner: root
     group: root
