@@ -1,7 +1,13 @@
-/* components/Video.css */
+.video-player-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
 .video-player {
   position: relative;
+  width: 75%;
 }
 
 video {
@@ -12,5 +18,5 @@ video {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: 0;
 }

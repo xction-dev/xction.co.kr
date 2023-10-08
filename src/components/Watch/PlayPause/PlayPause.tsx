@@ -1,4 +1,6 @@
 import "./PlayPause.css";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
 
 interface PlayPauseProps {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -25,7 +27,7 @@ function PlayPause({
   };
   return (
     <button className="play-pause-button" onClick={togglePlay}>
-      {isPlaying ? "Pause" : "Play"}
+      {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
     </button>
   );
 }

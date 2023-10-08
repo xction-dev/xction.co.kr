@@ -1,4 +1,6 @@
 import "./FullScreen.css";
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 
 interface FullScreenProps {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -42,7 +44,7 @@ function FullScreen({ videoRef, isFullScreen }: FullScreenProps) {
 
   return (
     <button className="fullscreen-button" onClick={handleFullScreenToggle}>
-      {isFullScreen ? "Exit Full Screen" : "Full Screen"}
+      {isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
     </button>
   );
 }

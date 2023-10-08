@@ -1,4 +1,6 @@
 import "./Skip.css";
+import Forward10Icon from "@mui/icons-material/Forward10";
+import Replay10Icon from "@mui/icons-material/Replay10";
 
 interface SkipProps {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -20,10 +22,10 @@ function Skip({ videoRef }: SkipProps) {
   return (
     <div className="skip-container">
       <button className="skip-button" onClick={skipBackward}>
-        -10s
+        <Replay10Icon />
       </button>
       <button className="skip-button" onClick={skipForward}>
-        +10s
+        <Forward10Icon />
       </button>
     </div>
   );

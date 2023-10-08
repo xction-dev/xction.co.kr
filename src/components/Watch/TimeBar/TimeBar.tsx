@@ -1,4 +1,5 @@
 import "./TimeBar.css";
+import Slider from "@mui/material/Slider";
 
 interface TimeBarProps {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -7,21 +8,20 @@ interface TimeBarProps {
 }
 
 function TimeBar({ videoRef, currentTime, duration }: TimeBarProps) {
-  const TimeBarWidth = (currentTime / duration) * 100 + "%";
+  const handleTimeBarClick = (event: Event, newValue: number | number[]) => {
+    const seekTime = (duration * (newValue as number)) / 100;
 
-  const handleTimeBarClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (videoRef.current) {
-      const TimeBar = event.currentTarget;
-      const clickX = event.clientX - TimeBar.getBoundingClientRect().left;
-      const percentClicked = clickX / TimeBar.clientWidth;
-      const newTime = percentClicked * duration;
-      videoRef.current.currentTime = newTime;
+      videoRef.current.currentTime = seekTime;
     }
   };
+
   return (
-    <div className="time-bar" onClick={handleTimeBarClick}>
-      <div className="time-bar-fill" style={{ width: TimeBarWidth }}></div>
-    </div>
+    <Slider
+      value={(currentTime / duration) * 100} // Calculate the value based on current time and duration
+      onChange={handleTimeBarClick}
+      aria-label="Time Bar"
+    />
   );
 }
 

@@ -19,6 +19,7 @@ function Player({ src }: PlayerProps) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
@@ -82,26 +83,38 @@ function Player({ src }: PlayerProps) {
   }, []);
 
   return (
-    <div className="video-player">
-      <video ref={videoRef}>
-        <source src={src} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-      <div className="controls">
-        <PlayPause
-          videoRef={videoRef}
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          setDuration={setDuration}
-        />
-        <Skip videoRef={videoRef} />
-        <TimeBar
-          videoRef={videoRef}
-          currentTime={currentTime}
-          duration={duration}
-        />
-        <Volume videoRef={videoRef} volume={volume} setVolume={setVolume} />
-        <FullScreen videoRef={videoRef} isFullScreen={isFullScreen} />
+    <div className="video-player-container">
+      <div className="video-player">
+        <video ref={videoRef}>
+          <source src={src} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        <div className="timebar-contianer">
+          <TimeBar
+            videoRef={videoRef}
+            currentTime={currentTime}
+            duration={duration}
+          />
+        </div>
+
+        <div className="controls">
+          <PlayPause
+            videoRef={videoRef}
+            isPlaying={isPlaying}
+            setIsPlaying={setIsPlaying}
+            setDuration={setDuration}
+          />
+          <Skip videoRef={videoRef} />
+          <Volume
+            videoRef={videoRef}
+            volume={volume}
+            setVolume={setVolume}
+            isMuted={isMuted}
+            setIsMuted={setIsMuted}
+          />
+          <FullScreen videoRef={videoRef} isFullScreen={isFullScreen} />
+        </div>
       </div>
     </div>
   );
