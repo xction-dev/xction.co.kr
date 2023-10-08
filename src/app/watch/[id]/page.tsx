@@ -14,7 +14,7 @@ import Player from "@/components/Watch/Player/Player";
 import Player from "@/components/Watch/Player/Player";
 import { useState, useEffect } from "react";
 
-export default function Watch(props) {
+export default function Watch(props: { params: { id: string } }) {
   const id = props.params.id;
   const [videoSource, setVideoSource] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
