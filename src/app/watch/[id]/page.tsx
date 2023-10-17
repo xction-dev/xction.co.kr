@@ -14,29 +14,33 @@ import Player from "@/components/Watch/Player/Player";
 import Player from "@/components/Watch/Player/Player";
 import { useState, useEffect } from "react";
 
-export default function Watch(props: { params: { id: string } }) {
-  const id = props.params.id;
+type WatchParams = {
+  id: string;
+};
+
+export default function Watch(props: WatchParams) {
+  const id = props.id;
   const [videoSource, setVideoSource] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const callVideo = async () => {
-    try {
-      const response = await fetch(`/api/mock/project/${id}`);
-
-      if (response.ok) {
-        const data = await response.json();
-        setVideoSource(data.src);
-      } else {
-        const data = await response.json();
-        setErrorMessage(data.error_message);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     if (id) {
+      const callVideo = async () => {
+        try {
+          const response = await fetch(`/api/mock/project/${id}`);
+
+          if (response.ok) {
+            const data = await response.json();
+            setVideoSource(data.src);
+          } else {
+            const data = await response.json();
+            setErrorMessage(data.error_message);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
       callVideo();
     }
   }, [id]);
