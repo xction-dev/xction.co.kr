@@ -13,7 +13,7 @@ export async function GET(
       return NextResponse.json({
         id: parsedId,
         title: "프로젝트 1",
-        src: "https://www.youtube.com/watch?v=gSSsZReIFRk",
+        src: "https://d2yo7lrb9dagdw.cloudfront.net/v2/v2_A.mp4",
       });
     } else {
       return NextResponse.json(
