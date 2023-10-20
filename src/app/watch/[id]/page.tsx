@@ -38,12 +38,7 @@ export default function Watch(props: WatchProps) {
     }
   }, [id]);
 
-  console.log(errorMessage);
-
   return (
-    <>
-      <Player src={videoSource} />
-      {errorMessage && <p>{errorMessage}</p>}
-    </>
+    <>{errorMessage ? <p>{errorMessage}</p> : <Player src={videoSource} />}</>
   );
 }
