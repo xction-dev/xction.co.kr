@@ -8,6 +8,7 @@ import TimeBar from "../TimeBar/TimeBar";
 
 import "./Player.css";
 import React, { useState, useRef, useEffect } from "react";
+import { VideoElementWithFullScreen, ExtendedDocument } from "@/types/utility";
 
 interface PlayerProps {
   src: string;
@@ -23,21 +24,23 @@ function Player({ src }: PlayerProps) {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
-    if (videoRef.current && src) {
+    const currentVideo = videoRef.current;
+    if (currentVideo && src) {
       // Update currentTime and duration when the video can play
-      videoRef.current.addEventListener("canplay", () => {
-        if (!videoRef.current?.duration || !src) return;
-        setDuration(videoRef.current.duration);
+      currentVideo.addEventListener("canplay", () => {
+        if (!currentVideo?.duration || !src) return;
+        setDuration(currentVideo.duration);
       });
 
       // // Update currentTime while the video is playing
-      videoRef.current.addEventListener("timeupdate", () => {
-        if (!videoRef.current?.duration || !src) return;
-        setCurrentTime(videoRef.current.currentTime);
+      currentVideo.addEventListener("timeupdate", () => {
+        if (!currentVideo?.duration || !src) return;
+        setCurrentTime(currentVideo.currentTime);
       });
 
       // Detect full-screen change
       const handleFullScreenChange = () => {
+        const document = window.document as ExtendedDocument;
         setIsFullScreen(
           !!(
             document.fullscreenElement ||
@@ -57,10 +60,10 @@ function Player({ src }: PlayerProps) {
       document.addEventListener("msfullscreenchange", handleFullScreenChange);
 
       return () => {
-        if (videoRef.current) {
+        if (currentVideo) {
           // Clean up event listeners when the component unmounts
-          videoRef.current.removeEventListener("canplay", () => {});
-          videoRef.current.removeEventListener("timeupdate", () => {});
+          currentVideo.removeEventListener("canplay", () => {});
+          currentVideo.removeEventListener("timeupdate", () => {});
         }
 
         // Clean up full-screen change listeners
