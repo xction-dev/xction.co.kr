@@ -1,28 +1,18 @@
-<<<<<<< refs/remotes/origin/main
-<<<<<<< refs/remotes/origin/main
-<<<<<<< refs/remotes/origin/main
-import Player from "@/components/Watch/Player/Player";
-=======
-import Video from "@/components/Watch/Video";
->>>>>>> Refact: Rename 'Video' components to 'Watch'
-=======
-import Player from "@/components/Watch/Player/Player";
->>>>>>> refact: Make separate video contols components
-=======
 "use client";
 
 import Player from "@/components/Watch/Player/Player";
 import { useState, useEffect } from "react";
 
-type WatchParams = {
-  id: string;
+type WatchProps = {
+  params: {
+    id: string;
+  };
 };
 
-export default function Watch(props: WatchParams) {
-  const id = props.id;
+export default function Watch(props: WatchProps) {
+  const id = props.params.id;
   const [videoSource, setVideoSource] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
   useEffect(() => {
     if (id) {
       const callVideo = async () => {
@@ -33,8 +23,11 @@ export default function Watch(props: WatchParams) {
             const data = await response.json();
             setVideoSource(data.src);
           } else {
+            // 에러 발생 시 조건부로 errorMessage를 useState에 저장
             const data = await response.json();
-            setErrorMessage(data.error_message);
+            data.error_fields
+              ? setErrorMessage(data.error_fields[0].error_message)
+              : setErrorMessage(data.error_message);
           }
         } catch (error) {
           console.error(error);
@@ -44,7 +37,8 @@ export default function Watch(props: WatchParams) {
       callVideo();
     }
   }, [id]);
->>>>>>> feat: Add fetching from mock api
+
+  console.log(errorMessage);
 
   return (
     <>

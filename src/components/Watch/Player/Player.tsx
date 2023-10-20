@@ -23,14 +23,16 @@ function Player({ src }: PlayerProps) {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
-    if (videoRef.current) {
+    if (videoRef.current && src) {
       // Update currentTime and duration when the video can play
       videoRef.current.addEventListener("canplay", () => {
+        if (!videoRef.current?.duration || !src) return;
         setDuration(videoRef.current.duration);
       });
 
-      // Update currentTime while the video is playing
+      // // Update currentTime while the video is playing
       videoRef.current.addEventListener("timeupdate", () => {
+        if (!videoRef.current?.duration || !src) return;
         setCurrentTime(videoRef.current.currentTime);
       });
 
@@ -80,13 +82,13 @@ function Player({ src }: PlayerProps) {
         );
       };
     }
-  }, []);
+  }, [videoRef, src]);
 
   return (
     <div className="video-player-container">
       <div className="video-player">
         <video ref={videoRef}>
-          <source src={src} type="video/mp4" />
+          {src && <source src={src} type="video/mp4" />}
           Your browser does not support the video tag.
         </video>
 

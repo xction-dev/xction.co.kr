@@ -9,7 +9,7 @@ type VideoElementWithFullScreen = HTMLVideoElement & {
 };
 
 interface FullScreenProps {
-  videoRef: React.RefObject<HTMLVideoElement>;
+  videoRef: React.RefObject<VideoElementWithFullScreen>;
   isFullScreen: boolean;
 }
 

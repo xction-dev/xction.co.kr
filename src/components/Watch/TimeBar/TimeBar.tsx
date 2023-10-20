@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "./TimeBar.css";
 import Slider from "@mui/material/Slider";
 
@@ -18,7 +19,7 @@ function TimeBar({ videoRef, currentTime, duration }: TimeBarProps) {
 
   return (
     <Slider
-      value={(currentTime / duration) * 100} // Calculate the value based on current time and duration
+      value={currentTime && duration ? (currentTime / duration) * 100 : 0} // Calculate the value based on current time and duration
       onChange={handleTimeBarClick}
       aria-label="Time Bar"
     />
