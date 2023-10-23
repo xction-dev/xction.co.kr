@@ -9,7 +9,9 @@ function Login() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState<string | null>(null)
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
-    //const navigate = useNavigate()
+    import { useRouter } from "next/router"
+    /* ... */
+    const router = useRouter()
 
     const handleLogin = () => {
         fetch('../api/mock/user/login/route', {
