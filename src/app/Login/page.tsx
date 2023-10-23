@@ -52,7 +52,10 @@ function Login() {
                 <Typography variant="h4" component="h2" gutterBottom>
                     Login
                 </Typography>
-                <form>
+                <form onSubmit={(e)=> {
+                  e.preventDeafult();
+                  handleLogin();
+                }}>
                     <TextField
                         label="Email"
                         fullWidth
