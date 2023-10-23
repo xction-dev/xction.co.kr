@@ -14,7 +14,7 @@ function Login() {
     const router = useRouter()
 
     const handleLogin = () => {
-        fetch('../api/mock/user/login/route', {
+        fetch('/api/mock/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
