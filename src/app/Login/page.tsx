@@ -9,10 +9,12 @@ function Login() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState<string | null>(null)
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
-    //const navigate = useNavigate()
+    import { useRouter } from "next/router"
+    /* ... */
+    const router = useRouter()
 
     const handleLogin = () => {
-        fetch('../api/mock/user/login/route', {
+        fetch('/api/mock/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,7 +52,10 @@ function Login() {
                 <Typography variant="h4" component="h2" gutterBottom>
                     Login
                 </Typography>
-                <form>
+                <form onSubmit={(e)=> {
+                  e.preventDeafult();
+                  handleLogin();
+                }}>
                     <TextField
                         label="Email"
                         fullWidth
