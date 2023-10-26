@@ -4,7 +4,7 @@ export type VideoElementWithFullScreen = HTMLVideoElement & {
   msRequestFullscreen?: () => void;
 };
 
-export type ExtendedDocument = Document & {
+export type DocumentWithFullScreen = Document & {
   mozCancelFullScreen?: () => void;
   webkitExitFullscreen?: () => void;
   msExitFullscreen?: () => void;

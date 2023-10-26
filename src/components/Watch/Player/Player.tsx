@@ -8,7 +8,7 @@ import TimeBar from "../TimeBar/TimeBar";
 
 import "./Player.css";
 import React, { useState, useRef, useEffect } from "react";
-import { VideoElementWithFullScreen, ExtendedDocument } from "@/types/utility";
+import { DocumentWithFullScreen } from "@/types/utility/polyfills";
 
 interface PlayerProps {
   src: string;
@@ -40,7 +40,7 @@ function Player({ src }: PlayerProps) {
 
       // Detect full-screen change
       const handleFullScreenChange = () => {
-        const document = window.document as ExtendedDocument;
+        const document = window.document as DocumentWithFullScreen;
         setIsFullScreen(
           !!(
             document.fullscreenElement ||

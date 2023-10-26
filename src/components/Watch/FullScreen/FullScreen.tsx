@@ -1,7 +1,10 @@
 import "./FullScreen.css";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
-import { VideoElementWithFullScreen, ExtendedDocument } from "@/types/utility";
+import {
+  VideoElementWithFullScreen,
+  DocumentWithFullScreen,
+} from "@/types/utility/polyfills";
 
 interface FullScreenProps {
   videoRef: React.RefObject<VideoElementWithFullScreen>;
@@ -26,7 +29,7 @@ function FullScreen({ videoRef, isFullScreen }: FullScreenProps) {
           videoRef.current.msRequestFullscreen();
         }
       } else {
-        const document = window.document as ExtendedDocument;
+        const document = window.document as DocumentWithFullScreen;
 
         // Exit full screen
         if (document.exitFullscreen) {
