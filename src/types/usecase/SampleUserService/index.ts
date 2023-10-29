@@ -5,7 +5,7 @@
 export type SampleUserService<UserData, LoginRequestBody> = {
   tryLogin: (body: LoginRequestBody) => void;
 } & (
-  | { status: "loading"; me: null; error: null }
+  | { status: "fetching"; me: UserData | null; error: null }
   | { status: "fail"; error: unknown; me: null }
   | { status: "success"; me: UserData; error: null }
 );

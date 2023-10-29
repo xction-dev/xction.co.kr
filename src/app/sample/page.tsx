@@ -24,7 +24,7 @@ export default function Sample() {
       />
       <button onClick={() => tryLogin({ email, password })}>로그인</button>
 
-      {status === "loading" && <div>로딩 중</div>}
+      {status === "fetching" && <div>로딩 중</div>}
       {status === "fail" && <div>실패</div>}
       {status === "success" && <div>성공: {me.name}</div>}
     </div>
