@@ -1,6 +1,6 @@
 import {
-  PostSampleLoginDto,
-  SampleUserDto,
+  PostSampleLoginRequestDto,
+  GetSampleMeResponseDto,
 } from "@/types/dto/SampleUserService";
 
 /**
@@ -8,14 +8,17 @@ import {
  * 유즈케이스를 실제로 구현한 hook이 너무 커지는 것을 방지하기 위해 분리해두었습니다.
  */
 
-export const getSampleMe = (): Promise<SampleUserDto> =>
+/**
+ *
+ */
+export const getSampleMe = (): Promise<GetSampleMeResponseDto> =>
   fetch(`/api/mock/user`).then((res) =>
     res.ok ? res.json() : Promise.reject(res),
   );
 
 export const postSampleLogin = (
-  body: PostSampleLoginDto,
-): Promise<SampleUserDto> =>
+  body: PostSampleLoginRequestDto,
+): Promise<GetSampleMeResponseDto> =>
   fetch(`/api/mock/user/login`, {
     method: "POST",
     body: JSON.stringify(body),
