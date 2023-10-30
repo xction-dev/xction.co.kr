@@ -1,4 +1,4 @@
-import Providers from "@/utils/Providers";
+import Providers from "@/utils/next-query-resolver/Providers";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
