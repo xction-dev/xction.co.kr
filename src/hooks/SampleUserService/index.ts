@@ -1,13 +1,16 @@
 import { useMemo } from "react";
 import { getSampleMe, postSampleLogin } from "@/api/SampleUserService";
 import {
-  PostSampleLoginDto,
-  SampleUserDto,
+  PostSampleLoginRequestDto,
+  GetSampleMeResponseDto,
 } from "@/types/dto/SampleUserService";
 import { SampleUserService } from "@/types/usecase/SampleUserService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-type InjectedUsecase = SampleUserService<SampleUserDto, PostSampleLoginDto>; // 의미에 맞는 적절한 DTO를 Generic으로 주입해줍니다.
+type InjectedUsecase = SampleUserService<
+  GetSampleMeResponseDto,
+  PostSampleLoginRequestDto
+>; // 의미에 맞는 적절한 DTO를 Generic으로 주입해줍니다.
 
 /**
  * SampleUserService 유즈케이스를 위한 구현체입니다.
