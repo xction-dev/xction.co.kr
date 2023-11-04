@@ -32,11 +32,13 @@ function Player({ src }: PlayerProps) {
         setDuration(currentVideo.duration);
       });
 
-      // // Update currentTime while the video is playing
+      // Update currentTime while the video is playing
       currentVideo.addEventListener("timeupdate", () => {
         if (!currentVideo?.duration || !src) return;
         setCurrentTime(currentVideo.currentTime);
       });
+
+      currentVideo.addEventListener("ended", () => {});
 
       // Detect full-screen change
       const handleFullScreenChange = () => {
