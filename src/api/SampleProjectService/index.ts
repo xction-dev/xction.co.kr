@@ -14,9 +14,8 @@ export const getSampleProjectById =
       res.ok ? res.json() : Promise.reject(res),
     );
 
-export const postSampleProject = (
-  id: string,
-): Promise<GetSampleProjectResponseDto> =>
-  fetch(`/api/mock/project/${id}/finish`, {
-    method: "POST",
-  }).then(async (res) => (res.ok ? res.json() : Promise.reject(res)));
+export const postSampleProjectById =
+  (id: string) => (): Promise<GetSampleProjectResponseDto> =>
+    fetch(`/api/mock/project/${id}/finish`, {
+      method: "POST",
+    }).then(async (res) => (res.ok ? res.json() : Promise.reject(res)));
