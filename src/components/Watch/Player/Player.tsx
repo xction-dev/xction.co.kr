@@ -12,9 +12,10 @@ import { DocumentWithFullScreen } from "@/types/utility/polyfills";
 
 interface PlayerProps {
   src: string;
+  finishWatchingProject: () => void;
 }
 
-function Player({ src }: PlayerProps) {
+function Player({ src, finishWatchingProject }: PlayerProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -38,7 +39,7 @@ function Player({ src }: PlayerProps) {
         setCurrentTime(currentVideo.currentTime);
       });
 
-      currentVideo.addEventListener("ended", () => {});
+      currentVideo.addEventListener("ended", finishWatchingProject);
 
       // Detect full-screen change
       const handleFullScreenChange = () => {
@@ -66,6 +67,7 @@ function Player({ src }: PlayerProps) {
           // Clean up event listeners when the component unmounts
           currentVideo.removeEventListener("canplay", () => {});
           currentVideo.removeEventListener("timeupdate", () => {});
+          currentVideo.removeEventListener("ended", () => {});
         }
 
         // Clean up full-screen change listeners

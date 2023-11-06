@@ -19,7 +19,12 @@ export default function Watch(props: WatchProps) {
       <button onClick={() => finishWatchingProject()}>test button</button>
       {status === "fetching" && <div>로딩 중</div>}
       {status === "fail" && <div>실패</div>}
-      {status === "success" && <Player src={project.src} />}
+      {status === "success" && (
+        <Player
+          src={project.src}
+          finishWatchingProject={finishWatchingProject}
+        />
+      )}
     </>
   );
 }
