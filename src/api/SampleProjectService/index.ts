@@ -15,9 +15,8 @@ export const getSampleProjectById =
     );
 
 export const postSampleProject = (
-  body: any, // post body에 들어갈 타입은 user와 달리 정의되어 있지 않은데, 어떻게 구현하면 좋을까요?
+  id: string,
 ): Promise<GetSampleProjectResponseDto> =>
   fetch(`/api/mock/project/${id}/finish`, {
     method: "POST",
-    body: JSON.stringify(body),
   }).then(async (res) => (res.ok ? res.json() : Promise.reject(res)));

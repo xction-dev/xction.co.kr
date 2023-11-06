@@ -2,7 +2,10 @@ import { useMemo } from "react";
 import { GetSampleProjectResponseDto } from "@/types/dto/SampleProjectService";
 import { SampleProjectService } from "@/types/usecase/SampleProjectService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getSampleProjectById } from "@/api/SampleProjectService";
+import {
+  getSampleProjectById,
+  postSampleProject,
+} from "@/api/SampleProjectService";
 
 type InjectedUsecase = SampleProjectService<GetSampleProjectResponseDto>; // 의미에 맞는 적절한 DTO를 Generic으로 주입해줍니다.
 
@@ -25,11 +28,7 @@ export const useSampleProjectService = (id: string): InjectedUsecase => {
 
   // useMutation을 이용한 POST 시도
   const { mutate } = useMutation({
-    mutationFn: (body: any): Promise<GetSampleProjectResponseDto> =>
-      fetch(`/api/mock/project/${id}/finish`, {
-        method: "POST",
-        body: JSON.stringify(body),
-      }).then(async (res) => (res.ok ? res.json() : Promise.reject(res))),
+    mutationFn: postSampleProject,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["project", id] }); // POST 성공 시 ["project", id] 쿼리를 새로고침해줍니다
     },
