@@ -51,5 +51,5 @@ export const useSampleProjectService = (id: string): InjectedUsecase => {
     }
   }, [status, data, error]);
 
-  return { ...parsedFetchResult, finishWathcingProject: mutate }; // 유즈케이스의 타입과 동일한 객체를 반환합니다.
+  return { ...parsedFetchResult, finishWatchingProject: mutate }; // 유즈케이스의 타입과 동일한 객체를 반환합니다.
 };
