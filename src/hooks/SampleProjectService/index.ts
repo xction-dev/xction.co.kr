@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { GetSampleProjectResponseDto } from "@/types/dto/SampleProjectService";
 import { SampleProjectService } from "@/types/usecase/SampleProjectService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getSampleProjectById } from "@/api/SampleProjectService";
 
 type InjectedUsecase = SampleProjectService<GetSampleProjectResponseDto>; // 의미에 맞는 적절한 DTO를 Generic으로 주입해줍니다.
 
@@ -9,17 +10,14 @@ type InjectedUsecase = SampleProjectService<GetSampleProjectResponseDto>; // 의
  * SampleUserService 유즈케이스를 위한 구현체입니다.
  * 각 코드에 대한 설명을 자세히 달아놓았으니 참고하시기 바랍니다.
  */
-export const useSampleProjectService = (id: number): InjectedUsecase => {
+export const useSampleProjectService = (id: string): InjectedUsecase => {
   // query를 관리하는 객체
   const queryClient = useQueryClient();
 
   // useQuery를 이용한 비디오 가져오기
   const { data, error, status } = useQuery({
     queryKey: ["project", id],
-    queryFn: () =>
-      fetch(`/api/mock/project/${id}`).then((res) =>
-        res.ok ? res.json() : Promise.reject(res),
-      ), // api에서 정의한 함수를 가져오면 fail이 떠서, useQuery 내에서 정의했습니다(에러 원인 파악 필요).
+    queryFn: getSampleProjectById(id),
     staleTime: 1000 * 60,
     gcTime: 1000 * 60 * 60,
     retry: 0,
