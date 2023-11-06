@@ -1,4 +1,6 @@
 #!/bin/bash
-cd /var/frontend/
-rm -r node_modules/
+REPOSITORY=/home/ubuntu/build
+
+cd $REPOSITORY
+
 yarn install

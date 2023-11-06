@@ -2,9 +2,15 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/frontend
+    destination: /home/ubuntu/build
     overwrite: true
 file_exist_behavior: OVERWRITE
+
+permissions:
+  - object: /home/ubuntu/build
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
 
 hooks:
   BeforeInstall:
