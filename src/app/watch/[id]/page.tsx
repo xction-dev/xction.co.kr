@@ -5,7 +5,7 @@ import { useSampleProjectService } from "@/hooks/SampleProjectService";
 
 type WatchProps = {
   params: {
-    id: number;
+    id: string;
   };
 };
 
