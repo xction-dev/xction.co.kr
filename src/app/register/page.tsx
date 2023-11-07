@@ -7,7 +7,6 @@ import {
   Button,
   Snackbar,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import "./Register.css";
 
 function Register() {
