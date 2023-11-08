@@ -8,13 +8,14 @@ import TimeBar from "../TimeBar/TimeBar";
 
 import "./Player.css";
 import React, { useState, useRef, useEffect } from "react";
-import { VideoElementWithFullScreen, ExtendedDocument } from "@/types/utility";
+import { DocumentWithFullScreen } from "@/types/utility/polyfills";
 
 interface PlayerProps {
   src: string;
+  finishWatchingProject: () => void;
 }
 
-function Player({ src }: PlayerProps) {
+function Player({ src, finishWatchingProject }: PlayerProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -32,15 +33,17 @@ function Player({ src }: PlayerProps) {
         setDuration(currentVideo.duration);
       });
 
-      // // Update currentTime while the video is playing
+      // Update currentTime while the video is playing
       currentVideo.addEventListener("timeupdate", () => {
         if (!currentVideo?.duration || !src) return;
         setCurrentTime(currentVideo.currentTime);
       });
 
+      currentVideo.addEventListener("ended", finishWatchingProject);
+
       // Detect full-screen change
       const handleFullScreenChange = () => {
-        const document = window.document as ExtendedDocument;
+        const document = window.document as DocumentWithFullScreen;
         setIsFullScreen(
           !!(
             document.fullscreenElement ||
@@ -64,6 +67,7 @@ function Player({ src }: PlayerProps) {
           // Clean up event listeners when the component unmounts
           currentVideo.removeEventListener("canplay", () => {});
           currentVideo.removeEventListener("timeupdate", () => {});
+          currentVideo.removeEventListener("ended", () => {});
         }
 
         // Clean up full-screen change listeners
