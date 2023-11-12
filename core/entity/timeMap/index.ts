@@ -1,7 +1,7 @@
-import { TimeNode } from "./TimeNode";
+import { TimeNodeEntity } from "./TimeNode";
 
 export type TimeMapEntity = {
   type: "tree";
-  root: TimeNode;
-  leaves: TimeNode[];
+  root: TimeNodeEntity;
+  leaves: TimeNodeEntity[];
 };

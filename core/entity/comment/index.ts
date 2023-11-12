@@ -1,9 +1,11 @@
 import { PublicId } from "../.shared/Id";
-import { TimeNode } from "../timeMap/TimeNode";
+import { TimeNodeEntity } from "../timeMap/TimeNode";
+import { UserEntity } from "../user";
 
 export type Comment = {
   id: PublicId;
+  creatorId: UserEntity["id"];
   content: string;
   isSpoiler: boolean;
-  parentTimeNodeId: TimeNode["id"];
+  parentTimeNodeId: TimeNodeEntity["id"];
 };

@@ -1,4 +1,4 @@
-import { TimeNode } from "./TimeNode";
+import { TimeNodeEntity } from "./TimeNode";
 /**
  * Game은 tag를 유니크한 타입 식별자로 가지는 객체
  * "success" | "fail" | "pending"의 string enum 상태를 가짐

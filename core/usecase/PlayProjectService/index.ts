@@ -1,12 +1,12 @@
 import { ProjectEntity } from "@core/entity/project";
-import { TimeNode } from "@core/entity/timeMap/TimeNode";
+import { TimeNodeEntity } from "@core/entity/timeMap/TimeNode";
 
 export type PlayProjectService = {
   project: ProjectEntity;
-  currentTimeNode: TimeNode; // ProjectEntity.TimeMap.leaves[0]의 타입
-  playNextTimeNode: (nextTimeNode: TimeNode) => void;
+  currentTimeNode: TimeNodeEntity;
+  playNextTimeNode: (nextTimeNode: TimeNodeEntity) => void;
   playFromStart: () => void;
-  playFromSpecificTimeNode: (timeNode: TimeNode) => void;
-  savePlayHistory: (timeNode: TimeNode) => void;
+  playFromSpecificTimeNode: (timeNode: TimeNodeEntity) => void;
+  savePlayHistory: (timeNode: TimeNodeEntity) => void;
   loadPlayHistory: () => void;
 };

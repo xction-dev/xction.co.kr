@@ -24,8 +24,7 @@ type Selector = {
 };
 
 type TimeEdge = {
-  to: TimeNode;
-  transition: Transition;
+  to: TimeNodeEntity;
 };
 
-export type TimeNode = Basics & Selector;
+export type TimeNodeEntity = Basics & Selector;
