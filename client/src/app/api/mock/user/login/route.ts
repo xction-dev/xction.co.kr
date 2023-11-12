@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError, z } from "zod";
-import { cacheLogin } from "../route";
 
 const Body = z.object({
   email: z.string().email(),
@@ -28,8 +27,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // send success response
-    cacheLogin();
     return NextResponse.json({ success: true, user: validBody.email });
   } catch (e) {
     // default: unknown error
