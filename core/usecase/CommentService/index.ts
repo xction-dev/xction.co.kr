@@ -1,4 +1,4 @@
-import Comment from "../../entity/comment/index";
+import { Comment } from "@core/entity/comment";
 
 export type CommentService = {
   currentComments: Comment[];

@@ -1,3 +1,5 @@
+import { PublicId } from "../.shared/Id";
+
 /**
  * 1. 재생이 끝나면 넘어간다.
  * 2. 버튼이 뜨고, 누르는 것에 따라 넘어간다.
@@ -26,4 +28,4 @@ type TimeEdge = {
   transition: Transition;
 };
 
-export type TimeNode = BasicNode & SelectorNode;
+export type TimeNode = Basics & Selector;

@@ -1,4 +1,4 @@
-import { SampleProjectEntity } from "@/types/entity/sample/project";
+import { SampleProjectEntity } from "@core/entity/sample/project";
 
 export type GetSampleProjectResponseDto = {
   id: SampleProjectEntity["id"];

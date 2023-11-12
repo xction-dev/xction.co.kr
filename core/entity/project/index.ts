@@ -1,5 +1,6 @@
 import { TimeMapEntity } from "../timeMap";
 import { UserEntity } from "../user";
+import { PublicId } from "../.shared/Id";
 
 export type ProjectEntity = {
   id: PublicId;

@@ -1,5 +1,5 @@
-import { ProjectEntity } from "../../entity/project";
-import { TimeNode } from "../../entity/timeMap/TimeNode";
+import { ProjectEntity } from "@core/entity/project";
+import { TimeNode } from "@core/entity/timeMap/TimeNode";
 
 export type PlayProjectService = {
   project: ProjectEntity;
