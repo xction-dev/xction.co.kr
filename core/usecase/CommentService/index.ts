@@ -1,12 +1,14 @@
 import { Comment } from "@core/entity/comment";
 
-export type CommentService = {
-  currentComments: Comment[];
-  writeComment: (content: Comment["content"], isSpoiler: boolean) => void;
+export type CommentService<
+  ReadCommentResponseInterface extends Pick<Comment, "content" | "isSpoiler">,
+  WriteCommentRequestInterface extends Pick<Comment, "content" | "isSpoiler">,
+> = {
+  currentComments: ReadCommentResponseInterface[];
+  writeComment: (body: WriteCommentRequestInterface) => void;
   fixComment: (
     commentId: Comment["id"],
-    content: Comment["content"],
-    isSpolier: boolean,
+    body: WriteCommentRequestInterface,
   ) => void;
   deleteComment: (commentId: Comment["id"]) => void;
   reportComment: (commentId: Comment["id"]) => void;
