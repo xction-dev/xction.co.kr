@@ -38,8 +38,9 @@ export type PostUserLogoutResponseDto = {
  * POST "user/register"
  */
 export type PostUserRegisterRequestDto = {
-  authorization: Authorization;
+  name: string;
   email: string;
+  authorization: Authorization;
 };
 export type PostUserRegisterResponseDto = {
   success: true;

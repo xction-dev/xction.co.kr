@@ -1,4 +1,9 @@
+import { Authorization } from "../.shared/Authorization";
+import { PublicId } from "../.shared/Id";
+
 export type UserEntity = {
-  id: number;
-  name: string;
+  id: PublicId;
+  name: string; // required
+  email: string; // required
+  authorization: Authorization;
 };

@@ -1,4 +1,5 @@
 import { Authorization } from "@core/entity/.shared/Authorization";
+import { UserEntity } from "@core/entity/user";
 
 export type UserAccessService<
   LoginRequestInterface extends {
@@ -9,7 +10,9 @@ export type UserAccessService<
     success: boolean;
   },
   RegisterRequestInterface extends {
-    Authorization: Authorization;
+    name: UserEntity["name"];
+    email: UserEntity["email"];
+    authorization: Authorization;
   },
   RegisterResponseInterface extends {
     success: boolean;
