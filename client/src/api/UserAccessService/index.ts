@@ -11,7 +11,7 @@ import {
 export const postUserLogin = (
   body: PostUserLoginRequestDto,
 ): Promise<PostUserLoginResponseDto> =>
-  fetch(`/api/mock/user/login`, {
+  fetch(`/api/user/login`, {
     method: "POST",
     body: JSON.stringify(body),
   }).then(async (res) => (res.ok ? res.json() : Promise.reject(res)));
