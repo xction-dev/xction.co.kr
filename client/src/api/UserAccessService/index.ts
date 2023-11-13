@@ -8,11 +8,6 @@ import {
   PostUserLoginResponseDto,
 } from "@core/dto/UserAccessService";
 
-export const getUser = (): Promise<PostUserLoginResponseDto> =>
-  fetch(`/api/mock/user`).then((res) =>
-    res.ok ? res.json() : Promise.reject(res),
-  );
-
 export const postUserLogin = (
   body: PostUserLoginRequestDto,
 ): Promise<PostUserLoginResponseDto> =>
