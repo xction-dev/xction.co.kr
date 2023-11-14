@@ -3,17 +3,15 @@ import {
   postUserLogin,
   postUserAutoLogin,
   postUserLogout,
+  postUserRegister,
 } from "@/api/UserAccessService";
 import {
   PostUserLoginRequestDto,
   PostUserLoginResponseDto,
-  PostUserAutoLoginRequestDto,
-  PostUserAutoLoginResponseDto,
-  PostUserLogoutResponseDto,
   PostUserRegisterRequestDto,
   PostUserRegisterResponseDto,
 } from "@core/dto/UserAccessService";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserAccessService } from "@core/usecase/UserAccessService";
 
 type InjectedUsecase = UserAccessService<
@@ -36,18 +34,51 @@ export const useUserAccessService = (): InjectedUsecase => {
     mutationFn: postUserLogin,
   });
 
-  // useMutation을 이용한 자동 로그인 시도. (보완 필요)
+  // useMutation을 이용한 자동 로그인 시도.
   const { mutateAsync: tryAutoLogin } = useMutation({
     mutationFn: postUserAutoLogin,
-    onSuccess: (data) => {
-      return data;
-    },
   });
 
-  // useMutation을 이용한 로그아웃 시도. (보완 필요)
+  // useMutation을 이용한 로그아웃 시도.
   const { mutateAsync: tryLogout } = useMutation({
     mutationFn: postUserLogout,
   });
 
-  return { data, tryLogin, tryAutoLogin, tryLogout, tryRegister };
+  // useMutation을 이용한 회원가입 시도.
+  const { mutateAsync: tryRegister } = useMutation({
+    mutationFn: postUserRegister,
+  });
+
+  const parsedFetchResult = useMemo(() => {
+    switch (status) {
+      case "idle":
+        return {
+          status: "fetching",
+          token: null,
+        } as const;
+      case "pending":
+        return {
+          status: "fetching",
+          token: null,
+        } as const;
+      case "error":
+        return {
+          status: "not_authorized",
+          token: null,
+        } as const;
+      case "success":
+        return {
+          status: "authorized",
+          token: data.token,
+        } as const;
+    }
+  }, [status, data]);
+
+  return {
+    tryLogin,
+    tryAutoLogin,
+    tryLogout,
+    tryRegister,
+    ...parsedFetchResult,
+  };
 };

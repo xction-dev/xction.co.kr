@@ -6,9 +6,8 @@
 import {
   PostUserLoginRequestDto,
   PostUserLoginResponseDto,
-  PostUserAutoLoginRequestDto,
-  PostUserAutoLoginResponseDto,
-  PostUserLogoutResponseDto,
+  PostUserRegisterRequestDto,
+  PostUserRegisterResponseDto,
 } from "@core/dto/UserAccessService";
 
 export const postUserLogin = (
@@ -27,4 +26,12 @@ export const postUserAutoLogin = (): Promise<PostUserLoginResponseDto> =>
 export const postUserLogout = (): Promise<void> =>
   fetch(`/api/user/logout`, {
     method: "POST",
+  }).then(async (res) => (res.ok ? res.json() : Promise.reject(res)));
+
+export const postUserRegister = (
+  body: PostUserRegisterRequestDto,
+): Promise<PostUserRegisterResponseDto> =>
+  fetch(`/api/user/register`, {
+    method: "POST",
+    body: JSON.stringify(body),
   }).then(async (res) => (res.ok ? res.json() : Promise.reject(res)));
