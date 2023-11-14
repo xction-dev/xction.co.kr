@@ -28,11 +28,12 @@ export const useUserAccessService = (): InjectedUsecase => {
   const queryClient = useQueryClient();
 
   // useMutation을 이용한 로그인 시도. GET 요청이 없으니 invalidateQueries는 없어도 된다고 판단했습니다.
-  const { mutateAsync: tryLogin } = useMutation({
+  const {
+    status,
+    data,
+    mutateAsync: tryLogin,
+  } = useMutation({
     mutationFn: postUserLogin,
-    onSuccess: (data) => {
-      return data;
-    },
   });
 
   // useMutation을 이용한 자동 로그인 시도. (보완 필요)
@@ -46,9 +47,6 @@ export const useUserAccessService = (): InjectedUsecase => {
   // useMutation을 이용한 로그아웃 시도. (보완 필요)
   const { mutateAsync: tryLogout } = useMutation({
     mutationFn: postUserLogout,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", "me"] });
-    },
   });
 
   return { data, tryLogin, tryAutoLogin, tryLogout, tryRegister };
