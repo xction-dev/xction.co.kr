@@ -8,6 +8,7 @@ export type UserAccessService<
   },
   LoginResponseInterface extends {
     success: boolean;
+    token: string;
   },
   RegisterRequestInterface extends {
     name: UserEntity["name"];
@@ -16,21 +17,22 @@ export type UserAccessService<
   },
   RegisterResponseInterface extends {
     success: boolean;
+    token: string;
   },
 > = {
-  data:
-    | {
-        status: "fetching" | "fail";
-        user: null;
-      }
-    | {
-        status: "success";
-        user: LoginResponseInterface;
-      };
   tryLogin: (body: LoginRequestInterface) => Promise<LoginResponseInterface>;
   tryAutoLogin: () => Promise<LoginResponseInterface>;
   tryLogout: () => Promise<void>;
   tryRegister: (
     body: RegisterRequestInterface,
   ) => Promise<RegisterResponseInterface>;
-};
+} & (
+  | {
+      status: "fetching" | "not_authorized";
+      token: null;
+    }
+  | {
+      status: "authorized";
+      token: string;
+    }
+);

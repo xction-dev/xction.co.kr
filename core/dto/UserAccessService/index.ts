@@ -44,4 +44,5 @@ export type PostUserRegisterRequestDto = {
 };
 export type PostUserRegisterResponseDto = {
   success: true;
+  token: Token;
 };
