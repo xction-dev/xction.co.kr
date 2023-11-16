@@ -44,5 +44,8 @@ export type PostUserRegisterRequestDto = {
 };
 export type PostUserRegisterResponseDto = {
   success: true;
+<<<<<<< Updated upstream
   token: Token;
+=======
+>>>>>>> Stashed changes
 };
