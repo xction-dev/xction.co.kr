@@ -1,6 +1,7 @@
 "use client";
 
 import Heading from "@/components/Heading";
+import Wip from "@/components/Wip";
 import DevSection from "@/modules/dev/DevSection";
 import styled from "@emotion/styled";
 
@@ -19,6 +20,9 @@ export default function Dev() {
       <DevSection title="Button"></DevSection>
       <DevSection title="Text Input"></DevSection>
       <DevSection title="Slider"></DevSection>
+      <DevSection title="Wip">
+        <Wip width={500} height={200} />
+      </DevSection>
     </Main>
   );
 }
