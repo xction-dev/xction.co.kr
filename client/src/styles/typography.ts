@@ -47,6 +47,49 @@ const h6 = css`
   letter-spacing: 0.15px;
 `;
 
+const subTitle1 = css`
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.15px;
+`;
+
+const subTitle2 = css`
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.1px;
+`;
+
+const body1 = css`
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+`;
+
+const body2 = css`
+  /* Body2 */
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+`;
+
+const button = css`
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+`;
+
+const caption = css`
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+`;
+
+const overline = css`
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+`;
+
 const typography = {
   h1,
   h2,
@@ -54,6 +97,13 @@ const typography = {
   h4,
   h5,
   h6,
+  subTitle1,
+  subTitle2,
+  body1,
+  body2,
+  button,
+  caption,
+  overline,
 };
 
 export default typography;
