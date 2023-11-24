@@ -1,6 +1,7 @@
 "use client";
 
 import Heading from "@/components/Heading";
+import Button from "@/components/Button";
 import Wip from "@/components/Wip";
 import DevSection from "@/modules/dev/DevSection";
 import styled from "@emotion/styled";
@@ -19,7 +20,9 @@ export default function Dev() {
         <Heading.H5>H5: 아주 작은 제목입니다</Heading.H5>
         <Heading.H6>H6: 가장 작은 제목입니다</Heading.H6>
       </DevSection>
-      <DevSection title="Button"></DevSection>
+      <DevSection title="Button">
+        <Button.black content="test"></Button.black>
+      </DevSection>
       <DevSection title="Text Input"></DevSection>
       <DevSection title="Slider"></DevSection>
       <DevSection title="Wip">
