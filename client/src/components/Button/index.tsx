@@ -41,18 +41,18 @@ function white(props: ButtonProps) {
     <MuiButton
       disableRipple
       css={css`
-        background-color: white;
-        color: black;
+        background-color: #f1f1f1;
+        color: #202020;
         border-radius: 34px;
         height: 68px;
         padding: 16px 32px;
         box-shadow: 9px 9px 9px rgba(0, 0, 0, 0.2);
         &:hover {
-          background-color: gray;
+          background-color: #d3d3d3;
         }
         &:active {
-          background-color: white;
-          border: 1px solid black;
+          background-color: #f1f1f1;
+          border: 2px solid #202020;
         }
         ${typography.h5}
       `}
@@ -68,17 +68,17 @@ function capsule(props: ButtonProps) {
     <MuiButton
       disableRipple
       css={css`
-        background-color: gray;
-        color: white;
+        background-color: #343434;
+        color: #f1f1f1;
         border-radius: 8px;
         height: 57px;
         padding: 16px 24px;
         &:hover {
-          background-color: lightgray;
+          background-color: #7c7c7c;
         }
         &:active {
-          background-color: gray;
-          border: 1px solid white;
+          background-color: #343434;
+          border: 2px solid #f1f1f1;
         }
         ${typography.h6}
       `}
