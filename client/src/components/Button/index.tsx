@@ -1,9 +1,8 @@
 /**  @jsxImportSource @emotion/react */
 "use client";
 
-import { css, useTheme } from "@emotion/react";
+import { css } from "@emotion/react";
 import { Button as MuiButton } from "@mui/material";
-// import { Theme as MuiTheme } from "@mui/material/styles";
 import typography from "@/styles/typography";
 
 type ButtonProps = Parameters<typeof MuiButton>[0];
@@ -95,16 +94,17 @@ function text(props: ButtonProps) {
       disableRipple
       css={css`
         background-color: none;
-        color: black;
-        border-radius: 8px;
-        height: 57px;
-        padding: 16px 24px;
-        &:hover {
-          background-color: lightgray;
-        }
+        color: #000000;
+        height: 49px;
+        padding: 12px 20px;
+        text-transform: none;
+        text-decoration: none;
+        line-height: 1.5;
+        &:hover,
         &:active {
-          background-color: gray;
-          border: 1px solid white;
+          line-height: 1.5;
+          text-decoration: underline;
+          text-underline-offset: 4px;
         }
         ${typography.h6}
       `}

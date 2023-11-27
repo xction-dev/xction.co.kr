@@ -24,6 +24,7 @@ export default function Dev() {
         <Button.black>업적 확인하기</Button.black>
         <Button.white>보러가기</Button.white>
         <Button.capsule>마이페이지</Button.capsule>
+        <Button.text>Text</Button.text>
       </ButtonDevSection>
       <DevSection title="Text Input"></DevSection>
       <DevSection title="Slider"></DevSection>
