@@ -4,6 +4,8 @@ import Heading from "@/components/Heading";
 import Wip from "@/components/Wip";
 import DevSection from "@/modules/dev/DevSection";
 import styled from "@emotion/styled";
+import Lottie from "lottie-react";
+import logoAnimation from "../../../public/logo_animation.json";
 
 export default function Dev() {
   return (
@@ -22,6 +24,9 @@ export default function Dev() {
       <DevSection title="Slider"></DevSection>
       <DevSection title="Wip">
         <Wip width={500} height={200} />
+      </DevSection>
+      <DevSection title="Logo Animation">
+        <Lottie animationData={logoAnimation} loop={false} reversed={true} />
       </DevSection>
     </Main>
   );
