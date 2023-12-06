@@ -10,8 +10,6 @@ type ButtonProps = Parameters<typeof MuiButton>[0];
 function Black(props: ButtonProps) {
   return (
     <MuiButton
-      /** MUI의 기본 Ripple Effect 비활성화 시켰습니다. 활성화할지 논의 필요합니다. */
-      disableRipple
       css={css`
         background-color: #343434;
         color: #f6f6f6;
@@ -40,7 +38,6 @@ function Black(props: ButtonProps) {
 function White(props: ButtonProps) {
   return (
     <MuiButton
-      disableRipple
       css={css`
         background-color: #f1f1f1;
         color: #202020;
@@ -69,7 +66,6 @@ function White(props: ButtonProps) {
 function Capsule(props: ButtonProps) {
   return (
     <MuiButton
-      disableRipple
       css={css`
         background-color: #343434;
         color: #f1f1f1;
@@ -97,7 +93,6 @@ function Capsule(props: ButtonProps) {
 function Text(props: ButtonProps) {
   return (
     <MuiButton
-      disableRipple
       css={css`
         background-color: none;
         color: #000000;
