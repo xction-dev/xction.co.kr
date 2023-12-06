@@ -116,7 +116,6 @@ function Text(props: ButtonProps) {
   );
 }
 
-// const Button = { black, white, capsule, proceed, text };
 const Button = { Black, White, Capsule, Text };
 
 export default Button;
