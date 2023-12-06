@@ -21,10 +21,10 @@ export default function Dev() {
         <Heading.H6>H6: 가장 작은 제목입니다</Heading.H6>
       </DevSection>
       <ButtonDevSection title="Button">
-        <Button.black>업적 확인하기</Button.black>
-        <Button.white>보러가기</Button.white>
-        <Button.capsule>마이페이지</Button.capsule>
-        <Button.text>Text</Button.text>
+        <Button.Black>업적 확인하기</Button.Black>
+        <Button.White>보러가기</Button.White>
+        <Button.Capsule>마이페이지</Button.Capsule>
+        <Button.Text>Text</Button.Text>
       </ButtonDevSection>
       <DevSection title="Text Input"></DevSection>
       <DevSection title="Slider"></DevSection>

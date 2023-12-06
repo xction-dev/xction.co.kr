@@ -7,7 +7,7 @@ import typography from "@/styles/typography";
 
 type ButtonProps = Parameters<typeof MuiButton>[0];
 
-function black(props: ButtonProps) {
+function Black(props: ButtonProps) {
   return (
     <MuiButton
       /** MUI의 기본 Ripple Effect 비활성화 시켰습니다. 활성화할지 논의 필요합니다. */
@@ -35,7 +35,7 @@ function black(props: ButtonProps) {
   );
 }
 
-function white(props: ButtonProps) {
+function White(props: ButtonProps) {
   return (
     <MuiButton
       disableRipple
@@ -62,7 +62,7 @@ function white(props: ButtonProps) {
   );
 }
 
-function capsule(props: ButtonProps) {
+function Capsule(props: ButtonProps) {
   return (
     <MuiButton
       disableRipple
@@ -88,7 +88,7 @@ function capsule(props: ButtonProps) {
   );
 }
 
-function text(props: ButtonProps) {
+function Text(props: ButtonProps) {
   return (
     <MuiButton
       disableRipple
@@ -116,6 +116,6 @@ function text(props: ButtonProps) {
 }
 
 // const Button = { black, white, capsule, proceed, text };
-const Button = { black, white, capsule, text };
+const Button = { Black, White, Capsule, Text };
 
 export default Button;
