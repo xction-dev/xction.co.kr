@@ -19,9 +19,11 @@ function Black(props: ButtonProps) {
         height: 68px;
         padding: 16px 32px;
         box-shadow: 9px 9px 9px rgba(0, 0, 0, 0.2);
+        border: 2px solid transparent;
         ${typography.h5}
         &:hover {
           background-color: #7c7c7c;
+          border: 2px solid transparent;
         }
         &:active {
           background-color: #343434;
@@ -46,8 +48,10 @@ function White(props: ButtonProps) {
         height: 68px;
         padding: 16px 32px;
         box-shadow: 9px 9px 9px rgba(0, 0, 0, 0.2);
+        border: 2px solid transparent;
         &:hover {
           background-color: #d3d3d3;
+          border: 2px solid transparent;
         }
         &:active {
           background-color: #f1f1f1;
@@ -72,8 +76,10 @@ function Capsule(props: ButtonProps) {
         border-radius: 8px;
         height: 57px;
         padding: 16px 24px;
+        border: 2px solid transparent;
         &:hover {
           background-color: #7c7c7c;
+          border: 2px solid transparent;
         }
         &:active {
           background-color: #343434;
