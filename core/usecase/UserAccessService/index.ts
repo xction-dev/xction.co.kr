@@ -1,4 +1,4 @@
-import { Authorization } from "@core/entity/.shared/Authorization";
+import { Authorization } from "@core/utility/Authorization";
 import { UserEntity } from "@core/entity/user";
 
 export type UserAccessService<

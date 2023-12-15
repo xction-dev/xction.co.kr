@@ -1,4 +1,4 @@
-import { PublicId } from "../.shared/Id";
+import { PublicId } from "../../utility/Id";
 
 /**
  * 1. 재생이 끝나면 넘어간다.

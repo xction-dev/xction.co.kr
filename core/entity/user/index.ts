@@ -1,5 +1,5 @@
-import { Authorization } from "../.shared/Authorization";
-import { PublicId } from "../.shared/Id";
+import { Authorization } from "../../utility/Authorization";
+import { PublicId } from "../../utility/Id";
 
 export type UserEntity = {
   id: PublicId;

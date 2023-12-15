@@ -1,4 +1,4 @@
-import { PublicId } from "../.shared/Id";
+import { PublicId } from "../../utility/Id";
 import { TimeNodeEntity } from "../timeMap/TimeNode";
 import { UserEntity } from "../user";
 
