@@ -7,6 +7,7 @@ import DevSection from "@/modules/dev/DevSection";
 import styled from "@emotion/styled";
 import Lottie from "lottie-react";
 import logoAnimation from "../../../public/logo_animation.json";
+import layout from "../../styles/layout";
 
 export default function Dev() {
   return (
@@ -38,13 +39,16 @@ export default function Dev() {
   );
 }
 
-const Main = styled("main")({
-  display: "flex",
-  flexDirection: "column",
-  backgroundColor: "black",
-  color: "white",
-  minHeight: "100vh",
-});
+const Main = styled("main")([
+  layout.page,
+  {
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: "black",
+    color: "white",
+    minHeight: "100vh",
+  },
+]);
 
 const Title = styled(Heading.H1)({
   textAlign: "center",
