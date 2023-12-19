@@ -1,15 +1,24 @@
 import { BaseServerTransaction } from "@core/utility/AbstractType";
-import { Token } from "@core/utility/Token";
 
 export type UserAccessService<
-  Login extends BaseServerTransaction,
-  AutoLogin extends BaseServerTransaction,
-  Refresh extends BaseServerTransaction,
-  Logout extends BaseServerTransaction,
+  Interface extends {
+    Login: BaseServerTransaction;
+    AutoLogin: BaseServerTransaction;
+    Refresh: BaseServerTransaction;
+    Logout: BaseServerTransaction;
+  },
 > = {
-  login: (request: Login["Request"]) => Promise<Login["Response"]>;
-  autoLogin: (request: AutoLogin["Request"]) => Promise<AutoLogin["Response"]>;
-  refresh: (request: Refresh["Request"]) => Promise<Refresh["Response"]>;
-  logout: (request: Logout["Request"]) => Promise<Logout["Response"]>;
-  token: Token | null;
+  login: (
+    request: Interface["Login"]["Request"],
+  ) => Promise<Interface["Login"]["Response"]>;
+  autoLogin: (
+    request: Interface["AutoLogin"]["Request"],
+  ) => Promise<Interface["AutoLogin"]["Response"]>;
+  refresh: (
+    request: Interface["Refresh"]["Request"],
+  ) => Promise<Interface["Refresh"]["Response"]>;
+  logout: (
+    request: Interface["Logout"]["Request"],
+  ) => Promise<Interface["Logout"]["Response"]>;
+  token: Interface["Login"]["Response"] | Interface["AutoLogin"] | null;
 };
