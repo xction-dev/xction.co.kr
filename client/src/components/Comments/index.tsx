@@ -11,6 +11,9 @@ import { makeStyles } from "@mui/styles";
 import { PropsWithChildren } from "react";
 import Image from "next/image";
 import button1 from "../Comments/cbutton1.png";
+import IconButton from "@mui/material/IconButton";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 
 type CommentsProps = PropsWithChildren;
 
@@ -151,6 +154,12 @@ export default function Comments({ children }: CommentsProps) {
                 <Typography>{comment.text}</Typography>
               </Grid>
             </Grid>
+            <IconButton>
+              <ThumbUpOffAltIcon />
+            </IconButton>
+            <IconButton>
+              <ThumbDownOffAltIcon />
+            </IconButton>
             <Button
               variant="outlined"
               color="secondary"
@@ -203,7 +212,7 @@ export default function Comments({ children }: CommentsProps) {
                     color="secondary"
                     onClick={() => handleDelete(commentIndex, replyIndex)}
                   >
-                    취소
+                    답글 삭제
                   </Button>
                 </div>
               ))}
@@ -215,3 +224,4 @@ export default function Comments({ children }: CommentsProps) {
     </div>
   );
 }
+
