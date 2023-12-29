@@ -1,6 +1,6 @@
 "use client";
 
-import Comments from "@/modules/dev/Comments";
+import Comments from "@Comments";
 
 export default function CommentPage() {
   return (
