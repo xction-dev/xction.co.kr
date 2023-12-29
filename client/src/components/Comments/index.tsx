@@ -64,6 +64,7 @@ export default function Comments({ children }: CommentsProps) {
   const classes = useStyles();
   const [newComment, setNewComment] = useState<string>("");
   const [newReply, setNewReply] = useState<string>("");
+  const [openReplyform, setOpenReplyForm] = useState<number | null>(null);
 
   const [comments, setComments] = useState<Comment[]>([
     { text: "hello", replies: [] },
@@ -94,6 +95,12 @@ export default function Comments({ children }: CommentsProps) {
       }
     };
 
+  const toggleReplyForm = (commentIndex: number) => {
+    setOpenReplyForm((prevIndex) =>
+      prevIndex === commentIndex ? null : commentIndex,
+    );
+  };
+
   const handleDelete = (commentIndex: number, replyIndex?: number) => {
     const updatedComments = [...comments];
     if (replyIndex !== undefined) {
@@ -102,6 +109,7 @@ export default function Comments({ children }: CommentsProps) {
       updatedComments.splice(commentIndex, 1);
     }
     setComments(updatedComments);
+    setOpenReplyForm(null);
   };
 
   return (
@@ -163,43 +171,47 @@ export default function Comments({ children }: CommentsProps) {
             <Button
               variant="outlined"
               color="secondary"
-              onClick={() => handleDelete(commentIndex)}
+              onClick={() => toggleReplyForm(commentIndex)}
             >
-              취소
+              답글
             </Button>
-            <form
-              onSubmit={handleReplySubmit(commentIndex)}
-              className={classes.commentContainer}
-              style={{ marginLeft: "100px" }}
-            >
-              <Grid container spacing={1} alignItems="center">
-                <Grid item>
-                  <Avatar className={classes.avatar}>U</Avatar>
+
+            {openReplyform === commentIndex && (
+              <form
+                onSubmit={handleReplySubmit(commentIndex)}
+                className={classes.commentContainer}
+                style={{ marginLeft: "100px" }}
+              >
+                <Grid container spacing={1} alignItems="center">
+                  <Grid item>
+                    <Avatar className={classes.avatar}>U</Avatar>
+                  </Grid>
+                  <Grid item xs>
+                    <TextField
+                      placeholder="Add a reply..."
+                      value={newReply}
+                      onChange={(e) => setNewReply(e.target.value)}
+                      fullWidth
+                      variant="standard"
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs>
-                  <TextField
-                    placeholder="Add a reply..."
-                    value={newReply}
-                    onChange={(e) => setNewReply(e.target.value)}
-                    fullWidth
-                    variant="standard"
-                  />
-                </Grid>
-              </Grid>
-              <div className={classes.buttonContainer}>
-                <Button variant="outlined" color="secondary">
-                  취소
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  disabled={newReply.trim() === ""}
-                >
-                  답글
-                </Button>
-              </div>
-            </form>
+                <div className={classes.buttonContainer}>
+                  <Button variant="outlined" color="secondary">
+                    취소
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={newReply.trim() === ""}
+                  >
+                    답글
+                  </Button>
+                </div>
+              </form>
+            )}
+
             <div
               className={classes.commentList}
               style={{ marginLeft: "100px" }}
@@ -224,4 +236,3 @@ export default function Comments({ children }: CommentsProps) {
     </div>
   );
 }
-
