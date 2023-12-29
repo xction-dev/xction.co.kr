@@ -123,7 +123,7 @@ export default function Comments({ children }: CommentsProps) {
         <Typography variant="h6">정렬 기준</Typography>
       </div>
       <form onSubmit={handleCommentSubmit} className={classes.commentContainer}>
-        <Grid container spacing={0} alignItems="center">
+        <Grid container spacing={1} alignItems="center">
           <Grid item>
             <Avatar className={classes.avatar}>U</Avatar>
           </Grid>
@@ -218,13 +218,26 @@ export default function Comments({ children }: CommentsProps) {
             >
               {comment.replies.map((reply, replyIndex) => (
                 <div key={replyIndex}>
-                  <Typography>{reply}</Typography>
+                  <Grid container spacing={1} alignItems="center">
+                    <Grid item>
+                      <Avatar className={classes.avatar}>U</Avatar>
+                    </Grid>
+                    <Grid item xs>
+                      <Typography>{reply}</Typography>
+                    </Grid>
+                  </Grid>
+                  <IconButton>
+                    <ThumbUpOffAltIcon />
+                  </IconButton>
+                  <IconButton>
+                    <ThumbDownOffAltIcon />
+                  </IconButton>
                   <Button
                     variant="outlined"
                     color="secondary"
-                    onClick={() => handleDelete(commentIndex, replyIndex)}
+                    //onClick={() => handleDelete(commentIndex, replyIndex)}
                   >
-                    답글 삭제
+                    답글
                   </Button>
                 </div>
               ))}
