@@ -127,6 +127,9 @@ export default function Comments({ children }: CommentsProps) {
           </Grid>
         </Grid>
         <div className={classes.buttonContainer}>
+          <Button variant="outlined" color="secondary">
+            취소
+          </Button>
           <Button
             variant="contained"
             color="primary"
@@ -175,6 +178,9 @@ export default function Comments({ children }: CommentsProps) {
                 </Grid>
               </Grid>
               <div className={classes.buttonContainer}>
+                <Button variant="outlined" color="secondary">
+                  취소
+                </Button>
                 <Button
                   variant="contained"
                   color="primary"
