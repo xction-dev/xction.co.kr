@@ -19,7 +19,7 @@ type CommentsProps = PropsWithChildren;
 
 const useStyles = makeStyles({
   body: {
-    backgroundColor: "grey  ",
+    backgroundColor: "grey",
     color: "white",
     padding: "16px",
     marginLeft: "100px",
@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   },
   top: {
     display: "flex",
-    justifyContent: "flex-start", // Align to the left
+    justifyContent: "flex-start",
     alignItems: "center",
     marginBottom: "16px",
   },
@@ -129,11 +129,12 @@ export default function Comments({ children }: CommentsProps) {
           </Grid>
           <Grid item xs>
             <TextField
-              placeholder="Add a comment..."
+              placeholder="댓글 추가..."
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               fullWidth
               variant="standard"
+              sx={{ input: { color: "white" } }}
             />
           </Grid>
         </Grid>
@@ -193,6 +194,7 @@ export default function Comments({ children }: CommentsProps) {
                       onChange={(e) => setNewReply(e.target.value)}
                       fullWidth
                       variant="standard"
+                      sx={{ input: { color: "white" } }}
                     />
                   </Grid>
                 </Grid>
