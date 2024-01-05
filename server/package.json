@@ -2,8 +2,8 @@
   "name": "server",
   "packageManager": "yarn@3.6.3",
   "scripts": {
-    "build": "tsc",
-    "dev": "concurrently \"yarn build --watch\" \"nodemon -q dist/index.js\""
+    "build": "tsc && tsc-alias",
+    "dev": "tsc && (concurrently \"tsc -w\" \"tsc-alias -w\" \"nodemon -q dist/server/src/index.js\")"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -12,6 +12,12 @@
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "eslint": "^8.55.0",
+    "tsc-alias": "^1.8.8",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "mongodb": "^6.3.0"
   }
 }
