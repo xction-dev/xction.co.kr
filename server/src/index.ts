@@ -27,7 +27,7 @@ connectDB()
 
 // default route
 app.get("/", (_, res) => {
-  res.send("Codec Server!");
+  res.send("Xction Server!");
 });
 
 // routes
