@@ -3,6 +3,7 @@
 import Heading from "@/components/Heading";
 import Button from "@/components/Button";
 import Wip from "@/components/Wip";
+import ValueCard from "@/components/Card/ValueCard";
 import DevSection from "@/modules/dev/DevSection";
 import styled from "@emotion/styled";
 import Lottie from "lottie-react";
@@ -28,6 +29,9 @@ export default function Dev() {
         <Button.Text>Text</Button.Text>
       </DevSection>
       <DevSection title="Text Input"></DevSection>
+      <DevSection title="ValueCard">
+        <ValueCard title="카드 제목" content="카드 본문"></ValueCard>
+      </DevSection>
       <DevSection title="Slider"></DevSection>
       <DevSection title="Wip">
         <Wip width={500} height={200} />
