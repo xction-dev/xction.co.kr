@@ -4,6 +4,8 @@
 import { css } from "@emotion/react";
 import { Card as MuiCard } from "@mui/material";
 import Heading from "@/components/Heading";
+import styled from "@emotion/styled";
+import typography from "@/styles/typography";
 
 type CardProps = Parameters<typeof MuiCard>[0];
 
@@ -43,16 +45,19 @@ export default function ValueCard({ title, content, ...props }: CardProps) {
       >
         {title}
       </Heading.H4>
-      <Heading.H6
+      <p
         css={css`
           flex: 80%;
           display: flex;
           margin: 24px;
           align-items: center;
+          white-space: pre-wrap;
+          text-align: center;
+          ${typography.h6}
         `}
       >
         {content}
-      </Heading.H6>
+      </p>
     </MuiCard>
   );
 }
