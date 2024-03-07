@@ -8,9 +8,17 @@ import DevSection from "@/modules/dev/DevSection";
 import styled from "@emotion/styled";
 import Lottie from "lottie-react";
 import logoAnimation from "../../../public/logo_animation.json";
+import { useEffect } from "react";
 import layout from "../../styles/layout";
 
+
 export default function Dev() {
+  useEffect(() => {
+    fetch("http://localhost:8080/")
+      .then((res) => res.text())
+      .then(console.log);
+  }, []);
+
   return (
     <Main>
       <Title>COMPONENTS</Title>

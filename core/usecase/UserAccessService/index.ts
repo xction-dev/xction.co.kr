@@ -1,38 +1,24 @@
-import { Authorization } from "@core/entity/.shared/Authorization";
-import { UserEntity } from "@core/entity/user";
+import { BaseServerTransaction } from "@core/utility/AbstractType";
 
 export type UserAccessService<
-  LoginRequestInterface extends {
-    authorization: Authorization;
-    isAutoLoginAllowed: boolean;
-  },
-  LoginResponseInterface extends {
-    success: boolean;
-    token: string;
-  },
-  RegisterRequestInterface extends {
-    name: UserEntity["name"];
-    email: UserEntity["email"];
-    authorization: Authorization;
-  },
-  RegisterResponseInterface extends {
-    success: boolean;
-    token: string;
+  Interface extends {
+    Login: BaseServerTransaction;
+    AutoLogin: BaseServerTransaction;
+    Refresh: BaseServerTransaction;
+    Logout: BaseServerTransaction;
   },
 > = {
-  tryLogin: (body: LoginRequestInterface) => Promise<LoginResponseInterface>;
-  tryAutoLogin: () => Promise<LoginResponseInterface>;
-  tryLogout: () => Promise<void>;
-  tryRegister: (
-    body: RegisterRequestInterface,
-  ) => Promise<RegisterResponseInterface>;
-} & (
-  | {
-      status: "fetching" | "not_authorized";
-      token: null;
-    }
-  | {
-      status: "authorized";
-      token: string;
-    }
-);
+  login: (
+    request: Interface["Login"]["Request"],
+  ) => Promise<Interface["Login"]["Response"]>;
+  autoLogin: (
+    request: Interface["AutoLogin"]["Request"],
+  ) => Promise<Interface["AutoLogin"]["Response"]>;
+  refresh: (
+    request: Interface["Refresh"]["Request"],
+  ) => Promise<Interface["Refresh"]["Response"]>;
+  logout: (
+    request: Interface["Logout"]["Request"],
+  ) => Promise<Interface["Logout"]["Response"]>;
+  token: Interface["Login"]["Response"] | Interface["AutoLogin"] | null;
+};
