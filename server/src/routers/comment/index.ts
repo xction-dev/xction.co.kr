@@ -5,12 +5,12 @@ import {
   CommentNormalRepository,
   CommentRepository,
 } from "../../repositories/comment";
-import { mockWriter } from "@/utils/mock";
+import { mockWriter } from "../../utils/mock";
 import {
   GetCommentResponseDto,
   PostCommentRequestDto,
-} from "@core/dto/CommentService";
-import { uniqueId } from "@/utils/db/uniqueId";
+} from "../../../../core/dto/CommentService";
+import { uniqueId } from "../../utils/db/uniqueId";
 
 const router = Router();
 
