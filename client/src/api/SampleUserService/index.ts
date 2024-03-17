@@ -6,7 +6,7 @@
 import {
   GetSampleMeResponseDto,
   PostSampleLoginRequestDto,
-} from "@core/dto/SampleUserService";
+} from "@core/dto/sample/SampleUserService";
 
 /**
  *

@@ -3,7 +3,7 @@
  * 유즈케이스를 실제로 구현한 hook이 너무 커지는 것을 방지하기 위해 분리해두었습니다.
  */
 
-import { GetSampleProjectResponseDto } from "@core/dto/SampleProjectService";
+import { GetSampleProjectResponseDto } from "@core/dto/sample/SampleProjectService";
 
 /**
  *

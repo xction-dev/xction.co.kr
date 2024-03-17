@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { SampleProjectService } from "@core/usecase/SampleProjectService";
+import { SampleProjectService } from "@core/usecase/sample/SampleProjectService";
 import {
   getSampleProjectById,
   postSampleProjectById,
 } from "@/api/SampleProjectService";
-import { GetSampleProjectResponseDto } from "@core/dto/SampleProjectService";
+import { GetSampleProjectResponseDto } from "@core/dto/sample/SampleProjectService";
 
 type InjectedUsecase = SampleProjectService<GetSampleProjectResponseDto>; // 의미에 맞는 적절한 DTO를 Generic으로 주입해줍니다.
 

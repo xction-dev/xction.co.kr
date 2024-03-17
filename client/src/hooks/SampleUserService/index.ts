@@ -3,9 +3,9 @@ import { getSampleMe, postSampleLogin } from "@/api/SampleUserService";
 import {
   PostSampleLoginRequestDto,
   GetSampleMeResponseDto,
-} from "@core/dto/SampleUserService";
+} from "@core/dto/sample/SampleUserService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { SampleUserService } from "@core/usecase/SampleUserService";
+import { SampleUserService } from "@core/usecase/sample/SampleUserService";
 
 type InjectedUsecase = SampleUserService<
   GetSampleMeResponseDto,
