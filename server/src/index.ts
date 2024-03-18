@@ -36,8 +36,8 @@ app.use("/comment", comment);
 // error handling
 app.use(errorMapperMiddleware);
 
-app.listen(process.env.PORT, () => {
-  console.log(
-    `[server]: Server is running at http://localhost:${process.env.PORT}`,
-  );
+// assign port and start server
+const port = process.env.PORT || 8000;
+app.listen(port, () => {
+  console.log(`[server]: Server is running at http://localhost:${port}`);
 });
