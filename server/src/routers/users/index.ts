@@ -86,7 +86,7 @@ router.post("/signin", (req, res) => {
         user.authorization.password === parsedBody.password,
     );
     if (!user) res.status(401).json({ message: "Unauthorized" });
-    else res.json(user.authorization?.token);
+    else res.json({ token: user.authorization?.token });
   } catch (e) {
     if (e instanceof z.ZodError)
       res.status(400).json({ message: e.errors[0].message });
@@ -96,7 +96,9 @@ router.post("/signin", (req, res) => {
 });
 
 router.get("", (_, res) => {
-  res.json({ data: mockUsers });
+  res.json({
+    data: mockUsers.map(({ id, name, thumbnail }) => ({ id, name, thumbnail })),
+  });
 });
 router.get("/me", (req, res) => {
   const token = req.headers.authorization;
@@ -104,7 +106,7 @@ router.get("/me", (req, res) => {
     (user) => token && user.authorization?.token === token,
   );
   if (!me) res.status(401).json({ message: "Unauthorized" });
-  else res.json(me);
+  else res.json({ id: me.id, name: me.name, thumbnail: me.thumbnail });
 });
 router.patch("/me", (req, res) => {
   try {
@@ -113,7 +115,16 @@ router.patch("/me", (req, res) => {
     const me = mockUsers.find((user) => user.authorization?.token === token);
     if (!me) throw new Error("Unauthorized");
     const parsedBody = SignupRequestDto.partial().parse(req.body);
-    const newMe = { ...me, ...parsedBody };
+    const newMe = {
+      id: me.id,
+      name: parsedBody.name ?? me.name,
+      thumbnail: parsedBody.thumbnail ?? me.thumbnail,
+      authorization: me.authorization && {
+        username: parsedBody.username ?? me.authorization.username,
+        password: parsedBody.password ?? me.authorization.password,
+        token: me.authorization.token,
+      },
+    };
     mockUsers[mockUsers.findIndex((user) => user.id === me.id)] = newMe;
     res.json(newMe);
   } catch (e) {
@@ -127,7 +138,7 @@ router.patch("/me", (req, res) => {
 router.get("/:userId", (req, res) => {
   const user = mockUsers.find((user) => user.id === Number(req.params.userId));
   if (!user) res.status(404).json({ message: "Not Found" });
-  else res.json(user);
+  else res.json({ id: user, name: user.name, thumbnail: user.thumbnail });
 });
 
 export default router;
