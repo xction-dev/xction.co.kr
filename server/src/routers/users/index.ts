@@ -126,7 +126,7 @@ router.patch("/me", (req, res) => {
       },
     };
     mockUsers[mockUsers.findIndex((user) => user.id === me.id)] = newMe;
-    res.json(newMe);
+    res.status(200);
   } catch (e) {
     if (e instanceof z.ZodError)
       res.status(400).json({ message: e.errors[0].message });
