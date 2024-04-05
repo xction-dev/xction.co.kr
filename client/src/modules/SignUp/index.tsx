@@ -3,19 +3,13 @@
 import { useSignUpService } from "@/hooks/SignUpService";
 import { useState } from "react";
 import { SignUpRequestDto } from "@core/dto/SignUpService";
-import { postSignUp } from "@/api/SignUpService";
 
 export default function SignUpModule() {
   const [name, setName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  //   const data: SignUpRequestDto = {
-  //     name: name,
-  //     thumbnail: thumbnail,
-  //     username: username,
-  //     password: password,
-  //   };
+
   const { trySignUp } = useSignUpService();
 
   const handleSubmit = () => {
@@ -25,7 +19,6 @@ export default function SignUpModule() {
       username: username,
       password: password,
     };
-    console.log(typeof data["thumbnail"]);
     trySignUp(data);
   };
 
