@@ -17,13 +17,15 @@ export const postSignUp = async (body: SignUpRequestDto): Promise<void> => {
   try {
     const res = await fetch(`http://localhost:8000/users/signup`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(body),
     });
 
     if (!res.ok) {
+      console.log(JSON.stringify(body));
       const errorMessage = await res.text();
-      console.error(errorMessage);
-      console.table(res);
       throw new Error(errorMessage);
     }
   } catch (error) {
