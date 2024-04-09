@@ -65,7 +65,8 @@ router.post("/signup", (req, res) => {
     });
     res.send(200);
   } catch (e) {
-    if (e instanceof z.ZodError) res.status(400).json({ message: e.errors });
+    if (e instanceof z.ZodError)
+      res.status(400).json({ message: e.errors[0].message });
     else if (e instanceof Error) res.status(400).json({ message: e.message });
     else res.status(500).json({ message: "Unknown" });
   }
