@@ -350,10 +350,59 @@ template {
   display: none;
 }
 
+<<<<<<< refs/remotes/origin/main
 /* Default fonts
+=======
+/* Primitives
+>>>>>>> feat: Update Primitives in globals.css
    ========================================================================== */
 :root {
   --default-font-family: "SUIT-Regular", sans-serif;
   --default-font-style: normal;
   --default-line-height: normal;
+<<<<<<< refs/remotes/origin/main
+=======
+  --spacing05: 4px;
+  --spacing1: 8px;
+  --spacing2: 16px;
+  --spacing3: 24px;
+  --spacing4: 32px;
+  --spacing5: 40px;
+  --spacing6: 48px;
+  --spacing7: 56px;
+  --spacing8: 64px;
+  --spacing9: 72px;
+  --spacing10: 80px;
+  --spacing11: 88px;
+  --spacing12: 96px;
+  --spacing13: 104px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-3xl: 40px;
+  --gray50: #f1f1f1;
+  --gray200: #d3d3d3;
+  --gray400: #afafaf;
+  --gray600: #7c7c7c;
+  --gray800: #343434;
+  --gray900: #202020;
+  --darkGreen: #24322c;
+  --darkGreenDark: #1e2522;
+  --darkGreenLight: #3c795e;
+  --bronze: #e7d0ba;
+  --bronzeDark: #aa835d;
+  --bronzeLight: #ffeedd;
+  --olive: #6d9042;
+  --oliveDark: #3d482f;
+  --oliveLight: #d0f4a5;
+  --purple: #d97ce8;
+  --pink: #ee77c6;
+  --blue: #6e93da;
+  --navy: #4f5eae;
+  --green: #58b256;
+  --mint: #51c09f;
+  --orange: #ee8c45;
+>>>>>>> feat: Update Primitives in globals.css
 }
