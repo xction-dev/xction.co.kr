@@ -4,6 +4,7 @@ import Heading from "@/components/Heading";
 import Button from "@/components/Button";
 import Wip from "@/components/Wip";
 import TrendingCard from "@/components/Card/TrendingCard";
+import TrendingCardLong from "@/components/Card/TrendingCardLong";
 import ValueCard from "@/components/Card/ValueCard";
 import DevSection from "@/modules/dev/DevSection";
 import styled from "@emotion/styled";
@@ -51,6 +52,7 @@ export default function Dev() {
       <DevSection title="Text Input"></DevSection>
       <DevSection title="TrendingCard">
         <TrendingCard data={sampleTrendingData}></TrendingCard>
+        <TrendingCardLong data={sampleTrendingData}></TrendingCardLong>
       </DevSection>
       <DevSection title="ValueCard">
         <ValueCard title="카드 제목" content="카드 본문"></ValueCard>
@@ -86,21 +88,31 @@ const sampleTrendingData = [
   {
     title: "1위 포스트",
     views: 5000,
+    tag: "태그",
+    date: new Date("2021-08-01"),
   },
   {
     title: "2위 포스트",
     views: 4000,
+    tag: "태그",
+    date: new Date("2021-08-01"),
   },
   {
     title: "3위 포스트",
     views: 3000,
+    tag: "태그",
+    date: new Date("2021-08-01"),
   },
   {
     title: "4위 포스트",
     views: 2000,
+    tag: "태그",
+    date: new Date("2021-08-01"),
   },
   {
     title: "5위 포스트",
     views: 1000,
+    tag: "태그",
+    date: new Date("2021-08-01"),
   },
 ];
