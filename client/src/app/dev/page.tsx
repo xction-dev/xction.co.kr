@@ -14,7 +14,6 @@ import { useView, useViewState } from "@/core/policy";
 import { User } from "@core/entity/user";
 
 
-
 export default function Dev() {
   // console.log(policy);
   // useEffect(() => {
