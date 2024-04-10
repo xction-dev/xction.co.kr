@@ -33,3 +33,25 @@ export const useProjectService = (id: string) => {
 
   return { ...project, finishWatchingProject };
 };
+
+/* For listing & searching
+
+import { useQuery } from "@tanstack/react-query";
+// listing, searching에 필요한 api, ex) getProjects, searchProjects
+import { ProjectEntity } from "@core/entity/project";
+
+export const useProjectListService = () => {
+  const { data, error, status } = useQuery<ProjectEntity[], Error>("projects", getProjects);
+
+  return { data, error, status };
+};
+
+export const useProjectSearchService = (query: string) => {
+  const { data, error, status } = useQuery<ProjectEntity[], Error>(["search", query], () =>
+    searchProjects(query)
+  );
+
+  return { data, error, status };
+};
+
+
