@@ -9,6 +9,18 @@ export type GetProjectResponseDto = {
   creatorId: ProjectEntity["creator"]["id"];
 };
 
+// 요약
+export type ProjectSummaryDto = {
+  id: string;
+  title: string;
+  description: string;
+};
+
+// 검색 or 목록
+export type ProjectListDto = {
+  projects: ProjectSummaryDto[];
+};
+
 export type CreateProjectDto = {
   title: string;
   description: string;
@@ -28,3 +40,5 @@ export type CreateProjectResponseDto = {
 export type UpdateProjectResponseDto = {
   id: string;
 };
+
+
