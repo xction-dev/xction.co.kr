@@ -4,6 +4,8 @@ import styles from "./TrendingCard.module.css";
 type TrendingPost = {
   title: string;
   views: number;
+  date?: Date;
+  tag?: string;
 };
 
 type TrendingCardProps = {

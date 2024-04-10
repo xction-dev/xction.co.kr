@@ -1,7 +1,7 @@
 .container {
   display: flex;
   width: 496px;
-  padding: var(--spacing-5, 40px) var(--spacing-4, 32px);
+  padding: var(--spacing5, 40px) var(--spacing4, 32px);
   border-radius: var(--radius-lg, 16px);
   background-color: var(--gray600);
   color: var(--gray50);
@@ -12,12 +12,12 @@
 
 .titleContainer {
   padding: 0px;
-  margin-bottom: var(--spacing-4, 32px);
+  margin-bottom: var(--spacing4, 32px);
 }
 
 .postContainer {
   display: flex;
-  width: 496px;
+  width: 100%;
   flex-direction: column;
   justify-content: space-between;
   gap: var(--spacing2);
