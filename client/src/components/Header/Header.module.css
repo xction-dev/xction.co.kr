@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  padding: var(--spacing8);
+}
+
+.leftContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing8);
+  align-items: center;
+}
+
+.leftContainer img {
+  width: 244px;
+  height: 58px;
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.navContainer a {
+  text-decoration: none;
+  color: var(--gray50);
+}
+
+.rightContainer {
+  display: flex;
+  gap: var(--spacing4);
+  align-items: center;
+}

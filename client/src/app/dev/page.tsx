@@ -1,5 +1,6 @@
 "use client";
 
+import Header from "@/components/Header";
 import Heading from "@/components/Heading";
 import Button from "@/components/Button";
 import Wip from "@/components/Wip";
@@ -35,6 +36,9 @@ export default function Dev() {
   return (
     <Main>
       <Title>COMPONENTS</Title>
+      <DevSection title="Header">
+        <Header />
+      </DevSection>
       <DevSection title="Heading">
         <Heading.H1>H1: 가장 큰 제목입니다</Heading.H1>
         <Heading.H2>H2: 큰 제목입니다</Heading.H2>
