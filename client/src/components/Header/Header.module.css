@@ -1,14 +1,7 @@
 .container {
   display: flex;
   justify-content: space-between;
-  width: 100vw;
-  padding: var(--spacing8);
-}
-
-.leftContainer {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--spacing8);
+  width: 100%;
   align-items: center;
 }
 
