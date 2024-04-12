@@ -786,6 +786,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pvi/core@workspace:library/pvi/core":
+  version: 0.0.0-use.local
+  resolution: "@pvi/core@workspace:library/pvi/core"
+  dependencies:
+    zod: ^3.22.4
+  languageName: unknown
+  linkType: soft
+
+"@pvi/react@workspace:library/pvi/react":
+  version: 0.0.0-use.local
+  resolution: "@pvi/react@workspace:library/pvi/react"
+  peerDependencies:
+    "@pvi/core": "workspace:^"
+    "@tanstack/react-query": ^5.14.1
+    react: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
 "@rushstack/eslint-patch@npm:^1.1.3":
   version: 1.5.1
   resolution: "@rushstack/eslint-patch@npm:1.5.1"
