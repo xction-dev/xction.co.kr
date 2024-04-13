@@ -1,15 +1,14 @@
 {
-  "extends": ["../tsconfig.base.json"],
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": "./",
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@core/*": ["../core/*"]
+      "@/*": ["./client/src/*"],
+      "@core/*": ["./core/*"]
     }
   },
   "include": [
