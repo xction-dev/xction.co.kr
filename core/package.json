@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@pvi/core": "workspace:^"
+    "@pvi/core": "workspace:^",
+    "zod": "^3.22.4"
   }
 }
