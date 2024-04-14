@@ -17,6 +17,7 @@ export const ID = {
   WORK: INTEGER_ID,
   ARTICLE: INTEGER_ID,
   POST: INTEGER_ID,
+  TAG: INTEGER_ID,
 };
 
 export type ID = {
