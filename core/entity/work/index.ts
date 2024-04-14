@@ -9,6 +9,7 @@ export const Work = z
     description: z.string().nullable(),
     tags: z.unknown().array(),
     credit: z.record(z.string().array()).nullable(),
+    thumbnailImage: z.string().nullable(),
     oneLineReviews: z.unknown().array(),
     relatedArticles: z.unknown().array(),
   })
