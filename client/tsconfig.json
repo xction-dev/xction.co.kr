@@ -9,11 +9,13 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@core/*": ["../core/*"]
+      "@core/*": ["../core/*"],
+      "@library/*": ["../library/*"]
     }
   },
   "include": [
     "../core/**/*.ts",
+    "../library/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
     "next-env.d.ts",
