@@ -18,6 +18,8 @@ export const ID = {
   ARTICLE: INTEGER_ID,
   POST: INTEGER_ID,
   TAG: INTEGER_ID,
+  POST_COMMENT: INTEGER_ID,
+  POST_REPLY: INTEGER_ID,
 };
 
 export type ID = {

@@ -4,17 +4,17 @@ import { Creatable } from "../utility/creatable";
 import { Tag } from "../tag";
 
 /**
- * @entity Post
- * @description 커뮤니티 탭에 작성되는 포스트입니다.
+ * @entity Article
+ * @description 아티클입니다. 아직 임시로 만들어 둔 상태.
  */
-export const Post = z
+export const Article = z
   .object({
-    id: ID.POST,
+    id: ID.ARTICLE,
     title: z.string().min(1).max(100),
+    description: z.string().nullable(),
     content: z.string().min(1),
     tags: Tag.array(),
-    likesCount: z.number().int().nonnegative(),
-    viewsCount: z.number().int().nonnegative(),
+    isXcticle: z.boolean(),
   })
   .extend(Creatable.shape);
-export type Post = z.infer<typeof Post>;
+export type Article = z.infer<typeof Article>;

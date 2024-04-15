@@ -5,7 +5,5 @@ export const PostSummary = Post.pick({
   title: true,
   content: true,
   createdUser: true,
-  createdTime: true,
-  lastModifiedTime: true,
 });
 export type PostSummary = typeof PostSummary;

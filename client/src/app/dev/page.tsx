@@ -12,8 +12,6 @@ import layout from "../../styles/layout";
 import { useView, useViewState } from "@/core/policy";
 import { User } from "@core/entity/user";
 
-
-
 export default function Dev() {
   // console.log(policy);
   // useEffect(() => {
@@ -22,16 +20,14 @@ export default function Dev() {
   //     .then(console.log);
   // }, []);
 
-  const {data} = useViewState((view)=>({
-    policy:view.user.me(),
-    repository: () => Promise.resolve({data: {name:""} as User}),
-  }))
+  const { data } = useViewState((view) => ({
+    policy: view.user.me(),
+    repository: () => Promise.resolve({ data: { name: "" } as User }),
+  }));
 
-  if(!data) return null;
+  if (!data) return null;
 
   console.log(data.name);
-
-
 
   return (
     <Main>
