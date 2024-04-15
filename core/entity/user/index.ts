@@ -23,8 +23,10 @@ export const User = z.object({
   type: USER_TYPE,
   email: z.string().email(),
   name: z.string().min(1).max(30),
+  bio: z.string().nullable(),
+
+  // image
   thumbnailImage: z.string().nullable(),
   backgroundImage: z.string().nullable(),
-  bio: z.string().nullable(),
 });
 export type User = z.infer<typeof User>;
