@@ -2,14 +2,17 @@
   "name": "xction.co.kr",
   "version": "0.0.0",
   "scripts": {
+    "core": "yarn workspace core",
     "client": "yarn workspace client",
     "server": "yarn workspace server",
     "dev": "concurrently \"yarn server dev\" \"yarn client dev\"",
     "prettier": "prettier . --write"
   },
   "workspaces": [
+    "core",
     "client",
-    "server"
+    "server",
+    "library/**/*"
   ],
   "packageManager": "yarn@3.6.3",
   "devDependencies": {
@@ -18,7 +21,6 @@
   },
   "dependencies": {
     "concurrently": "^8.2.2",
-    "dotenv": "^16.3.1",
-    "zod": "^3.22.4"
+    "dotenv": "^16.3.1"
   }
 }

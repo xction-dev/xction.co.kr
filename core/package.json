@@ -1,9 +1,9 @@
 {
-  "name": "@pvi/core",
+  "name": "core",
   "version": "0.0.0",
-  "type": "module",
-  "main": "index.ts",
+  "private": true,
   "dependencies": {
+    "@pvi/core": "workspace:^",
     "zod": "^3.22.4"
   }
 }

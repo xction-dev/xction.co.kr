@@ -9,15 +9,28 @@ import DevSection from "@/modules/dev/DevSection";
 import styled from "@emotion/styled";
 import Lottie from "lottie-react";
 import logoAnimation from "../../../public/logo_animation.json";
-import { useEffect } from "react";
 import layout from "../../styles/layout";
+import { useView, useViewState } from "@/core/policy";
+import { User } from "@core/entity/user";
+
+
 
 export default function Dev() {
-  useEffect(() => {
-    fetch("http://localhost:8080/")
-      .then((res) => res.text())
-      .then(console.log);
-  }, []);
+  // console.log(policy);
+  // useEffect(() => {
+  //   fetch("http://localhost:8080/")
+  //     .then((res) => res.text())
+  //     .then(console.log);
+  // }, []);
+
+  const { data } = useViewState((view) => ({
+    policy: view.user.me(),
+    repository: () => Promise.resolve({ data: { name: "" } as User }),
+  }));
+
+  if (!data) return null;
+
+  console.log(data.name);
 
   return (
     <Main>
