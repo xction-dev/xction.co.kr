@@ -698,6 +698,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@policy-maker/core@workspace:^, @policy-maker/core@workspace:library/policy-maker/core":
+  version: 0.0.0-use.local
+  resolution: "@policy-maker/core@workspace:library/policy-maker/core"
+  peerDependencies:
+    zod: ^3.22.4
+  languageName: unknown
+  linkType: soft
+
+"@policy-maker/react@workspace:^, @policy-maker/react@workspace:library/policy-maker/react":
+  version: 0.0.0-use.local
+  resolution: "@policy-maker/react@workspace:library/policy-maker/react"
+  peerDependencies:
+    "@policy-maker/core": "workspace:^"
+    "@tanstack/react-query": ^5.28.9
+    react: ^18.2.0
+    zod: ^3.22.4
+  languageName: unknown
+  linkType: soft
+
 "@popperjs/core@npm:^2.11.8":
   version: 2.11.8
   resolution: "@popperjs/core@npm:2.11.8"
@@ -705,7 +724,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pvi/core@workspace:^, @pvi/core@workspace:library/pvi/core":
+"@pvi/core@workspace:library/pvi/core":
   version: 0.0.0-use.local
   resolution: "@pvi/core@workspace:library/pvi/core"
   dependencies:
@@ -713,7 +732,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pvi/react@workspace:^, @pvi/react@workspace:library/pvi/react":
+"@pvi/react@workspace:library/pvi/react":
   version: 0.0.0-use.local
   resolution: "@pvi/react@workspace:library/pvi/react"
   peerDependencies:
@@ -1615,8 +1634,8 @@ __metadata:
     "@mui/icons-material": ^5.14.12
     "@mui/material": ^5.14.9
     "@mui/styles": ^5.15.13
-    "@pvi/core": "workspace:^"
-    "@pvi/react": "workspace:^"
+    "@policy-maker/core": "workspace:^"
+    "@policy-maker/react": "workspace:^"
     "@tanstack/react-query": ^5.4.3
     "@types/node": 20.6.0
     "@types/react": 18.2.21
@@ -1758,7 +1777,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "core@workspace:core"
   dependencies:
-    "@pvi/core": "workspace:^"
+    "@policy-maker/core": "workspace:^"
     zod: ^3.22.4
   languageName: unknown
   linkType: soft

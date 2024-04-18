@@ -9,10 +9,20 @@ import styled from "@emotion/styled";
 import Lottie from "lottie-react";
 import logoAnimation from "../../../public/logo_animation.json";
 import layout from "../../styles/layout";
-import { useView, useViewState } from "@/core/policy";
+import { useView } from "@policy-maker/react";
 import { User } from "@core/entity/user";
+import { viewPolicy } from "@core/policy/view";
+import { Suspense } from "react";
 
-export default function Dev() {
+export default function DevSuspended() {
+  return (
+    <Suspense>
+      <Dev />
+    </Suspense>
+  );
+}
+
+function Dev() {
   // console.log(policy);
   // useEffect(() => {
   //   fetch("http://localhost:8080/")
@@ -20,12 +30,10 @@ export default function Dev() {
   //     .then(console.log);
   // }, []);
 
-  const { data } = useViewState((view) => ({
-    policy: view.user.me(),
-    repository: () => Promise.resolve({ data: { name: "" } as User }),
-  }));
-
-  if (!data) return null;
+  const { data } = useView({
+    policy: viewPolicy.user.me(),
+    repository: () => Promise.resolve({ name: "hey" } as User),
+  });
 
   console.log(data.name);
 

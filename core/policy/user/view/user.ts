@@ -1,6 +1,6 @@
 import { ID } from "@core/constant/common/id";
 import { User } from "@core/entity/user";
-import { VP } from "@core/policy/viewPolicyFactory";
+import { VP } from "@policy-maker/core";
 
 /**
  * @viewPolicy User
