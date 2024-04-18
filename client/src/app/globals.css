@@ -349,3 +349,11 @@ template {
 [hidden] {
   display: none;
 }
+
+/* Default fonts
+   ========================================================================== */
+:root {
+  --default-font-family: "SUIT-Regular", sans-serif;
+  --default-font-style: normal;
+  --default-line-height: normal;
+}
