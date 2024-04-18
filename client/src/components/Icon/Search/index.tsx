@@ -1,3 +1,5 @@
+import styles from "./Search.module.css";
+
 export default function Search() {
   return (
     <svg
@@ -6,6 +8,7 @@ export default function Search() {
       height="41"
       viewBox="0 0 42 41"
       fill="none"
+      className={styles.searchIcon}
     >
       <path
         d="M33.0877 16.9492C33.0877 25.1409 26.1941 31.8983 17.5439 31.8983C8.89365 31.8983 2 25.1409 2 16.9492C2 8.75741 8.89365 2 17.5439 2C26.1941 2 33.0877 8.75741 33.0877 16.9492Z"
