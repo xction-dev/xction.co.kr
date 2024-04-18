@@ -1,0 +1,49 @@
+/**
+* 디자인팀에서 제공한 Primitives 스타일을 정의합니다. `--primitives_` 접두사를 사용하여 정의합니다.
+* 컴포넌트 내에 직접 사용하지 않고, tokens를 만드는 데 사용합니다.
+*/
+
+:root {
+  --primitives_spacing-05: 4px;
+  --primitives_spacing-1: 8px;
+  --primitives_spacing-2: 16px;
+  --primitives_spacing-3: 24px;
+  --primitives_spacing-4: 32px;
+  --primitives_spacing-5: 40px;
+  --primitives_spacing-6: 48px;
+  --primitives_spacing-7: 56px;
+  --primitives_spacing-8: 64px;
+  --primitives_spacing-9: 72px;
+  --primitives_spacing-10: 80px;
+  --primitives_spacing-11: 88px;
+  --primitives_spacing-12: 96px;
+  --primitives_spacing-13: 104px;
+  --primitives_radius-sm: 4px;
+  --primitives_radius-md: 8px;
+  --primitives_radius-lg: 16px;
+  --primitives_radius-xl: 24px;
+  --primitives_radius-2xl: 32px;
+  --primitives_radius-3xl: 40px;
+  --primitives_color_gray-50: #f1f1f1;
+  --primitives_color_gray-200: #d3d3d3;
+  --primitives_color_gray-400: #afafaf;
+  --primitives_color_gray-600: #7c7c7c;
+  --primitives_color_gray-800: #343434;
+  --primitives_color_gray-900: #202020;
+  --primitives_color_brand_darkGreen: #24322c;
+  --primitives_color_brand_darkGreenDark: #1e2522;
+  --primitives_color_brand_darkGreenLight: #3c795e;
+  --primitives_color_brand_bronze: #e7d0ba;
+  --primitives_color_brand_bronzeDark: #aa835d;
+  --primitives_color_brand_bronzeLight: #ffeedd;
+  --primitives_color_brand_olive: #6d9042;
+  --primitives_color_brand_oliveDark: #3d482f;
+  --primitives_color_brand_oliveLight: #d0f4a5;
+  --primitives_color_brand_purple: #d97ce8;
+  --primitives_color_brand_pink: #ee77c6;
+  --primitives_color_brand_blue: #6e93da;
+  --primitives_color_brand_navy: #4f5eae;
+  --primitives_color_brand_green: #58b256;
+  --primitives_color_brand_mint: #51c09f;
+  --primitives_color_brand_orange: #ee8c45;
+}
