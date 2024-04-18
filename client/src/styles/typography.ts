@@ -1,3 +1,8 @@
+/*
+ * @deprecated
+ * 공용 컴포넌트 css-in-css로 수정 후에 삭제할 예정입니다.
+ */
+
 import { css } from "@emotion/react";
 
 const fontBase = css`

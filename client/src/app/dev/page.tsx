@@ -3,6 +3,7 @@
 import Heading from "@/components/Heading";
 import Button from "@/components/Button";
 import Wip from "@/components/Wip";
+import TrendingCard from "@/components/Card/TrendingCard";
 import ValueCard from "@/components/Card/ValueCard";
 import DevSection from "@/modules/dev/DevSection";
 import styled from "@emotion/styled";
@@ -55,6 +56,9 @@ function Dev() {
         <Button.Text>Text</Button.Text>
       </DevSection>
       <DevSection title="Text Input"></DevSection>
+      <DevSection title="TrendingCard">
+        <TrendingCard data={sampleTrendingData}></TrendingCard>
+      </DevSection>
       <DevSection title="ValueCard">
         <ValueCard title="카드 제목" content="카드 본문"></ValueCard>
       </DevSection>
@@ -84,3 +88,26 @@ const Title = styled(Heading.H1)({
   textAlign: "center",
   margin: "40px 0",
 });
+
+const sampleTrendingData = [
+  {
+    title: "1위 포스트",
+    views: 5000,
+  },
+  {
+    title: "2위 포스트",
+    views: 4000,
+  },
+  {
+    title: "3위 포스트",
+    views: 3000,
+  },
+  {
+    title: "4위 포스트",
+    views: 2000,
+  },
+  {
+    title: "5위 포스트",
+    views: 1000,
+  },
+];
