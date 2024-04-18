@@ -1,0 +1,48 @@
+.container {
+  display: flex;
+  width: 496px;
+  padding: var(--spacing-5, 40px) var(--spacing-4, 32px);
+  border-radius: var(--radius-lg, 16px);
+  background-color: var(--gray600);
+  color: var(--gray50);
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.titleContainer {
+  padding: 0px;
+  margin-bottom: var(--spacing-4, 32px);
+}
+
+.postContainer {
+  display: flex;
+  width: 496px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--spacing2);
+}
+
+.postItemContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.postInfoContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: var(--spacing1);
+}
+
+.postInfoContainer > h5:nth-of-type(1) {
+  width: var(--spacing4);
+  text-align: center;
+}
+
+.postInfoContainer a {
+  width: 349px;
+  text-decoration: none;
+  color: var(--gray50);
+}
