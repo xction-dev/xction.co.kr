@@ -1,7 +1,5 @@
 .page {
-  height: 100vh;
   background-color: black;
-
 }
 
 .header {
@@ -10,8 +8,13 @@
 
 .body {
   padding: 0 6%;
+  margin-bottom: var(--primitives_spacing-10);
 }
 
 .TrendingCardContainer {
   margin-bottom: var(--primitives_spacing-4);
+}
+
+.InputFieldContainer {
+  margin-bottom: var(--primitives_spacing-8);
 }
