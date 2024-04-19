@@ -1,6 +1,8 @@
-import styles from "./CommentIcon.module.css";
+/**
+ * LikeIcon 벡터 정보가 없어 우선 코멘트 아이콘으로 대체합니다.
+ */
 
-export default function CommentIcon() {
+export default function LikeIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
