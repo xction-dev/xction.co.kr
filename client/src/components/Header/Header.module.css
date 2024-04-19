@@ -34,3 +34,8 @@
   gap: var(--spacing-lg);
   align-items: center;
 }
+
+.icon svg {
+  width: 2.5rem;
+  height: auto;
+}

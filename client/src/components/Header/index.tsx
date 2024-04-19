@@ -37,7 +37,9 @@ export default function Header() {
       </div>
       {/* 검색, 로그인 버튼을 담습니다 */}
       <div className={styles.rightContainer}>
-        <SearchIcon />
+        <div className={styles.icon}>
+          <SearchIcon />
+        </div>
         <Button.White>로그인</Button.White>
       </div>
     </header>

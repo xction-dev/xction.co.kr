@@ -1,5 +1,3 @@
-import styles from "./WriteIcon.module.css";
-
 export default function WriteIcon() {
   return (
     <svg
