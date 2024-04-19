@@ -1,5 +1,7 @@
 import typography from "../../styles/typography.module.css";
 import styles from "./Header.module.css";
+import "../../app/globals.primitives.css";
+import "../../app/globals.tokens.css";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Search from "../Icon/Search";
@@ -10,9 +12,11 @@ export default function Header() {
     <header className={styles.container}>
       {/* Xction 로고, nav bar를 담습니다 */}
       <div className={styles.leftContainer}>
-        <Link href="">
-          <img src="xction_logo.png" alt="Xction 로고" />
-        </Link>
+        <div className={styles.imgContainer}>
+          <Link href="">
+            <img src="xction_logo.png" alt="Xction 로고" />
+          </Link>
+        </div>
         <nav className={styles.navContainer}>
           <Link href="" className={typography.h5}>
             홈
