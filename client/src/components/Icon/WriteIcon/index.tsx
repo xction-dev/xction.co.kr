@@ -1,6 +1,6 @@
-import styles from "./Write.module.css";
+import styles from "./WriteIcon.module.css";
 
-export default function Write() {
+export default function WriteIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

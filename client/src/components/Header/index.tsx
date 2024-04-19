@@ -4,7 +4,7 @@ import "../../app/globals.primitives.css";
 import "../../app/globals.tokens.css";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Search from "../Icon/Search";
+import SearchIcon from "../Icon/SearchIcon";
 import Button from "../Button";
 
 export default function Header() {
@@ -37,7 +37,7 @@ export default function Header() {
       </div>
       {/* 검색, 로그인 버튼을 담습니다 */}
       <div className={styles.rightContainer}>
-        <Search />
+        <SearchIcon />
         <Button.White>로그인</Button.White>
       </div>
     </header>

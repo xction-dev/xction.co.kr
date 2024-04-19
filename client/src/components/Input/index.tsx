@@ -5,8 +5,8 @@
 
 import styles from "./Input.module.css";
 import typography from "../../styles/typography.module.css";
-import Search from "@/components/Icon/Search";
-import Write from "@/components/Icon/Write";
+import SearchIcon from "@/components/Icon/SearchIcon";
+import WriteIcon from "@/components/Icon/WriteIcon";
 
 type InputType = "email" | "password" | "write" | "search";
 
@@ -30,7 +30,7 @@ export default function Input({ inputType }: InputProps) {
       />
       {inputType === ("write" || "search") && (
         <div className={styles.icon}>
-          {inputType === "write" ? <Write /> : <Search />}
+          {inputType === "write" ? <WriteIcon /> : <SearchIcon />}
         </div>
       )}
     </div>

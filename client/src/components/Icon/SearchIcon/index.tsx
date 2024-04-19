@@ -1,6 +1,6 @@
-import styles from "./Search.module.css";
+import styles from "./SearchIcon.module.css";
 
-export default function Search() {
+export default function SearchIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
