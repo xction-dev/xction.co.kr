@@ -11,3 +11,7 @@
 .body {
   padding: 0 6%;
 }
+
+.TrendingCardContainer {
+  margin-bottom: var(--primitives_spacing-4);
+}

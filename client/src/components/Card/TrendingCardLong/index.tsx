@@ -6,11 +6,14 @@
 import typography from "../../../styles/typography.module.css";
 import styles from "./TrendingCardLong.module.css";
 
+import Tag from "../../Tag";
+import { TagText } from "../../Tag";
+
 type TrendingPost = {
   title: string;
   views: number;
   date: Date;
-  tag: string;
+  tag: TagText;
 };
 
 type TrendingCardProps = {
@@ -31,7 +34,7 @@ export default function TrendingCardLong({ data }: TrendingCardProps) {
               <a href="">
                 <h5 className={typography.h5}>{post.title}</h5>
               </a>
-              <h6 className={typography.h6}>{post.tag}</h6>
+              <Tag name={post.tag} />
             </div>
             <div className={styles.postViewsDateContainer}>
               <h6 className={typography.h6}>{`${
