@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import TrendingCardLong from "@/components/Card/TrendingCardLong";
 import Input from "@/components/Input";
 import PostListCard from "@/components/Card/PostListCard";
+import Footer from "@/components/Footer";
 import "./Community.css";
 
 export default function Community() {
@@ -23,6 +24,9 @@ export default function Community() {
           <PostListCard data={samplePostData} />
         </div>
       </div>  
+      <div className="footer">
+        <Footer />
+      </div>
     </div>
   );
 }
