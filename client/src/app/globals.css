@@ -9,7 +9,7 @@
  */
 
 html {
-  font-size: min(0.9vw, 16px);
+  font-size: clamp(10px, 0.9vw, 16px);
   line-height: 1.15; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
 }
