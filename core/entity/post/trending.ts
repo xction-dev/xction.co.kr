@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { Post } from ".";
 
 export const PostTrending = Post.pick({
@@ -8,4 +9,4 @@ export const PostTrending = Post.pick({
   createdTime: true,
 });
 
-export type PostTrending = typeof PostTrending;
+export type PostTrending = z.infer<typeof Post>;
