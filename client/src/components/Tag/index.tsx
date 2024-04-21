@@ -12,9 +12,24 @@ type TagProps = {
   data: TagType;
 };
 
+type TagColor = {
+  [key: string]: string;
+};
+
+const tagColor: TagColor = {
+  정보: "purple",
+  홍보: "pink",
+  자유: "blue",
+  한줄평: "navy",
+  주간Best: "green",
+  월간Best: "mint",
+  "실시간🔥": "orange",
+};
+
 export default function Tag({ data }: TagProps) {
+  const color = tagColor[data.name];
   return (
-    <div className={`${styles.container} ${styles[data.color]}`}>
+    <div className={`${styles.container} ${styles[color]}`}>
       <div className={typography.subTitle2}>{data.name}</div>
     </div>
   );

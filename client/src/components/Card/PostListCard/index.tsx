@@ -31,7 +31,7 @@ export default function PostListCard({ data }: PostListCardProps) {
               })}
             </div>
             <div className={styles.contentContainer}>
-              <h6 className={typography.h6}>{post.content}</h6>
+              <h6 className={typography.h6}>{post.content.slice(0, 100)}</h6>
             </div>
             {/* 하단 컨테이너: 좋아요, 댓글, 작성자, 작성시간 */}
             <div className={styles.lowerContainer}>
@@ -41,10 +41,13 @@ export default function PostListCard({ data }: PostListCardProps) {
               </div>
               <div className={styles.commentsContainer}>
                 <CommentIcon />
-                <p className={typography.subTitle1}>{post.viewsCount}</p>
+                <p className={typography.subTitle1}>{post.commentsCount}</p>
               </div>
               <p className={typography.subTitle1}>|</p>
-              <p className={typography.subTitle1}>{post.createdTime}</p>
+              {/* 우선 날짜 그대로 넣어두고, parse는 추후 작업하겠습니다. */}
+              <p className={typography.subTitle1}>
+                {`${post.createdTime.getFullYear()}.${(post.createdTime.getMonth() + 1).toString().padStart(2, "0")}.${post.createdTime.getDate().toString().padStart(2, "0")}`}
+              </p>
               <p className={typography.subTitle1}>{post.createdUser.name}</p>
             </div>
           </div>

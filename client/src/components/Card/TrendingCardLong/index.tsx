@@ -3,22 +3,15 @@
  * 추후 고정된 전체 width 값을 반응형으로 구현하며, 태그 작업이 필요합니다.
  */
 
+import { PostTrending } from "@core/entity/post/trending";
+
 import typography from "../../../styles/typography.module.css";
 import styles from "./TrendingCardLong.module.css";
 
 import Tag from "../../Tag";
-import { TagText } from "../../Tag";
-
-// 추후 entity의 type으로 대체 예정
-type TrendingPost = {
-  title: string;
-  views: number;
-  date: Date;
-  tag: TagText;
-};
 
 type TrendingCardProps = {
-  data: TrendingPost[];
+  data: PostTrending[];
 };
 
 export default function TrendingCardLong({ data }: TrendingCardProps) {
@@ -35,14 +28,18 @@ export default function TrendingCardLong({ data }: TrendingCardProps) {
               <a href="">
                 <h5 className={typography.h5}>{post.title}</h5>
               </a>
-              <Tag name={post.tag} />
+              {post.tags.map((tag, index) => {
+                return <Tag data={tag} key={index} />;
+              })}
             </div>
             <div className={styles.postViewsDateContainer}>
               <h6 className={typography.h6}>{`${
-                post.views
-              }회 | ${post.date.getFullYear()}.${(post.date.getMonth() + 1)
+                post.viewsCount
+              }회 | ${post.createdTime.getFullYear()}.${(
+                post.createdTime.getMonth() + 1
+              )
                 .toString()
-                .padStart(2, "0")}.${post.date
+                .padStart(2, "0")}.${post.createdTime
                 .getDate()
                 .toString()
                 .padStart(2, "0")}`}</h6>
