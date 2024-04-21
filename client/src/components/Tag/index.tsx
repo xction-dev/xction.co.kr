@@ -3,37 +3,19 @@
  * name을 props로 받아서 태그를 렌더링합니다.
  */
 
+import { Tag as TagType } from "@core/entity/tag";
+
 import typography from "../../styles/typography.module.css";
 import styles from "./Tag.module.css";
 
-export type TagText =
-  | "정보"
-  | "홍보"
-  | "자유"
-  | "한줄평"
-  | "주간Best"
-  | "월간Best"
-  | "실시간🔥";
-
 type TagProps = {
-  name: TagText;
+  data: TagType;
 };
 
-const tagColor = {
-  정보: "purple",
-  홍보: "pink",
-  자유: "blue",
-  한줄평: "navy",
-  주간Best: "green",
-  월간Best: "mint",
-  "실시간🔥": "orange",
-};
-
-export default function Tag({ name }: TagProps) {
-  const color = tagColor[name];
+export default function Tag({ data }: TagProps) {
   return (
-    <div className={`${styles.container} ${styles[color]}`}>
-      <div className={typography.subTitle2}>{name}</div>
+    <div className={`${styles.container} ${styles[data.color]}`}>
+      <div className={typography.subTitle2}>{data.name}</div>
     </div>
   );
 }

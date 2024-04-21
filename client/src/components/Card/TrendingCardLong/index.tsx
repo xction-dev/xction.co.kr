@@ -9,6 +9,7 @@ import styles from "./TrendingCardLong.module.css";
 import Tag from "../../Tag";
 import { TagText } from "../../Tag";
 
+// 추후 entity의 type으로 대체 예정
 type TrendingPost = {
   title: string;
   views: number;

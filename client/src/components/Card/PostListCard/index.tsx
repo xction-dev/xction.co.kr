@@ -3,27 +3,18 @@
  *
  */
 
+import { Post } from "@core/entity/post";
+
 import typography from "../../../styles/typography.module.css";
 import styles from "./PostListCard.module.css";
 
 import Tag from "../../Tag";
-import { TagText } from "../../Tag";
 import LikeIcon from "../../Icon/LikeIcon";
 import CommentIcon from "../../Icon/CommentIcon";
 import Line from "../../Line";
 
-type PostItem = {
-  title: string;
-  content: string;
-  likes: number;
-  comments: number;
-  createdTime: Date;
-  createdUser: string;
-  tag: TagText;
-};
-
 type PostListCardProps = {
-  data: PostItem[];
+  data: Post[];
 };
 
 export default function PostListCard({ data }: PostListCardProps) {
@@ -35,7 +26,9 @@ export default function PostListCard({ data }: PostListCardProps) {
             {/* 상단 컨테이너: 제목, 태그 */}
             <div className={styles.upperContainer}>
               <h5 className={typography.h5}>{post.title}</h5>
-              <Tag name={post.tag} />
+              {post.tags.map((tag, index) => {
+                return <Tag data={tag} key={index} />;
+              })}
             </div>
             <div className={styles.contentContainer}>
               <h6 className={typography.h6}>{post.content}</h6>
@@ -44,17 +37,15 @@ export default function PostListCard({ data }: PostListCardProps) {
             <div className={styles.lowerContainer}>
               <div className={styles.likesContainer}>
                 <LikeIcon />
-                <p className={typography.subTitle1}>{post.likes}</p>
+                <p className={typography.subTitle1}>{post.likesCount}</p>
               </div>
               <div className={styles.commentsContainer}>
                 <CommentIcon />
-                <p className={typography.subTitle1}>{post.comments}</p>
+                <p className={typography.subTitle1}>{post.viewsCount}</p>
               </div>
               <p className={typography.subTitle1}>|</p>
-              <p className={typography.subTitle1}>
-                {post.createdTime.getFullYear()}
-              </p>
-              <p className={typography.subTitle1}>{post.createdUser}</p>
+              <p className={typography.subTitle1}>{post.createdTime}</p>
+              <p className={typography.subTitle1}>{post.createdUser.name}</p>
             </div>
           </div>
           <div className={styles.lineContainer}>
