@@ -1,0 +1,50 @@
+.container {
+  color: var(--text-invert);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: var(--primitives_spacing-11) var(--primitives_spacing-8);
+}
+
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitives_spacing-3);
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm-md);
+}
+
+.leftContainer p:last-child {
+  color: var(--text-secondary);
+}
+
+.loginContainer p {
+  color: var(--text-secondary);
+}
+
+.rightContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: var(--spacing-2xl);
+}
+
+.xctionInfoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.email {
+  color: var(--text-secondary-white);
+}
+
+.rightContainer a {
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--text-invert);
+}

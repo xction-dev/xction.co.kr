@@ -1,0 +1,33 @@
+.container {
+  padding: var(--spacing-xs) var(--spacing-sm-md);
+  border-radius: 20px; /* primitives에 추가 필요 */
+  color: var(--text-invert);
+}
+
+.purple {
+  background-color: var(--primitives_color_brand_purple);
+}
+
+.pink {
+  background-color: var(--primitives_color_brand_pink);
+}
+
+.blue {
+  background-color: var(--primitives_color_brand_blue);
+}
+
+.navy {
+  background-color: var(--primitives_color_brand_navy);
+}
+
+.green {
+  background-color: var(--primitives_color_brand_green);
+}
+
+.mint {
+  background-color: var(--primitives_color_brand_mint);
+}
+
+.orange {
+  background-color: var(--primitives_color_brand_orange);
+}

@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: min(3.7%, var(--primitives_spacing-8)); /* figma에서 primitives 처리되어 있음 */
+  align-items: center;
+}
+
+.leftContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: min(8%, var(--primitives_spacing-8)); /* figma에서 primitives 처리되어 있음 */
+}
+
+.leftContainer img {
+  width: 15.25rem;
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 3.75rem;
+}
+
+.navContainer a {
+  display: block;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--text-secondary);
+}
+
+.rightContainer {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
+}
+
+.icon svg {
+  width: 2.5rem;
+  height: auto;
+}

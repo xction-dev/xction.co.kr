@@ -1,10 +1,13 @@
+/**
+Primitives로 정의되어 있어 수정 필요
+*/
+
 .container {
   display: flex;
-  width: 496px;
-  padding: var(--spacing5, 40px) var(--spacing4, 32px);
-  border-radius: var(--radius-lg, 16px);
-  background-color: var(--gray600);
-  color: var(--gray50);
+  padding: var(--primitives_spacing-5) var(--primitives_spacing-6);
+  border-radius: var(--primitives_radius-lg);
+  background-color: var(--primitives_color_gray-800);
+  color: var(--text-invert);
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
@@ -12,7 +15,7 @@
 
 .titleContainer {
   padding: 0px;
-  margin-bottom: var(--spacing4, 32px);
+  margin-bottom: var(--primitives_spacing-4);
 }
 
 .postContainer {
@@ -20,10 +23,11 @@
   width: 100%;
   flex-direction: column;
   justify-content: space-between;
-  gap: var(--spacing2);
+  gap: var(--primitives_spacing-2);
 }
 
 .postItemContainer {
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -32,17 +36,17 @@
 .postInfoContainer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  gap: var(--spacing1);
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--primitives_spacing-1);
 }
 
 .postInfoContainer > h5:nth-of-type(1) {
-  width: var(--spacing4);
+  width: var(--primitives_spacing-4);
   text-align: center;
 }
 
 .postInfoContainer a {
-  width: 349px;
   text-decoration: none;
-  color: var(--gray50);
+  color: var(--text-secondary-white);
 }

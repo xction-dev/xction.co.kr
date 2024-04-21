@@ -3,7 +3,7 @@
   font-style: var(--default-font-style);
   line-height: var(--default-line-height);
   margin: 0;
-  font-size: 96px;
+  font-size: 6rem;
   font-weight: 700;
   letter-spacing: -1.5px;
 }
@@ -13,7 +13,7 @@
   font-style: var(--default-font-style);
   line-height: var(--default-line-height);
   margin: 0;
-  font-size: 60px;
+  font-size: 3.75rem;
   font-weight: 700;
   letter-spacing: -1.5px;
 }
@@ -23,7 +23,7 @@
   font-style: var(--default-font-style);
   line-height: var(--default-line-height);
   margin: 0;
-  font-size: 48px;
+  font-size: 3rem;
   font-weight: 400;
   letter-spacing: -1.5px;
 }
@@ -33,7 +33,7 @@
   font-style: var(--default-font-style);
   line-height: var(--default-line-height);
   margin: 0;
-  font-size: 34px;
+  font-size: 2.125rem;
   font-weight: 400;
   line-height: 51px; /* 150% */
   letter-spacing: -1.5px;
@@ -44,7 +44,7 @@
   font-style: var(--default-font-style);
   line-height: var(--default-line-height);
   margin: 0;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 36px; /* 150% */
   letter-spacing: -0.8px;
@@ -55,56 +55,77 @@
   font-style: var(--default-font-style);
   line-height: var(--default-line-height);
   margin: 0;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 400;
   line-height: 30px; /* 150% */
   letter-spacing: 0.15px;
 }
 
 .subTitle1 {
-  font-size: 16px;
+  font-family: var(--default-font-family);
+  font-style: var(--default-font-style);
+  line-height: var(--default-line-height);
+  font-size: 1rem;
   font-weight: 400;
   letter-spacing: 0.15px;
   margin: 0;
 }
 
 .subTitle2 {
-  font-size: 14px;
+  font-family: var(--default-font-family);
+  font-style: var(--default-font-style);
+  line-height: var(--default-line-height);
+  font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 0.1px;
   margin: 0;
 }
 
 .body1 {
-  font-size: 16px;
+  font-family: var(--default-font-family);
+  font-style: var(--default-font-style);
+  line-height: var(--default-line-height);
+  font-size: 1rem;
   font-weight: 400;
   letter-spacing: 0.5px;
   margin: 0;
 }
 
 .body2 {
-  font-size: 14px;
+  font-family: var(--default-font-family);
+  font-style: var(--default-font-style);
+  line-height: var(--default-line-height);
+  font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 0.25px;
   margin: 0;
 }
 
 .button {
-  font-size: 12px;
+  font-family: var(--default-font-family);
+  font-style: var(--default-font-style);
+  line-height: var(--default-line-height);
+  font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.4px;
   margin: 0;
 }
 
 .caption {
-  font-size: 12px;
+  font-family: var(--default-font-family);
+  font-style: var(--default-font-style);
+  line-height: var(--default-line-height);
+  font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.4px;
   margin: 0;
 }
 
 .overline {
-  font-size: 10px;
+  font-family: var(--default-font-family);
+  font-style: var(--default-font-style);
+  line-height: var(--default-line-height);
+  font-size: 0.625rem;
   font-weight: 400;
   letter-spacing: 1.5px;
   margin: 0;

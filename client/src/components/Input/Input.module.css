@@ -1,0 +1,38 @@
+.container {
+  position: relative;
+}
+
+.input {
+  box-sizing: border-box;
+  border: 0;
+  margin: 0;
+  padding: var(--spacing-sm-md) var(--spacing-md);
+  border-radius: var(--radius-rounded);
+  background-color: var(--surface-primary);
+}
+
+.input::placeholder {
+  color: var(--text-secondary);
+}
+
+.email,
+.password {
+  width: 20rem;
+}
+
+.write,
+.search {
+  width: 100%;
+}
+
+.icon {
+  width: 10px;
+  position: absolute;
+  top: 20%;
+  right: 40px;
+}
+
+.icon svg {
+  width: 30px;
+  height: auto;
+}

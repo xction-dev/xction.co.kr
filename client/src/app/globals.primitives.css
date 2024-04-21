@@ -4,20 +4,20 @@
 */
 
 :root {
-  --primitives_spacing-05: 4px;
-  --primitives_spacing-1: 8px;
-  --primitives_spacing-2: 16px;
-  --primitives_spacing-3: 24px;
-  --primitives_spacing-4: 32px;
-  --primitives_spacing-5: 40px;
-  --primitives_spacing-6: 48px;
-  --primitives_spacing-7: 56px;
-  --primitives_spacing-8: 64px;
-  --primitives_spacing-9: 72px;
-  --primitives_spacing-10: 80px;
-  --primitives_spacing-11: 88px;
-  --primitives_spacing-12: 96px;
-  --primitives_spacing-13: 104px;
+  --primitives_spacing-05: 0.25rem;
+  --primitives_spacing-1: 0.5rem;
+  --primitives_spacing-2: 1rem;
+  --primitives_spacing-3: 1.5rem;
+  --primitives_spacing-4: 2rem;
+  --primitives_spacing-5: 2.5rem;
+  --primitives_spacing-6: 3rem;
+  --primitives_spacing-7: 3.5rem;
+  --primitives_spacing-8: 4rem;
+  --primitives_spacing-9: 4.5rem;
+  --primitives_spacing-10: 5rem;
+  --primitives_spacing-11: 5.5rem;
+  --primitives_spacing-12: 6rem;
+  --primitives_spacing-13: 6.5rem;
   --primitives_radius-sm: 4px;
   --primitives_radius-md: 8px;
   --primitives_radius-lg: 16px;

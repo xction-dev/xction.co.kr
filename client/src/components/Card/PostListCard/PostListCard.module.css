@@ -1,0 +1,61 @@
+.container {
+  box-sizing: border-box;
+  border-radius: var(--primitives_radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: var(--surface-secondary);
+  padding: var(--spacing-xl) 0;
+  gap: var(--primitives_spacing-5);
+}
+
+.postItemContainer {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  padding: 0 var(--spacing-xl); /* padding 값 정의 필요 */
+}
+
+.upperContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--spacing-sm-md);
+  color: var(--text-invert);
+  margin-bottom: var(--spacing-xs);
+}
+
+.contentContainer {
+  color: var(--text-secondary-white);
+  margin-bottom: var(--spacing-sm-md);
+}
+
+.lowerContainer {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-sm-md);
+  color: var(--text-secondary-white);
+}
+
+.lowerContainer svg {
+  width: 16px;
+  height: auto;
+}
+
+.likesContainer,
+.commentsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-sm);
+}
+
+.lineContainer svg {
+  width: 100%;
+}
+
+.lineContainer:last-child {
+  display: none;
+}

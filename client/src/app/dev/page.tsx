@@ -1,9 +1,11 @@
 "use client";
 
+import Header from "@/components/Header";
 import Heading from "@/components/Heading";
 import Button from "@/components/Button";
 import Wip from "@/components/Wip";
 import TrendingCard from "@/components/Card/TrendingCard";
+import TrendingCardLong from "@/components/Card/TrendingCardLong";
 import ValueCard from "@/components/Card/ValueCard";
 import DevSection from "@/modules/dev/DevSection";
 import styled from "@emotion/styled";
@@ -12,7 +14,6 @@ import logoAnimation from "../../../public/logo_animation.json";
 import layout from "../../styles/layout";
 import { useView, useViewState } from "@/core/policy";
 import { User } from "@core/entity/user";
-
 
 
 export default function Dev() {
@@ -35,6 +36,9 @@ export default function Dev() {
   return (
     <Main>
       <Title>COMPONENTS</Title>
+      <DevSection title="Header">
+        <Header />
+      </DevSection>
       <DevSection title="Heading">
         <Heading.H1>H1: 가장 큰 제목입니다</Heading.H1>
         <Heading.H2>H2: 큰 제목입니다</Heading.H2>
@@ -52,6 +56,7 @@ export default function Dev() {
       <DevSection title="Text Input"></DevSection>
       <DevSection title="TrendingCard">
         <TrendingCard data={sampleTrendingData}></TrendingCard>
+        <TrendingCardLong data={sampleTrendingData}></TrendingCardLong>
       </DevSection>
       <DevSection title="ValueCard">
         <ValueCard title="카드 제목" content="카드 본문"></ValueCard>
@@ -87,21 +92,31 @@ const sampleTrendingData = [
   {
     title: "1위 포스트",
     views: 5000,
+    tag: "태그",
+    date: new Date("2021-08-01"),
   },
   {
     title: "2위 포스트",
     views: 4000,
+    tag: "태그",
+    date: new Date("2021-08-01"),
   },
   {
     title: "3위 포스트",
     views: 3000,
+    tag: "태그",
+    date: new Date("2021-08-01"),
   },
   {
     title: "4위 포스트",
     views: 2000,
+    tag: "태그",
+    date: new Date("2021-08-01"),
   },
   {
     title: "5위 포스트",
     views: 1000,
+    tag: "태그",
+    date: new Date("2021-08-01"),
   },
 ];
