@@ -2,7 +2,6 @@ import { ID } from "@core/constant/common/id";
 import { z } from "zod";
 import { Creatable } from "../utility/creatable";
 import { Tag } from "../tag";
-import { PostComment } from "../comment/post";
 import { POST_TYPE } from "@core/constant/post/postType";
 
 /**
