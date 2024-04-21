@@ -39,6 +39,12 @@
   gap: var(--spacing-md);
 }
 
-.instagram .email {
+.email {
   color: var(--text-secondary-white);
+}
+
+.rightContainer a {
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--text-invert);
 }

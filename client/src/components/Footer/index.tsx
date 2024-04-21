@@ -1,3 +1,4 @@
+import Link from "next/link";
 import typography from "../../styles/typography.module.css";
 import styles from "./Footer.module.css";
 import Input from "../Input";
@@ -18,14 +19,14 @@ export default function Footer() {
       <div className={styles.rightContainer}>
         <div className={styles.xctionInfoContainer}>
           <div>
-            <h6 className={typography.h6}>Xction이 궁금하다면?</h6>
+            <Link href="">
+              <h6 className={typography.h6}>Xction이 궁금하다면?</h6>
+            </Link>
           </div>
           <div>
-            <h6 className={typography.h6}>소개</h6>
-          </div>
-          <div className={styles.instagram}>
-            <h6 className={typography.h6}>인스타그램</h6>
-            <p className={typography.subTitle1}>@xction</p>
+            <Link href="">
+              <h6 className={typography.h6}>소개</h6>
+            </Link>
           </div>
           <div className={styles.email}>
             <h6 className={typography.h6}>이메일</h6>
@@ -33,7 +34,9 @@ export default function Footer() {
           </div>
         </div>
         <div className={styles.privacyContainer}>
-          <h6 className={typography.h6}>개인정보처리방침</h6>
+          <Link href="">
+            <h6 className={typography.h6}>개인정보처리방침</h6>
+          </Link>
         </div>
         <div className={styles.copyrightContainer}>
           <h6 className={typography.h6}>2024, Xction! All rights reserved</h6>
