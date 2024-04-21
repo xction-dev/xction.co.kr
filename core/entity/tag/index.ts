@@ -8,6 +8,5 @@ import { z } from "zod";
 export const Tag = z.object({
   id: ID.TAG,
   name: z.string(),
-  color: z.string().nullable(),
 });
 export type Tag = z.infer<typeof Tag>;
