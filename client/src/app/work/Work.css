@@ -1,0 +1,40 @@
+.page {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin: 0 0 var(--primitives_spacing-4) 0;
+}
+
+.first-container {
+  background-color: grey;
+  height: 738px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.image {
+  display: block;
+  max-width: 100%;
+  min-width: 100%;
+}
+
+.placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+}
+
+.second-container {
+  padding: 0 6%;
+  margin-bottom: var(--primitives_spacing-10);
+  margin-top: 160px;
+  display: flex;
+  flex-direction: column;
+}
