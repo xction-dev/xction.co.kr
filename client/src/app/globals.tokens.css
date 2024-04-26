@@ -18,6 +18,7 @@
   --surface-third: var(--primitives_color_gray-600);
   --border-primary: var(--primitives_color_gray-50);
   --spacing-none: 0;
+  /* spacing-영문은 디자인팀 요청으로 deprecated될 예정입니다. */
   --spacing-xs: var(--primitives_spacing-05);
   --spacing-sm: var(--primitives_spacing-1);
   --spacing-sm-md: var(--primitives_spacing-2);
@@ -25,6 +26,21 @@
   --spacing-lg: var(--primitives_spacing-4);
   --spacing-xl: var(--primitives_spacing-6);
   --spacing-2xl: var(--primitives_spacing-13);
+  --spacing-05: var(--primitives_spacing-05);
+  /* 앞으로 만들 spacing 관련 css 속성은 spacing-숫자 token 사용합니다. */
+  --spacing-1: var(--primitives_spacing-1);
+  --spacing-2: var(--primitives_spacing-2);
+  --spacing-3: var(--primitives_spacing-3);
+  --spacing-4: var(--primitives_spacing-4);
+  --spacing-5: var(--primitives_spacing-5);
+  --spacing-6: var(--primitives_spacing-6);
+  --spacing-7: var(--primitives_spacing-7);
+  --spacing-8: var(--primitives_spacing-8);
+  --spacing-9: var(--primitives_spacing-9);
+  --spacing-10: var(--primitives_spacing-10);
+  --spacing-11: var(--primitives_spacing-11);
+  --spacing-12: var(--primitives_spacing-12);
+  --spacing-13: var(--primitives_spacing-13);
   --radius-minimal: var(--primitives_radius-sm);
   --radius-rounded: var(--primitives_radius-md);
   --radius-full: var(--primitives_radius-3xl);
