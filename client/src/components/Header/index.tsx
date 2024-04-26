@@ -5,8 +5,7 @@ import "../../app/globals.tokens.css";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import SearchIcon from "../Icon/SearchIcon";
-import Button from "../Button";
-import ButtonBlack from "../Button/ButtonBlack";
+import BasicButton from "../Button/BasicButton";
 
 export default function Header() {
   return (
@@ -41,7 +40,7 @@ export default function Header() {
         <div className={styles.icon}>
           <SearchIcon />
         </div>
-        <ButtonBlack content="업적 확인하기" />
+        <BasicButton color="white" content="로그인" />
       </div>
     </header>
   );
