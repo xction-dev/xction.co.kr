@@ -1,3 +1,7 @@
+/**
+ * Deprecated
+ */
+
 /**  @jsxImportSource @emotion/react */
 "use client";
 
