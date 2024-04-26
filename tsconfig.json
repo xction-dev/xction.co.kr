@@ -3,7 +3,9 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@core/*": ["./core/*"]
+      "@core/*": ["./core/*"],
+      "@styles/*": ["./client/src/styles/*"],
+      "@components/*": ["./client/src/components/*"]
     }
   }
 }
