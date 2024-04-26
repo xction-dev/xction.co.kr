@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import SearchIcon from "../Icon/SearchIcon";
 import Button from "../Button";
+import ButtonBlack from "../Button/ButtonBlack";
 
 export default function Header() {
   return (
@@ -40,7 +41,7 @@ export default function Header() {
         <div className={styles.icon}>
           <SearchIcon />
         </div>
-        <Button.White>로그인</Button.White>
+        <ButtonBlack content="업적 확인하기" />
       </div>
     </header>
   );
