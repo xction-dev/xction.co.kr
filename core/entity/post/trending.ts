@@ -9,4 +9,4 @@ export const PostTrending = Post.pick({
   createdTime: true,
 });
 
-export type PostTrending = z.infer<typeof Post>;
+export type PostTrending = z.infer<typeof PostTrending>;
