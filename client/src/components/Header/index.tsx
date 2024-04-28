@@ -1,7 +1,7 @@
 import typography from "../../styles/typography.module.css";
 import styles from "./Header.module.css";
-import "../../app/globals.primitives.css";
-import "../../app/globals.tokens.css";
+import "@/styles/globals.primitives.css";
+import "@/styles/globals.tokens.css";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import SearchIcon from "../Icon/SearchIcon";
