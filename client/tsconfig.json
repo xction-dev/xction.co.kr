@@ -8,7 +8,8 @@
     ],
     "paths": {
       "@/*": ["./client/src/*"],
-      "@core/*": ["./core/*"]
+      "@core/*": ["./core/*"],
+      "@components/*": ["./client/src/components/*"]
     }
   },
   "include": [
