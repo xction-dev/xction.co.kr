@@ -2,6 +2,7 @@
   padding: var(--spacing-xs) var(--spacing-sm-md);
   border-radius: 20px; /* primitives에 추가 필요 */
   color: var(--text-invert);
+  display: inline-block;
 }
 
 .purple {
