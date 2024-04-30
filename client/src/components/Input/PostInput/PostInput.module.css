@@ -1,0 +1,62 @@
+.container {
+  background-color: var(--surface-primary);
+  box-sizing: border-box;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-rounded);
+  color: var(--text-primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 37.625rem;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.inputContainer button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: var(--surface-primary);
+  color: var(--text-secondary);
+  text-align: left;
+  padding: 0;
+}
+
+.inputContainer input {
+  border: none;
+  outline: none;
+  background-color: var(--surface-primary);
+  padding: 0;
+}
+
+.inputContainer input::placeholder {
+  color: var(--text-secondary);
+}
+
+.inputContainer textarea {
+  border: none;
+  outline: none;
+  resize: none;
+  background-color: var(--surface-primary);
+  padding: 0;
+  height: 20rem;
+}
+
+.inputContainer textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+.inputContainer svg {
+  width: 100%;
+}
+
+.buttonContainer {
+  margin-left: auto;
+}
