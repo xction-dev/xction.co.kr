@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2);
+  background-color: var(--surface-secondary-white);
+  width: max-content;
+  border-radius: var(--radius-rounded);
+}
+
+.container button {
+  display: flex;
+  align-items: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: var(--surface-secondary-white);
+}
