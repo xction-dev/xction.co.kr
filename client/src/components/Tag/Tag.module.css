@@ -5,6 +5,11 @@
   display: inline-block;
 }
 
+.container div {
+  display: inline-block;
+  width: auto;
+}
+
 .purple {
   background-color: var(--primitives_color_brand_purple);
 }
