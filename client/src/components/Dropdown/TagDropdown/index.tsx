@@ -4,6 +4,7 @@
 
 import styles from "./TagDropdown.module.css";
 import Tag from "@components/Tag";
+import { Tag as TagType } from "@core/entity/tag";
 
 const TagMockData = [
   {
@@ -15,30 +16,36 @@ const TagMockData = [
     name: "홍보",
   },
   {
-    id: 1,
+    id: 3,
     name: "자유",
   },
   {
-    id: 1,
+    id: 4,
     name: "한줄평",
   },
 ];
 
-export default function TagDropdown() {
+type TagDropdownProps = {
+  setIsDropDownOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedTag: React.Dispatch<React.SetStateAction<TagType>>;
+};
+
+export default function TagDropdown({
+  setIsDropDownOpened,
+  setSelectedTag,
+}: TagDropdownProps) {
+  const handleClick = (index: number) => {
+    setSelectedTag(TagMockData[index]);
+    setIsDropDownOpened(false);
+  };
+
   return (
     <div className={styles.container}>
-      <button>
-        <Tag data={TagMockData[0]} />
-      </button>
-      <button>
-        <Tag data={TagMockData[1]} />
-      </button>
-      <button>
-        <Tag data={TagMockData[2]} />
-      </button>
-      <button>
-        <Tag data={TagMockData[3]} />
-      </button>
+      {TagMockData.map((tag, index) => (
+        <button type="button" key={tag.id} onClick={() => handleClick(index)}>
+          <Tag data={tag} />
+        </button>
+      ))}
     </div>
   );
 }
