@@ -1,4 +1,6 @@
 import { ID } from "@core/constant/common/id";
+import { TAG_TYPE } from "@core/constant/tag/tagType";
+import { TAG_TEXT } from "@core/constant/tag/text";
 import { z } from "zod";
 
 /**
@@ -7,6 +9,7 @@ import { z } from "zod";
  */
 export const Tag = z.object({
   id: ID.TAG,
-  name: z.string(),
+  type: TAG_TYPE.nullish(),
+  name: TAG_TEXT.NAME,
 });
 export type Tag = z.infer<typeof Tag>;

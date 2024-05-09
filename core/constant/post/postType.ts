@@ -6,3 +6,4 @@ export const POST_TYPE = z.enum([
   "PROMOTION",
   "ONE_LINE_REVIEW",
 ]);
+export type POST_TYPE = z.infer<typeof POST_TYPE>;

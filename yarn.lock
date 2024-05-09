@@ -689,6 +689,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@policy-maker-2/core@workspace:^, @policy-maker-2/core@workspace:library/policy-maker-2/core":
+  version: 0.0.0-use.local
+  resolution: "@policy-maker-2/core@workspace:library/policy-maker-2/core"
+  dependencies:
+    nanoid: ^5.0.7
+  peerDependencies:
+    zod: ^3.23.0
+  languageName: unknown
+  linkType: soft
+
+"@policy-maker-2/react@workspace:library/policy-maker-2/react":
+  version: 0.0.0-use.local
+  resolution: "@policy-maker-2/react@workspace:library/policy-maker-2/react"
+  peerDependencies:
+    "@policy-maker-2/core": "workspace:*"
+    react: ^18.0.0
+    react-dom: ^18.0.0
+    zod: ^3.23.0
+  languageName: unknown
+  linkType: soft
+
+"@policy-maker/core@workspace:library/policy-maker/core":
+  version: 0.0.0-use.local
+  resolution: "@policy-maker/core@workspace:library/policy-maker/core"
+  peerDependencies:
+    zod: ^3.23.5
+  languageName: unknown
+  linkType: soft
+
+"@policy-maker/react@workspace:library/policy-maker/react":
+  version: 0.0.0-use.local
+  resolution: "@policy-maker/react@workspace:library/policy-maker/react"
+  dependencies:
+    fast-deep-equal: ^3.1.3
+    use-debounce: ^10.0.0
+  peerDependencies:
+    "@policy-maker/core": "workspace:^"
+    "@tanstack/react-query": ^5.28.9
+    react: ^18.2.0
+    zod: ^3.23.5
+  languageName: unknown
+  linkType: soft
+
 "@popperjs/core@npm:^2.11.8":
   version: 2.11.8
   resolution: "@popperjs/core@npm:2.11.8"
@@ -1597,7 +1640,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     typescript: 5.2.2
-    zod: ^3.22.2
+    zod: ^3.23.8
   languageName: unknown
   linkType: soft
 
@@ -1726,8 +1769,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "core@workspace:core"
   dependencies:
+    "@policy-maker-2/core": "workspace:^"
     "@pvi/core": "workspace:^"
-    zod: ^3.22.4
+    qs: ^6.12.1
+    zod: ^3.23.8
   languageName: unknown
   linkType: soft
 
@@ -2603,6 +2648,12 @@ __metadata:
   checksum: a8c5b26788d5a1763f88bae56a8ddeee579f935a831c5fe7a8268cea5b0a91fbfe705f612209e02d639b881d7b48e461a50da4a10cfaa40da5ca7cc9da098d88
   languageName: node
   linkType: hard
+
+"fetch@workspace:library/fetch":
+  version: 0.0.0-use.local
+  resolution: "fetch@workspace:library/fetch"
+  languageName: unknown
+  linkType: soft
 
 "file-entry-cache@npm:^6.0.1":
   version: 6.0.1
@@ -4053,6 +4104,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^5.0.7":
+  version: 5.0.7
+  resolution: "nanoid@npm:5.0.7"
+  bin:
+    nanoid: bin/nanoid.js
+  checksum: 25ab0b0cf9082ae6747f0f55cec930e6c1cc5975103aa3a5fda44be5720eff57d9b25a8a9850274bfdde8def964b49bf03def71c6aa7ad1cba32787819b79f60
+  languageName: node
+  linkType: hard
+
 "natural-compare@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
@@ -4538,6 +4598,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qs@npm:^6.12.1":
+  version: 6.12.1
+  resolution: "qs@npm:6.12.1"
+  dependencies:
+    side-channel: ^1.0.6
+  checksum: aa761d99e65b6936ba2dd2187f2d9976afbcda38deb3ff1b3fe331d09b0c578ed79ca2abdde1271164b5be619c521ec7db9b34c23f49a074e5921372d16242d5
+  languageName: node
+  linkType: hard
+
 "queue-lit@npm:^1.5.1":
   version: 1.5.2
   resolution: "queue-lit@npm:1.5.2"
@@ -4905,6 +4974,7 @@ __metadata:
     tsc-alias: ^1.8.8
     tsconfig-paths: ^4.2.0
     typescript: ^5.3.3
+    zod: ^3.23.8
   languageName: unknown
   linkType: soft
 
@@ -5561,6 +5631,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"use-debounce@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "use-debounce@npm:10.0.0"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: b296fedba916ca721eeb7117f29a13c252966d03411abccc5e5894ed4de0f32b9cb6f6b150555b8b4cb9b0acf53b84022ad4cd43b89253389e9cd13779eebca7
+  languageName: node
+  linkType: hard
+
 "utils-merge@npm:1.0.1":
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
@@ -5762,9 +5841,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.22.2, zod@npm:^3.22.4":
+"zod@npm:^3.22.4":
   version: 3.22.4
   resolution: "zod@npm:3.22.4"
   checksum: 80bfd7f8039b24fddeb0718a2ec7c02aa9856e4838d6aa4864335a047b6b37a3273b191ef335bf0b2002e5c514ef261ffcda5a589fb084a48c336ffc4cdbab7f
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.23.8":
+  version: 3.23.8
+  resolution: "zod@npm:3.23.8"
+  checksum: 15949ff82118f59c893dacd9d3c766d02b6fa2e71cf474d5aa888570c469dbf5446ac5ad562bb035bf7ac9650da94f290655c194f4a6de3e766f43febd432c5c
   languageName: node
   linkType: hard
