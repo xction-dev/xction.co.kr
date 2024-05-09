@@ -29,8 +29,12 @@ const tagColor: TagColor = {
 export default function Tag({ data }: TagProps) {
   const color = tagColor[data.name];
   return (
-    <div className={`${styles.container} ${styles[color]}`}>
-      <div className={typography.subTitle2}>{data.name}</div>
+    <div>
+      {" "}
+      {/** 너비가 없는 div를 하나 만들어 inline 효과 생성 */}
+      <div className={`${styles.container} ${styles[color]}`}>
+        <div className={typography.subTitle2}>{data.name}</div>
+      </div>
     </div>
   );
 }

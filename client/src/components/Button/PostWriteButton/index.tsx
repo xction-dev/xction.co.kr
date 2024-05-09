@@ -9,6 +9,7 @@ import styles from "./PostWriteButton.module.css";
 import typography from "../../../styles/typography.module.css";
 import WriteIcon from "../../Icon/WriteIcon";
 import { useState } from "react";
+import PostInput from "@/components/Input/PostInput";
 
 export default function PostWriteButton() {
   const [writeMode, setWriteMode] = useState(false);
@@ -26,7 +27,7 @@ export default function PostWriteButton() {
           </div>
         </button>
       ) : (
-        <div></div>
+        <PostInput />
       )}
     </>
   );

@@ -9,7 +9,8 @@
     "paths": {
       "@/*": ["./client/src/*"],
       "@core/*": ["./core/*"],
-      "@components/*": ["./client/src/components/*"]
+      "@components/*": ["./client/src/components/*"],
+      "@styles/*": ["./client/src/styles/*"]
     }
   },
   "include": [
