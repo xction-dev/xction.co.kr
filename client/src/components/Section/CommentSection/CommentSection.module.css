@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm-md);
+}
+
+.upperContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profileContainer {
+  display: flex;
+  gap: var(--spacing-sm-md);
+  color: var(--text-invert);
+}
+
+.functionButton {
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.contentContainer {
+  color: var(--text-secondary-white);
+}
+
+.lowerContainer {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
+  color: var(--text-secondary-white);
+}
+
+.likeContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.likeContainer svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.likeButton {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+}
