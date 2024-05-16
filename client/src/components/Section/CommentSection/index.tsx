@@ -8,12 +8,17 @@ import { PostComment } from "@core/entity/comment/post";
 import ProfileIcon from "@components/Icon/ProfileIcon";
 import LikeIcon from "@components/Icon/LikeIcon";
 import typography from "@styles/typography.module.css";
+import { buttonBaseClasses } from "@mui/material";
 
 type CommentSectionProps = {
   comment: PostComment;
+  isMine: boolean;
 };
 
-export default function CommentSection({ comment }: CommentSectionProps) {
+export default function CommentSection({
+  comment,
+  isMine,
+}: CommentSectionProps) {
   return (
     <div className={styles.container}>
       <div className={styles.upperContainer}>
@@ -22,8 +27,15 @@ export default function CommentSection({ comment }: CommentSectionProps) {
           <h6 className={typography.h6}>{comment.createdUser.name}</h6>
         </div>
         <div className={styles.functionContainer}>
-          <div className={`${typography.subTitle1} ${styles.buttonContainer}`}>
-            <button className={styles.functionButton}>신고</button>
+          <div className={typography.subTitle1}>
+            {isMine ? (
+              <div className={styles.mineButtonContainer}>
+                <button className={styles.functionButton}>수정</button>
+                <button className={styles.functionButton}>삭제</button>
+              </div>
+            ) : (
+              <button className={styles.functionButton}>신고</button>
+            )}
           </div>
         </div>
       </div>

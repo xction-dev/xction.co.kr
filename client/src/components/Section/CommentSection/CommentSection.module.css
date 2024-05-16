@@ -15,6 +15,11 @@
   color: var(--text-invert);
 }
 
+.mineButtonContainer {
+  display: flex;
+  gap: var(--spacing-sm-md);
+}
+
 .functionButton {
   color: var(--text-secondary);
   background: none;
