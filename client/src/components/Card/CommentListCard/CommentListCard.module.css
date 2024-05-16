@@ -1,0 +1,28 @@
+.container {
+  box-sizing: border-box;
+  border-radius: var(--primitives_radius-lg);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface-secondary);
+  padding: var(--spacing-xl) 0;
+  gap: var(--spacing-5);
+}
+
+.commentItemContainer {
+  box-sizing: border-box;
+  padding: 0 var(--spacing-6);
+}
+
+.lineContainer {
+  display: flex;
+  padding: 0;
+  align-items: center;
+}
+
+.lineContainer svg {
+  width: 100%;
+}
+
+.lineContainer:last-child {
+  display: none;
+}
