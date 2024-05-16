@@ -1,5 +1,5 @@
-const getPosts = () => {};
-const getPostsByType = () => {};
-const getPostsOfUser = () => {};
+// const getPosts = () => {};
+// const getPostsByType = () => {};
+// const getPostsOfUser = () => {};
 
 export const PostRepository = {};

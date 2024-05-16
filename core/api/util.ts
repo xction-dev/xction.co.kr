@@ -6,15 +6,16 @@ export const { api, authApi } = createFetch({
   baseUrl: "http://localhost:8080",
 });
 
-export const parseConfig = (config?: Record<string, unknown>) =>
-  config && Object.keys(config).length > 0 ? "?" + qs.stringify(config) : "";
+export const parseQuery = (query?: Record<string, unknown>) =>
+  query && Object.keys(query).length > 0 ? "?" + qs.stringify(query) : "";
 
-export const parsePaginatedConfig = <Config extends { pageNumber?: number }>(
+export const parsePaginatedQuery = <Config extends { pageNumber?: number }>(
   config?: Config,
-) => parseConfig({ pageNumber: 1, ...config });
+) => parseQuery({ pageNumber: 1, ...config });
 
 export const Paginated = (data: ZodType) =>
   z.object({
     items: data.array(),
     maxPageNumber: z.number().int().nonnegative(),
   });
+export type Paginated<T> = { items: T[]; maxPageNumber: number };

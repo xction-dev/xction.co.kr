@@ -1,25 +1,25 @@
 type Api = {
-  get: (url: string, headers?: HeadersInit) => Promise<unknown>;
-  post: (
+  get: <T>(url: string, headers?: HeadersInit) => Promise<T>;
+  post: <T>(
     url: string,
     body?: Record<string, unknown> | File,
     headers?: HeadersInit,
-  ) => Promise<unknown>;
-  patch: (
+  ) => Promise<T>;
+  patch: <T>(
     url: string,
     body?: Record<string, unknown> | File,
     headers?: HeadersInit,
-  ) => Promise<unknown>;
-  put: (
+  ) => Promise<T>;
+  put: <T>(
     url: string,
     body?: Record<string, unknown> | File,
     headers?: HeadersInit,
-  ) => Promise<unknown>;
-  delete: (
+  ) => Promise<T>;
+  delete: <T>(
     url: string,
     body?: Record<string, unknown> | File,
     headers?: HeadersInit,
-  ) => Promise<unknown>;
+  ) => Promise<T>;
 };
 
 export type CreateFetch = (config: {

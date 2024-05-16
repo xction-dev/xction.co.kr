@@ -2,7 +2,7 @@ import { ID } from "@core/constant/common/id";
 import { POST_TYPE } from "@core/constant/post/postType";
 import { POST_TEXT } from "@core/constant/post/text";
 import { Post } from "@core/entity/post";
-import { IntentPolicy } from "library/policy-maker-2/core";
+import { IntentPolicy } from "@policy-maker-2/core";
 import { z } from "zod";
 
 const input = z.object({

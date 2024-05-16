@@ -1,5 +1,5 @@
 import { ID } from "@core/constant/common/id";
-import { IntentPolicy } from "library/policy-maker-2/core";
+import { IntentPolicy } from "@policy-maker-2/core";
 import { z } from "zod";
 
 export const IPLikePostComment = IntentPolicy(

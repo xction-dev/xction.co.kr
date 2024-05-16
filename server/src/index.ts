@@ -1,12 +1,9 @@
+import "dotenv/config";
 import cors from "cors";
 import express from "express";
-import dotenv from "dotenv";
 import user from "./routers/users";
-import { connection } from "./utils/db/init";
+import post from "./routers/posts";
 import test from "./routers/test";
-
-// set environment variables
-dotenv.config();
 
 // create express app
 const app = express();
@@ -24,14 +21,13 @@ app.get("/", (_, res) => {
 // routes
 app.use("/tests", test);
 app.use("/users", user);
+app.use("/posts", post);
 
 // error handling
 // app.use(errorMapperMiddleware);
 
-connection.then((connection) => {
-  connection.execute(`SELECT * FROM tests`).then(([rows]) => console.log(rows));
-});
-
 app.listen(8080, () => {
-  console.log(`[server]: Server is running at http://localhost:${8080}`);
+  console.log(
+    `[server]: Server is running at http://localhost:${process.env.PORT}`,
+  );
 });
