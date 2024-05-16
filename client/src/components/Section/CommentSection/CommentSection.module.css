@@ -11,8 +11,14 @@
 
 .profileContainer {
   display: flex;
+  align-items: center;
   gap: var(--spacing-sm-md);
   color: var(--text-invert);
+}
+
+.functionContainer {
+  display: flex;
+  align-items: center;
 }
 
 .mineButtonContainer {
