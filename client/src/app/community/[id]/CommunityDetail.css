@@ -10,3 +10,15 @@
   padding: 0 20%;
   margin-bottom: var(--primitives_spacing-10);
 }
+
+.PostContainer {
+  margin-bottom: var(--spacing-13);
+}
+
+.CommentButtonContainer {
+  margin-bottom: var(--spacing-7);
+}
+
+.CommentListContainer {
+  margin-bottom: var(--spacing-7);
+}
