@@ -14,7 +14,7 @@ export default function Header() {
       <div className={styles.leftContainer}>
         <div className={styles.imgContainer}>
           <Link href="">
-            <img src="xction_logo.png" alt="Xction 로고" />
+            <img src="/xction_logo.png" alt="Xction 로고" />
           </Link>
         </div>
         <nav className={styles.navContainer}>
