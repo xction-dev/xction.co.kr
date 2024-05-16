@@ -13,7 +13,7 @@ export const Work = z
     id: ID.WORK,
     title: z.string().min(1).max(100),
     description: z.string().nullable(),
-    tags: z.unknown().array(),
+    tags: z.array(z.string()),
     credit: z.record(z.string().array()).nullable(),
 
     // image
