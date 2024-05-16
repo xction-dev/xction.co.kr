@@ -2,16 +2,18 @@
  * ProfileIcon component
  */
 
+import styles from "./ProfileIcon.module.css";
+
 export default function ProfileIcon({ imgUrl }: { imgUrl?: string }) {
   return (
-    <div>
+    <div className={styles.container}>
       {imgUrl ? (
         <img src={imgUrl} alt="profile" width="28" height="28" />
       ) : (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
+          width="30"
+          height="30"
           viewBox="0 0 28 28"
           fill="none"
         >
