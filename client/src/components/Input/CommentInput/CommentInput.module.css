@@ -1,0 +1,27 @@
+.container {
+  background-color: var(--surface-primary);
+  box-sizing: border-box;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-rounded);
+  color: var(--text-primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 11.0625rem;
+}
+
+.form textarea {
+  border: none;
+  outline: none;
+  resize: none;
+  background-color: var(--surface-primary);
+  padding: 0;
+  height: 20rem;
+}
+
+.buttonContainer {
+  margin-left: auto;
+}

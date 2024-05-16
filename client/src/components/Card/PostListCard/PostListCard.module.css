@@ -52,6 +52,11 @@
   gap: var(--spacing-sm);
 }
 
+.lineContainer {
+  display: flex;
+  align-items: center;
+}
+
 .lineContainer svg {
   width: 100%;
 }

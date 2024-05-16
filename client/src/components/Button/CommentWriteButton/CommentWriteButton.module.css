@@ -1,0 +1,19 @@
+.button {
+  width: 100%;
+  box-sizing: border-box;
+  border: 0;
+  margin: 0;
+  padding: var(--spacing-sm-md) var(--spacing-md);
+  border-radius: var(--radius-rounded);
+  background-color: var(--surface-primary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon svg {
+  width: 30px;
+  height: auto;
+}

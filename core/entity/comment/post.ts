@@ -22,7 +22,7 @@ export const PostComment = z
   .object({
     id: ID.POST_COMMENT,
     content: z.string().min(1),
-    replies: PostReply.array(),
+    likesCount: z.number().int().nonnegative(),
   })
   .extend(Creatable.shape);
 export type PostComment = z.infer<typeof PostComment>;
