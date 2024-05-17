@@ -16,10 +16,10 @@ export const useView = <T>({
   }, [policy.key, from]);
 
   const reset = useCallback(() => {
-    set(get.init);
+    set(get.from);
   }, [policy.key]);
 
-  if (get.status === "PENDING") throw get.promise;
+  if (get.status === "PENDING") throw get.value;
   if (get.status === "REJECTED") throw get.error;
 
   return {

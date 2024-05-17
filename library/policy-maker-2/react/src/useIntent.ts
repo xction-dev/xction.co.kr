@@ -1,6 +1,5 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useSyncStore } from "./useStore";
-import { Validator, useInput } from "./useInput";
 import { IntentPolicy, store } from "@policy-maker-2/core";
 
 type IntentMeta = {
@@ -8,21 +7,28 @@ type IntentMeta = {
   error: unknown;
 };
 
-export const useSendIntent = <Input, Output>({
+export const useIntent = <Input, Output>({
   policy,
   to,
 }: {
   policy: IntentPolicy<Input, Output>;
   to: (input: Input) => Promise<Output>;
 }) => {
-  const [get, set] = useSyncStore<IntentMeta>(policy.key + "_send", {
+  const [get, set] = useSyncStore<IntentMeta>(policy.key, {
     isWorking: false,
     error: null,
   });
+  const value = useMemo(() => {
+    if (get.status === "PENDING" || get.status === "REJECTED")
+      return { isWorking: true, error: null };
+    return get.value;
+  }, [get]);
   const send = useCallback(
     async (input: Input) => {
       try {
-        if (get.value?.isWorking) throw new Error("Already working");
+        if (get.status === "PENDING" || get.status === "REJECTED")
+          throw new Error("Preparing");
+        if (get.value.isWorking) throw new Error("Already working");
         set((prev) => ({ isWorking: true, error: prev?.error ?? null }));
         const raw = await to(policy.model.input.parse(input));
         const output = policy.model.output.parse(raw);
@@ -37,35 +43,5 @@ export const useSendIntent = <Input, Output>({
     [policy.key],
   );
 
-  return { ...get.value, send, validator: policy.model.input };
-};
-
-export const useSubmitIntent = <Input extends Record<string, unknown>, Output>({
-  policy,
-  to,
-  initialValue,
-  compareDiff,
-}: {
-  policy: IntentPolicy<Input, Output>;
-  to: (input: Input) => Promise<Output>;
-  initialValue: Required<{ [key in keyof Input]: NonNullable<Input[key]> }>;
-  compareDiff?: boolean;
-}) => {
-  const { send, validator, isWorking } = useSendIntent({ policy, to });
-  const { inputValues, values, isValid, set, reset } = useInput(
-    policy.key,
-    validator as unknown as Validator<Input>,
-    initialValue,
-    compareDiff,
-  );
-  return {
-    values,
-    inputValues,
-    validator,
-    isValid,
-    isWorking,
-    set,
-    reset,
-    submit: () => send(inputValues as Input),
-  };
+  return { ...value, send, validator: policy.model.input };
 };

@@ -1,27 +1,53 @@
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { ZodObject, ZodType, z } from "zod";
 import { useSyncStore } from "./useStore";
 
-type Input = Record<string, any>;
+/*
+ * Config
+ */
+export type InputConfig = { compareDiff: boolean; useInitialValue: boolean };
+const defaultInputConfig: InputConfig = {
+  compareDiff: false,
+  useInitialValue: false,
+};
+
+/*
+ * Validation
+ */
+export type Inputable = Record<string, any>;
 type ValidatedValue<T> =
   | { isValid: true; value: T; error: null }
   | { isValid: false; value: T; error: unknown };
-
-export type Validator<T extends Required<Input>> = ZodObject<{
+export type Validator<T extends Required<Inputable>> = ZodObject<{
   [key in keyof T]: ZodType<T[key]>;
 }>;
 
-type Return<T extends Input> = {
+/*
+ * Hook Types
+ */
+type Param<Whole extends Inputable, Part extends Partial<Whole>> = {
+  key: string;
+  validator: Validator<Whole>;
+  initialValue: (prev?: Partial<Whole>) => {
+    [key in keyof Part]: NonNullable<Part[key]>;
+  };
+  config?: Partial<InputConfig>;
+};
+
+type Return<T extends Inputable> = {
   values: {
     [key in keyof Required<T>]: ValidatedValue<NonNullable<Required<T>[key]>>;
   };
   inputValues: Partial<T>;
   isValid: boolean;
-  set: (setter: ((prev: Partial<T>) => Partial<T>) | Partial<T>) => void;
+  set: (setter: Partial<T> | ((prev?: Partial<T>) => Partial<T>)) => void;
   reset: () => void;
 };
 
-const getDiff = <T extends Input>(
+/*
+ * Util
+ */
+const getDiff = <T extends Inputable>(
   original: T,
   target: Partial<T>,
 ): Partial<T> => {
@@ -31,19 +57,27 @@ const getDiff = <T extends Input>(
   }, {} as Partial<T>);
 };
 
-export const useInput = <T extends Input>(
-  key: string,
-  validator: Validator<T>,
-  initialValue: Required<{ [key in keyof T]: NonNullable<T[key]> }>,
-  compareDiff?: boolean,
-): Return<T> => {
-  const [{ value: inputValues }, setInputValues] = useSyncStore<Partial<T>>(
-    key + "_input",
-    compareDiff ? {} : initialValue,
+/*
+ * Hook
+ */
+export const useInput = <Whole extends Inputable, T extends Partial<Whole>>({
+  key,
+  validator,
+  initialValue,
+  config: inputConfig,
+}: Param<Whole, T>): Return<T> => {
+  const config = useMemo(
+    () => ({ ...defaultInputConfig, ...inputConfig }),
+    [key],
   );
-  const merged: Required<T> = useMemo(
-    () => ({ ...initialValue, ...inputValues }),
-    [inputValues],
+  const [store, setStoreValue] = useSyncStore<Partial<T>>(key + "_input", {});
+
+  const merged: { [key in keyof T]: T[key] } = useMemo(
+    () =>
+      store.status === "PENDING"
+        ? initialValue()
+        : { ...initialValue(store.value), ...store.value },
+    [key, store.value],
   );
   const values: Return<T>["values"] = useMemo(() => {
     return Object.keys(merged).reduce(
@@ -59,20 +93,38 @@ export const useInput = <T extends Input>(
       },
       {} as Return<T>["values"],
     );
-  }, [merged]);
+  }, [key, merged]);
   const isValid = useMemo(() => {
-    if (z.object({}).strict().safeParse(inputValues).success) return false;
-    return validator.safeParse(inputValues).success;
-  }, [inputValues]);
-  const set: Return<T>["set"] = (setter) =>
-    setInputValues((prev) => {
-      const value =
-        typeof setter === "function"
-          ? { ...prev, ...setter(prev) }
-          : { ...prev, ...setter };
-      return compareDiff ? getDiff(initialValue, value) : value;
-    });
-  const reset = () => setInputValues(() => (compareDiff ? {} : initialValue));
+    if (z.object({}).strict().safeParse(store.value).success) return false;
+    return validator.safeParse(store.value).success;
+  }, [store.value]);
+
+  const inputValues = useMemo(() => {
+    if (store.status === "PENDING" || store.status === "REJECTED")
+      return {} as Partial<T>;
+    return store.value;
+  }, [key, store.status, store.value]);
+
+  const set: Return<T>["set"] = useCallback(
+    (setter) => {
+      setStoreValue((prev) => {
+        const value =
+          typeof setter === "function"
+            ? { ...prev, ...setter(prev) }
+            : { ...prev, ...setter };
+        return config.compareDiff ? getDiff(initialValue, value) : value;
+      });
+    },
+    [key, setStoreValue],
+  );
+  const reset = useCallback(
+    () => setStoreValue(() => initialValue()),
+    [key, setStoreValue],
+  );
+
+  useEffect(() => {
+    if (config.useInitialValue) set(initialValue);
+  }, [key]);
 
   return { values, inputValues, isValid, set, reset };
 };

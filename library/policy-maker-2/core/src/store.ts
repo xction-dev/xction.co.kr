@@ -1,203 +1,287 @@
+import { IntentNext } from "./intent";
+
 /*
  * Types
  */
 
-import { IntentNext } from "./intent";
-
 /* Basics */
-export type Lifecycle = {
-  lastFreshedAt: number;
-  staleTime: number | null;
-};
 export type LifecycleConfig = {
   staleTime: number | null;
+  gcTime: number | null;
+};
+export type LifecycleContext = {
+  lastFreshedAt: number;
+  gcTimer: number;
 };
 export type StoreConfig = LifecycleConfig;
+export type StoreContext = Partial<LifecycleConfig & LifecycleContext>;
+
+export type Subscriber = () => void;
+export type Subscriptions = Map<string, Subscriber>;
+export type Subscribable = { subscriptions: Subscriptions };
 
 /* States */
 /**  Dataless State **/
-type Rejected<T> = {
-  status: "REJECTED";
-  value: undefined;
-  error: unknown;
-  init: () => T | Promise<T>;
-};
-type Pending<T> = {
-  status: "PENDING";
-  value: undefined;
-  promise: Promise<T>;
-  init: () => T | Promise<T>;
-};
+type Rejected<T> = Subscribable &
+  StoreContext & {
+    status: "REJECTED";
+    value: undefined;
+    error: unknown;
+    from: () => T | Promise<T>;
+  };
+
+type Pending<T> = Subscribable &
+  StoreContext & {
+    status: "PENDING";
+    value: Promise<T>;
+    error: undefined;
+    from: () => T | Promise<T>;
+  };
 
 /**  Dataful State **/
-type Resolved<T> = {
-  status: "FRESH" | "REFRESHING" | "STALE";
-  value: T;
-  init: () => T | Promise<T>;
-} & Lifecycle;
+type Fresh<T> = Subscribable &
+  StoreContext & {
+    status: "FRESH";
+    value: T;
+    from: () => T | Promise<T>;
+    error: unknown;
+  };
 
-/* Stored State */
-export type State<T> = Rejected<T> | Pending<T> | Resolved<T>;
-export type Stored<T> = State<T> & {
-  subscriptions: Map<string, () => void>;
-};
-export type StoredWithData<T> = Resolved<T> & {
-  subscriptions: Map<string, () => void>;
-};
+type Refreshing<T> = Subscribable &
+  StoreContext & {
+    status: "REFRESHING";
+    value: T;
+    from: () => T | Promise<T>;
+    error: unknown;
+  };
+
+type Stale<T> = Subscribable &
+  StoreContext & {
+    status: "STALE";
+    value: T;
+    from: () => T | Promise<T>;
+    error: unknown;
+  };
+
+type Cached<T> = Subscribable &
+  StoreContext & {
+    status: "CACHED";
+    value: T;
+    from: () => T | Promise<T>;
+    error: unknown;
+  };
+
+/** Stored State **/
+export type StoreStatus =
+  | "REJECTED"
+  | "PENDING"
+  | "FRESH"
+  | "REFRESHING"
+  | "STALE"
+  | "CACHED";
+export type Stored<T> =
+  | Rejected<T>
+  | Pending<T>
+  | Fresh<T>
+  | Refreshing<T>
+  | Stale<T>
+  | Cached<T>;
+export type StoredWithData<T> = Fresh<T> | Refreshing<T> | Stale<T> | Cached<T>;
 
 /*
- * Functions
+ * Predicates
  */
+const isWithData = <T>(snapshot?: Stored<T>): snapshot is StoredWithData<T> =>
+  !!snapshot && snapshot.status !== "PENDING" && snapshot.status !== "REJECTED";
 
-/* util */
-const isStale = <T>(snapshot: StoredWithData<T>) =>
-  snapshot.staleTime !== null &&
-  snapshot.lastFreshedAt + snapshot.staleTime < Date.now();
+const isStale = <T>(snapshot: Stored<T>): snapshot is Fresh<T> | Stale<T> => {
+  if (!isWithData(snapshot)) return false;
+  if (isBusy(snapshot)) return false;
+  if (snapshot.status === "STALE") return true;
+  if (!snapshot.staleTime || !snapshot.lastFreshedAt) return true;
+  return snapshot.lastFreshedAt + snapshot.staleTime < Date.now();
+};
+const isCached = <T>(snapshot: Stored<T>): snapshot is Cached<T> =>
+  snapshot.status === "CACHED";
 
-/* Internal */
+const isBusy = <T>(
+  snapshot: Stored<T>,
+): snapshot is Pending<T> | Refreshing<T> =>
+  snapshot.status === "PENDING" || snapshot.status === "REFRESHING";
+
+/*
+ * Store Manupulation
+ */
 const _store = new Map<string, Stored<any>>();
 const _get = <T>(key: string) => _store.get(key) as Stored<T> | undefined;
-const _set = <T>(key: string, value: Stored<T>): Stored<T> => {
+const _set = <T, S extends Stored<T> = Stored<T>>(key: string, value: S) => {
   _store.set(key, value);
   value.subscriptions.forEach((listener) => listener());
   return value;
 };
 const _delete = (key: string) => _store.delete(key);
 
-const _pend = <T>(
+/*
+ * State Transformer
+ */
+
+/* PENDING */
+const pend = <T>(
   key: string,
-  promise: Promise<T>,
-  init: () => T | Promise<T>,
-  config: LifecycleConfig,
-  subscriptions: Map<string, () => void> = new Map(),
-) =>
-  _set<T>(key, {
+  from: () => T | Promise<T>,
+  subscribers: Subscriber[],
+  config: StoreConfig,
+) => {
+  const value = Promise.resolve(from());
+  value.then((resolved) => freshSnapshot(key, resolved));
+
+  const subscriptions = new Map<string, Subscriber>();
+  subscribers.forEach((listener) => subscriptions.set(listener.name, listener));
+
+  return _set<T>(key, {
     status: "PENDING",
-    value: undefined,
-    promise,
-    init,
+    error: undefined,
+    value,
+    from,
     subscriptions,
     ...config,
   });
+};
 
-const _fresh = <T>(
-  key: string,
-  value: T,
-  init: () => T | Promise<T>,
-  subscriptions: Map<string, () => void>,
-  config: LifecycleConfig,
-) =>
-  _set(key, {
+const repend = <T>(key: string, snapshot: StoredWithData<T>) => {
+  if (isBusy(snapshot)) return snapshot;
+  const value = Promise.resolve(snapshot.from());
+  value.then((resolved) => freshSnapshot(key, resolved));
+  return _set<T>(key, {
+    ...snapshot,
+    status: "PENDING",
+    error: undefined,
+    value,
+  });
+};
+
+/* FRESH */
+const freshSnapshot = <T>(key: string, value: T) => {
+  const prev = _get<T>(key);
+  if (!prev) return;
+  return _set<T>(key, {
+    ...prev,
     status: "FRESH",
     value,
-    init,
-    subscriptions,
     lastFreshedAt: Date.now(),
-    ...config,
   });
-const _refresh = <T>(key: string, prev: StoredWithData<T>) =>
-  _set(key, { ...prev, status: "REFRESHING" });
-const _stale = <T>(key: string, prev: StoredWithData<T>) =>
-  _set(key, { ...prev, status: "STALE" });
+};
 
-/* Public */
+const freshCache = <T>(key: string, snapshot: Cached<T>) => {
+  window.clearTimeout(snapshot.gcTimer);
+  return _set(key, {
+    ...snapshot,
+    status: "FRESH" as const,
+    gcTimer: undefined,
+  });
+};
+
+/* STALE */
+
+const stale = <T>(key: string) => {
+  const prev = _get<T>(key);
+  if (!prev || isBusy(prev) || !isWithData(prev)) return;
+  return _set<T>(key, { ...prev, status: "STALE" });
+};
+
+/* CACHE */
+
+/*
+ * Public API
+ */
+
+/* getter / setter */
 const get = <T>(key: string): Stored<T> | undefined => {
   const snapshot = _get<T>(key);
-  if (
-    snapshot?.status === "STALE" ||
-    (snapshot?.status === "FRESH" && isStale(snapshot))
-  )
-    return set(key, snapshot.init, { staleTime: snapshot.staleTime });
+  if (!snapshot) return snapshot;
+  if (isStale(snapshot)) return repend(key, snapshot);
+  if (snapshot.status === "CACHED") return freshCache(key, snapshot);
   return snapshot;
 };
 
-const set = <T>(
-  key: string,
-  setter: (prev?: T) => T | Promise<T>,
-  config: LifecycleConfig,
-) => {
-  const prev = _get<T>(key);
-  // no previous state
-  if (!prev || prev.status === "REJECTED") {
-    const next = setter();
-    // input is promise
-    if (next instanceof Promise) {
-      next.then((resolved) => {
-        const snapshot = _get<T>(key);
-        if (snapshot?.status !== "PENDING") return;
-        _fresh(key, resolved, snapshot.init, snapshot.subscriptions, config);
-      });
-      return _pend(key, next, setter, config);
-    }
-    // input is value
-    return _fresh(key, next, setter, new Map(), config);
-  }
-  // previous state is busy
-  if (prev.status === "PENDING" || prev.status === "REFRESHING") return prev;
-
-  // previous state is idle
-  const next = setter(prev.value);
-  if (next instanceof Promise) {
-    next.then((resolved) => {
-      const snapshot = _get<T>(key);
-      if (snapshot?.status !== "REFRESHING") return;
-      _fresh(key, resolved, snapshot.init, snapshot.subscriptions, {
-        staleTime: snapshot.staleTime,
-      });
-    });
-    return prev.status === "STALE" || isStale(prev)
-      ? _pend(key, next, prev.init, { staleTime: prev.staleTime })
-      : _refresh(key, prev);
-  }
-  return _fresh(key, next, prev.init, prev.subscriptions, {
-    staleTime: prev.staleTime,
+const initSync = <T>(key: string, initialData: T, config: StoreConfig) => {
+  return _set<T>(key, {
+    status: "FRESH",
+    value: initialData,
+    error: undefined,
+    from: () => initialData,
+    subscriptions: new Map(),
+    ...config,
+    lastFreshedAt: Date.now(),
   });
 };
+const initAsync = <T>(
+  key: string,
+  from: () => T | Promise<T>,
+  config: StoreConfig,
+) => pend(key, from, [], config);
 
+const setSync = <T>(key: string, updater: (prev?: T) => T) => {
+  const prev = _get<T>(key);
+  if (!prev || prev.status === "REJECTED" || isBusy(prev)) return;
+  return _set<T>(key, { ...prev, value: updater(prev.value) });
+};
+
+const setAsync = <T>(key: string, updater: (prev?: T) => T | Promise<T>) => {
+  const prev = _get<T>(key);
+  if (!prev || prev.status === "REJECTED" || isBusy(prev)) return;
+  const value: Promise<T> = Promise.resolve(updater(prev.value));
+  value.then((resolved) => freshSnapshot(key, resolved));
+  return _set<T>(key, { ...prev, status: "REFRESHING" });
+};
+
+/* Intent Next */
+const invalidate = (key: string) => stale(key);
+
+const map = <T>(key: string, mapper: (prev?: T) => T) => {
+  const prev = _get<T>(key);
+  if (!prev || prev.status === "REJECTED" || isBusy(prev)) return;
+  _set<T>(key, { ...prev, value: mapper(prev.value) });
+  prev.subscriptions.forEach((listener) => listener());
+};
+
+/* subscription */
 const unsubscribe = (key: string, subscriptionKey: string) => {
   const prev = _get(key);
-  if (prev) {
-    prev.subscriptions.delete(subscriptionKey);
-    if (prev.subscriptions.size === 0) _delete(key);
-  }
+  if (!prev) return;
+
+  prev.subscriptions.delete(subscriptionKey);
+  if (prev.subscriptions.size > 0 || isCached(prev)) return;
+
+  if (!prev.gcTime) return _delete(key);
+
+  if (!Number.isFinite(prev.gcTime)) return;
+  const timer = window.setTimeout(() => _delete(key), prev.gcTime);
+
+  _set(key, { ...prev, gcTimer: timer });
 };
+
 const subscribe = <T>(
   key: string,
   subscriptionKey: string,
   listener: () => void,
-  init: () => T | Promise<T>,
-  config: LifecycleConfig,
+  from: () => T | Promise<T>,
+  config: StoreConfig,
 ) => {
   const prev = _get<T>(key);
-  if (!prev || prev.status === "REJECTED") {
-    const initial = set(key, init, config);
-    initial.subscriptions.set(subscriptionKey, listener);
-    return {
-      stored: initial,
-      unsubscribe: () => unsubscribe(key, subscriptionKey),
-    };
-  }
-  prev.subscriptions.set(subscriptionKey, listener);
-  return { stored: prev, unsubscribe: () => unsubscribe(key, subscriptionKey) };
-};
 
-const invalidate = <T>(key: string) => {
-  const prev = _get<T>(key);
-  if (
-    !prev ||
-    prev.status === "REFRESHING" ||
-    prev.status === "PENDING" ||
-    prev.status === "REJECTED"
-  )
-    return;
-  _stale(key, prev);
+  if (!prev || prev.status === "REJECTED") pend(key, from, [listener], config);
+  else prev.subscriptions.set(subscriptionKey, listener);
+
+  listener();
+  return { unsubscribe: () => unsubscribe(key, subscriptionKey) };
 };
 
 const parseIntent = <Next extends IntentNext>(next: Next) => {
   switch (next.type) {
     case "SET":
       typeof next.predicate === "string"
-        ? set(next.predicate, next.fn, { staleTime: null })
+        ? setSync(next.predicate, next.fn)
         : null;
       return;
     case "INVALIDATE":
@@ -209,9 +293,13 @@ const parseIntent = <Next extends IntentNext>(next: Next) => {
 };
 
 export const store = {
+  initSync,
+  initAsync,
   get,
-  set,
+  setSync,
+  setAsync,
   invalidate,
+  map,
   subscribe,
   unsubscribe,
   parseIntent,

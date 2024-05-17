@@ -1,14 +1,15 @@
-import { StoreConfig, StoredWithData, store } from "@policy-maker-2/core";
+import { StoreConfig, store } from "@policy-maker-2/core";
 import { useReducer, useMemo, useEffect, useCallback } from "react";
 import { nanoid } from "nanoid";
 
 const defaultStoreConfig: StoreConfig = {
-  staleTime: null,
+  staleTime: Infinity,
+  gcTime: null,
 };
 
 export const useStore = <T>(
   key: string,
-  init: () => T | Promise<T>,
+  from: () => T | Promise<T>,
   inputConfig?: Partial<StoreConfig>,
 ) => {
   const config = useMemo(
@@ -25,12 +26,12 @@ export const useStore = <T>(
     undefined,
     () => {
       const existing = store.get<T>(key);
-      return existing ?? store.set(key, init, config);
+      return existing ?? store.initAsync<T>(key, from, config);
     },
   );
 
   const set = useCallback(
-    (setter: (prev?: T) => T | Promise<T>) => store.set(key, setter, config),
+    (setter: (prev?: T) => T | Promise<T>) => store.setAsync(key, setter),
     [key],
   );
 
@@ -39,21 +40,54 @@ export const useStore = <T>(
       key,
       subscriptionKey,
       dispatch,
-      init,
+      from,
       config,
     );
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, [key]);
 
   return [stored, set] as const;
 };
 
-export const useSyncStore = <T>(key: string, init: T) => {
-  const [_get, _set] = useStore(key, () => init, { staleTime: null });
+const defaultSyncStoreConfig: StoreConfig = {
+  staleTime: Infinity,
+  gcTime: null,
+};
+
+export const useSyncStore = <T>(key: string, from: T) => {
+  const subscriptionKey = useMemo(() => key + nanoid(5), [key]);
+  const [stored, dispatch] = useReducer(
+    () => {
+      const next = store.get<T>(key);
+      if (!next) throw new Error(`Store with key ${key} not found`);
+      return next;
+    },
+    undefined,
+    () => {
+      const existing = store.get<T>(key);
+      return existing ?? store.initSync<T>(key, from, defaultSyncStoreConfig);
+    },
+  );
+
   const set = useCallback(
-    (setter: (prev: T) => T) => _set((prev) => setter(prev as T)),
+    (setter: (prev?: T) => T) => store.setSync(key, setter),
     [key],
   );
-  if (!_get.value) throw new Error(`Store with key ${key} not found`);
-  return [_get as StoredWithData<T>, set] as const;
+
+  useEffect(() => {
+    const { unsubscribe } = store.subscribe<T>(
+      key,
+      subscriptionKey,
+      dispatch,
+      () => from,
+      defaultSyncStoreConfig,
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, [key]);
+
+  return [stored, set] as const;
 };
