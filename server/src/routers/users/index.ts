@@ -1,3 +1,5 @@
+import { connection } from "@/utils/db/init";
+import wrap from "@/utils/wrap";
 import { Router } from "express";
 import { nanoid } from "nanoid";
 import { z } from "zod";
@@ -135,10 +137,23 @@ router.patch("/me", (req, res) => {
   }
 });
 
-router.get("/:userId", (req, res) => {
-  const user = mockUsers.find((user) => user.id === Number(req.params.userId));
-  if (!user) res.status(404).json({ message: "Not Found" });
-  else res.json({ id: user, name: user.name, thumbnail: user.thumbnail });
-});
+router.get(
+  "/:userId",
+  wrap(async (req, res) => {
+    const [result] = await (
+      await connection
+    ).execute(`
+      SELECT users.id, name, bio, thumbnailImage, backgroundImage, userTypes.value AS userType
+      FROM users
+      LEFT JOIN userTypes ON users.userTypeId = userTypes.id
+      WHERE users.id = ${req.params.userId}
+    `);
+    res.json({ data: result });
+
+    // const user = mockUsers.find((user) => user.id === Number(req.params.userId));
+    // if (!user) res.status(404).json({ message: "Not Found" });
+    // else res.json({ id: user, name: user.name, thumbnail: user.thumbnail });
+  }),
+);
 
 export default router;

@@ -8,3 +8,7 @@ export const POST_TEXT = {
 export type POST_TEXT = {
   [key in keyof typeof POST_TEXT]: z.infer<(typeof POST_TEXT)[key]>;
 };
+
+export const POST_COMMENT_TEXT = {
+  content: z.string().min(1),
+};

@@ -21,6 +21,7 @@ export const PostTagMapper = {
 export const PostMapper = {
   toEntity: (dto: PostDto): Post => ({
     ...dto,
+    likesCount: 0,
     tags: [PostTagMapper.toTypeTag(dto.postType)],
   }),
 };

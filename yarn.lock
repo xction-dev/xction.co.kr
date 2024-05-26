@@ -1632,6 +1632,7 @@ __metadata:
     "@types/node": 20.6.0
     "@types/react": 18.2.21
     "@types/react-dom": 18.2.7
+    core: "workspace:^"
     eslint: 8.49.0
     eslint-config-next: 13.4.19
     lottie-react: ^2.4.0
@@ -1765,12 +1766,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core@workspace:core":
+"core@workspace:^, core@workspace:core":
   version: 0.0.0-use.local
   resolution: "core@workspace:core"
   dependencies:
     "@policy-maker-2/core": "workspace:^"
     "@pvi/core": "workspace:^"
+    fetch: "workspace:^"
     qs: ^6.12.1
     zod: ^3.23.8
   languageName: unknown
@@ -2649,7 +2651,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fetch@workspace:library/fetch":
+"fetch@workspace:^, fetch@workspace:library/fetch":
   version: 0.0.0-use.local
   resolution: "fetch@workspace:library/fetch"
   languageName: unknown
@@ -4964,6 +4966,7 @@ __metadata:
     "@types/node": ^20.10.4
     "@typescript-eslint/eslint-plugin": ^6.14.0
     "@typescript-eslint/parser": ^6.14.0
+    core: "workspace:^"
     cors: ^2.8.5
     dotenv: ^16.3.1
     eslint: ^8.55.0
