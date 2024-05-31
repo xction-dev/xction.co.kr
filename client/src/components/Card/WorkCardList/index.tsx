@@ -1,7 +1,5 @@
-import { TagText } from "@/components/Tag";
 import typography from "../../../styles/typography.module.css";
 import styles from "./WorkCardList.module.css";
-import Tag from "../../Tag";
 
 type WorkCard = {
   title: string;
