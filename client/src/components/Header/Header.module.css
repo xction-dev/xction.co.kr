@@ -1,7 +1,10 @@
 .container {
   display: flex;
   justify-content: space-between;
-  padding: min(3.7%, var(--primitives_spacing-8)); /* figma에서 primitives 처리되어 있음 */
+  padding: min(
+    3.7%,
+    var(--primitives_spacing-8)
+  ); /* figma에서 primitives 처리되어 있음 */
   align-items: center;
 }
 
@@ -9,11 +12,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: min(8%, var(--primitives_spacing-8)); /* figma에서 primitives 처리되어 있음 */
+  gap: min(
+    8%,
+    var(--primitives_spacing-8)
+  ); /* figma에서 primitives 처리되어 있음 */
 }
 
 .leftContainer img {
-  width: 15.25rem;
+  width: 10.425rem;
 }
 
 .navContainer {
