@@ -1,48 +1,45 @@
-import { useCallback, useEffect, useMemo } from "react";
-import { ZodObject, ZodType, z } from "zod";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { ZodObject, ZodType } from "zod";
 import { useSyncStore } from "./useStore";
+import { isDeepEqual } from "./util/isDeepEqual";
+import { pickValidValues } from "./util/pickValidValues";
+import { isEmpty } from "./util/isEmpty";
 
 /*
  * Config
  */
-export type InputConfig = { compareDiff: boolean; useInitialValue: boolean };
+export type InputConfig = {
+  compareDiff: boolean;
+  useInitialValue: boolean;
+  allowEmpty: boolean;
+};
 const defaultInputConfig: InputConfig = {
   compareDiff: false,
   useInitialValue: false,
+  allowEmpty: false,
 };
 
 /*
  * Validation
  */
 export type Inputable = Record<string, any>;
-type ValidatedValue<T> =
+export type ValidatedValue<T> =
   | { isValid: true; value: T; error: null }
   | { isValid: false; value: T; error: unknown };
 export type Validator<T extends Required<Inputable>> = ZodObject<{
   [key in keyof T]: ZodType<T[key]>;
 }>;
+type ValidatedInput<T extends Inputable> = {
+  [key in keyof T]: ValidatedValue<T[key]>;
+};
 
 /*
  * Hook Types
  */
-type Param<Whole extends Inputable, Part extends Partial<Whole>> = {
-  key: string;
-  validator: Validator<Whole>;
-  initialValue: (prev?: Partial<Whole>) => {
-    [key in keyof Part]: NonNullable<Part[key]>;
-  };
-  config?: Partial<InputConfig>;
-};
 
-type Return<T extends Inputable> = {
-  values: {
-    [key in keyof Required<T>]: ValidatedValue<NonNullable<Required<T>[key]>>;
-  };
-  inputValues: Partial<T>;
-  isValid: boolean;
-  set: (setter: Partial<T> | ((prev?: Partial<T>) => Partial<T>)) => void;
-  reset: () => void;
-};
+type Setter<Input extends Inputable> = (
+  setter: Partial<Input> | ((prev?: Partial<Input>) => Partial<Input>),
+) => void;
 
 /*
  * Util
@@ -52,7 +49,8 @@ const getDiff = <T extends Inputable>(
   target: Partial<T>,
 ): Partial<T> => {
   return Object.keys(target).reduce((acc, key) => {
-    if (original[key] === target[key]) return acc;
+    if (isDeepEqual(original[key], target[key]))
+      return { ...acc, [key]: undefined };
     return { ...acc, [key]: target[key] };
   }, {} as Partial<T>);
 };
@@ -60,71 +58,114 @@ const getDiff = <T extends Inputable>(
 /*
  * Hook
  */
-export const useInput = <Whole extends Inputable, T extends Partial<Whole>>({
+export const useInput = <
+  Input extends Inputable,
+  Slice extends Partial<Input>,
+>({
   key,
   validator,
   initialValue,
   config: inputConfig,
-}: Param<Whole, T>): Return<T> => {
+}: {
+  key: string;
+  validator: Validator<Input>;
+  initialValue: (prev?: Partial<Input>) => Required<Slice>;
+  config?: Partial<InputConfig>;
+}) => {
+  type ExactSlice = {
+    [key in keyof Required<Slice>]: key extends keyof Input
+      ? Required<Input>[key]
+      : never;
+  };
+
+  /*
+   * Init
+   */
   const config = useMemo(
     () => ({ ...defaultInputConfig, ...inputConfig }),
     [key],
   );
-  const [store, setStoreValue] = useSyncStore<Partial<T>>(key + "_input", {});
-
-  const merged: { [key in keyof T]: T[key] } = useMemo(
-    () =>
-      store.status === "PENDING"
-        ? initialValue()
-        : { ...initialValue(store.value), ...store.value },
-    [key, store.value],
+  const [store, setStoreValue] = useSyncStore<Partial<Input>>(
+    "input_" + key,
+    () => ({}),
   );
-  const values: Return<T>["values"] = useMemo(() => {
-    return Object.keys(merged).reduce(
-      (acc, key) => {
-        const value = merged[key];
-        const result = validator.shape[key].safeParse(value);
-        if (result.success)
-          return { ...acc, [key]: { value, isValid: true, error: undefined } };
+  const [cachedInitialValue, setCachedInitialValue] = useState(initialValue());
+
+  /*
+   * Calculate Value
+   */
+  const currentValue = useMemo(
+    () => ({ ...initialValue(store.value), ...pickValidValues(store.value) }),
+    [key, store.value],
+  ) as ExactSlice;
+
+  const values = useMemo(() => {
+    return Object.keys(currentValue).reduce((acc, key: keyof Input) => {
+      const value = currentValue[key];
+      const result = validator.shape[key].safeParse(value);
+      if (result.success)
+        return { ...acc, [key]: { value, isValid: true, error: undefined } };
+      else
         return {
           ...acc,
           [key]: { value, isValid: false, error: result.error },
         };
-      },
-      {} as Return<T>["values"],
-    );
-  }, [key, merged]);
+    }, {} as ValidatedInput<ExactSlice>);
+  }, [key, currentValue]);
+
   const isValid = useMemo(() => {
-    if (z.object({}).strict().safeParse(store.value).success) return false;
+    if (!config.allowEmpty && isEmpty(store.value)) return false;
     return validator.safeParse(store.value).success;
   }, [store.value]);
 
-  const inputValues = useMemo(() => {
-    if (store.status === "PENDING" || store.status === "REJECTED")
-      return {} as Partial<T>;
-    return store.value;
-  }, [key, store.status, store.value]);
-
-  const set: Return<T>["set"] = useCallback(
+  /*
+   * Set & Reset
+   */
+  const set: Setter<ExactSlice> = useCallback(
     (setter) => {
+      const setterFn = typeof setter === "function" ? setter : () => setter;
       setStoreValue((prev) => {
-        const value =
-          typeof setter === "function"
-            ? { ...prev, ...setter(prev) }
-            : { ...prev, ...setter };
-        return config.compareDiff ? getDiff(initialValue, value) : value;
+        const partialValueToSet = setterFn(prev as Partial<Slice>);
+        const comparedPartialValueToSet = config.compareDiff
+          ? getDiff(cachedInitialValue, partialValueToSet)
+          : partialValueToSet;
+        return { ...prev, ...comparedPartialValueToSet };
       });
     },
-    [key, setStoreValue],
+    [key, setStoreValue, cachedInitialValue],
   );
+
   const reset = useCallback(
-    () => setStoreValue(() => initialValue()),
+    () => setStoreValue(() => (config.useInitialValue ? initialValue() : {})),
     [key, setStoreValue],
   );
+
+  /*
+   * Calculate & Apply Initial Value
+   */
+  useEffect(() => {
+    if (config.useInitialValue) {
+      set(initialValue);
+    }
+  }, [key, cachedInitialValue]);
 
   useEffect(() => {
-    if (config.useInitialValue) set(initialValue);
-  }, [key]);
+    // TODO: optimize logic
+    if (!isDeepEqual(initialValue(), cachedInitialValue))
+      setCachedInitialValue(initialValue());
+  }, [key, initialValue]);
 
-  return { values, inputValues, isValid, set, reset };
+  return { values, inputValues: store.value, isValid, set, reset };
+};
+
+export const useInputValue = <T extends Inputable>({
+  key,
+  initialValue,
+}: {
+  key: string;
+  initialValue: T;
+}): { value: T } => {
+  const [{ value }] = useSyncStore<T>("input_" + key, () => initialValue);
+
+  return { value };
 };

@@ -1,19 +1,21 @@
 import { ZodType, TypeOf } from "zod";
-import { hashFn } from "./util";
+import { Key, hashKeys } from "./util";
 import { StoreConfig } from "./store";
+import { Predicate } from "./intent";
 
 export const ViewPolicy =
   <Args extends unknown[], Model extends ZodType>(
     init: (...args: Args) => {
-      key: Record<string, unknown>;
+      key: Key[];
       model: Model;
       config?: Partial<StoreConfig>;
     },
   ) =>
   (...args: Args): ViewPolicy<TypeOf<Model>> => {
     const { key, model, config } = init(...args);
-    const hashedKey = hashFn(key);
-    const predicate = hashedKey;
+    const hashedKey = hashKeys(key);
+    const predicate: Predicate = (str) => str.startsWith(hashedKey);
+
     return {
       key: hashedKey,
       model,
@@ -40,9 +42,9 @@ export type ViewPolicy<T> = {
   config?: Partial<StoreConfig>;
   set: (fn: (prev?: T) => T | void) => {
     type: "SET";
-    predicate: string;
+    predicate: Predicate;
     fn: (prev?: T) => T | void;
   };
-  invalidate: () => { type: "INVALIDATE"; predicate: string };
-  reset: () => { type: "RESET"; predicate: string };
+  invalidate: () => { type: "INVALIDATE"; predicate: Predicate };
+  reset: () => { type: "RESET"; predicate: Predicate };
 };

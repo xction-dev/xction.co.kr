@@ -1,5 +1,5 @@
 import { StoreConfig, store } from "@policy-maker-2/core";
-import { useReducer, useMemo, useEffect, useCallback } from "react";
+import { useMemo, useEffect, useCallback, useState } from "react";
 import { nanoid } from "nanoid";
 
 const defaultStoreConfig: StoreConfig = {
@@ -9,25 +9,19 @@ const defaultStoreConfig: StoreConfig = {
 
 export const useStore = <T>(
   key: string,
-  from: () => T | Promise<T>,
+  from: (prev?: T) => T | Promise<T>,
   inputConfig?: Partial<StoreConfig>,
 ) => {
   const config = useMemo(
-    () => ({ ...inputConfig, ...defaultStoreConfig }),
+    () => ({ ...defaultStoreConfig, ...inputConfig }),
     [key],
   );
-  const subscriptionKey = useMemo(() => key + nanoid(5), [key]);
-  const [stored, dispatch] = useReducer(
-    () => {
-      const next = store.get<T>(key);
-      if (!next) throw new Error(`Store with key ${key} not found`);
-      return next;
-    },
-    undefined,
-    () => {
-      const existing = store.get<T>(key);
-      return existing ?? store.initAsync<T>(key, from, config);
-    },
+  const subscriptionKey = useMemo(() => key + nanoid(), [key]);
+  const [count, rerender] = useState(0);
+
+  const get = useMemo(
+    () => store.get<T>(key) ?? store.initAsync<T>(key, from, config),
+    [key, count],
   );
 
   const set = useCallback(
@@ -39,7 +33,7 @@ export const useStore = <T>(
     const { unsubscribe } = store.subscribe<T>(
       key,
       subscriptionKey,
-      dispatch,
+      () => rerender((prev) => prev + 1),
       from,
       config,
     );
@@ -48,7 +42,7 @@ export const useStore = <T>(
     };
   }, [key]);
 
-  return [stored, set] as const;
+  return [get, set] as const;
 };
 
 const defaultSyncStoreConfig: StoreConfig = {
@@ -56,23 +50,21 @@ const defaultSyncStoreConfig: StoreConfig = {
   gcTime: null,
 };
 
-export const useSyncStore = <T>(key: string, from: T) => {
-  const subscriptionKey = useMemo(() => key + nanoid(5), [key]);
-  const [stored, dispatch] = useReducer(
-    () => {
-      const next = store.get<T>(key);
-      if (!next) throw new Error(`Store with key ${key} not found`);
-      return next;
-    },
-    undefined,
-    () => {
-      const existing = store.get<T>(key);
-      return existing ?? store.initSync<T>(key, from, defaultSyncStoreConfig);
-    },
-  );
+export const useSyncStore = <T>(key: string, from: (prev?: T) => T) => {
+  const subscriptionKey = useMemo(() => key + nanoid(), [key]);
+  const [count, rerender] = useState(0);
+
+  const get = useMemo(() => {
+    const stored = store.get<T>(key);
+    if (!stored) return store.initSync<T>(key, from, defaultSyncStoreConfig);
+    if (stored.status === "REJECTED" || stored.status === "PENDING")
+      throw stored.error;
+    return stored;
+  }, [key, count]);
 
   const set = useCallback(
-    (setter: (prev?: T) => T) => store.setSync(key, setter),
+    (setter: (prev?: T) => T, objectKeys?: keyof T) =>
+      store.setSync(key, setter, objectKeys),
     [key],
   );
 
@@ -80,8 +72,10 @@ export const useSyncStore = <T>(key: string, from: T) => {
     const { unsubscribe } = store.subscribe<T>(
       key,
       subscriptionKey,
-      dispatch,
-      () => from,
+      () => {
+        rerender((prev) => prev + 1);
+      },
+      from,
       defaultSyncStoreConfig,
     );
     return () => {
@@ -89,5 +83,5 @@ export const useSyncStore = <T>(key: string, from: T) => {
     };
   }, [key]);
 
-  return [stored, set] as const;
+  return [get, set] as const;
 };

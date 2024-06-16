@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { UserSumamry } from "../user/summary";
+import { UserSummary } from "../user/summary";
+import { UNKNOWN_USER_SUMMARY } from "../../constant/user/unknownUser";
 
 export const Creatable = z.object({
-  createdUser: UserSumamry,
+  createdUser: UserSummary.default(UNKNOWN_USER_SUMMARY),
   createdTime: z.instanceof(Date),
   lastModifiedTime: z.instanceof(Date).nullable(),
 });

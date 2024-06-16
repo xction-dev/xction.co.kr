@@ -9,8 +9,6 @@ export const oneLine = (str: string) =>
 export const groupKeys = (name: string) => (obj: Record<string, unknown>) => {
   const totalKeys = Object.keys(obj);
   const keysToGroup = totalKeys.filter((k) => k.startsWith(name));
-  console.log({ totalKeys });
-  console.log({ keysToGroup });
   const keysLeft = totalKeys.filter((k) => !k.startsWith(name));
   const grouped = keysToGroup.reduce(
     (acc, key) => {

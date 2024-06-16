@@ -1,7 +1,7 @@
 import { ZodType, TypeOf } from "zod";
-import { hashFn } from "./util";
+import { Key, hashKeys } from "./util";
 
-type Predicate = string | ((key: Record<string, unknown>) => boolean);
+export type Predicate = (key: string) => boolean;
 
 type Set = {
   type: "SET";
@@ -19,12 +19,12 @@ type Reset = {
   predicate: Predicate;
 };
 
-export type IntentNext = Set | Invalidate | Reset;
+export type IntentNext = Set | Invalidate | Reset | undefined | null | false;
 
 export const IntentPolicy =
   <Args extends unknown[], Input extends ZodType, Output extends ZodType>(
     init: (...args: Args) => {
-      key: Record<string, unknown>;
+      key: Key[];
       model: { input: Input; output: Output };
       next: (result: {
         input: TypeOf<Input>;
@@ -34,7 +34,7 @@ export const IntentPolicy =
   ) =>
   (...args: Args): IntentPolicy<TypeOf<Input>, TypeOf<Output>> => {
     const { key, model, next } = init(...args);
-    return { key: hashFn(key), model, next };
+    return { key: hashKeys(key), model, next };
   };
 
 export type IntentPolicy<Input, Output> = {

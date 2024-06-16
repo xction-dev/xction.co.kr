@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import user from "./routers/users";
 import post from "./routers/posts";
+import article from "./routers/articles";
 import test from "./routers/test";
 
 // create express app
@@ -22,6 +23,7 @@ app.get("/", (_, res) => {
 app.use("/tests", test);
 app.use("/users", user);
 app.use("/posts", post);
+app.use("/articles", article);
 
 // error handling
 // app.use(errorMapperMiddleware);

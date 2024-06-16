@@ -3,6 +3,6 @@ import { Post } from "@core/entity/post";
 import { ViewPolicy } from "@policy-maker-2/core";
 
 export const VPPosts = ViewPolicy((page: number) => ({
-  key: { name: "posts", page },
+  key: ["posts"],
   model: Paginated(Post),
 }));

@@ -14,7 +14,6 @@ export const Article = z
     description: z.string().nullable(),
     content: z.string().min(1),
     tags: Tag.array(),
-    isXcticle: z.boolean(),
   })
   .extend(Creatable.shape);
 export type Article = z.infer<typeof Article>;

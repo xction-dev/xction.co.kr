@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useSyncStore } from "./useStore";
 import { IntentPolicy, store } from "@policy-maker-2/core";
 
@@ -14,20 +14,14 @@ export const useIntent = <Input, Output>({
   policy: IntentPolicy<Input, Output>;
   to: (input: Input) => Promise<Output>;
 }) => {
-  const [get, set] = useSyncStore<IntentMeta>(policy.key, {
+  const [get, set] = useSyncStore<IntentMeta>(policy.key, () => ({
     isWorking: false,
     error: null,
-  });
-  const value = useMemo(() => {
-    if (get.status === "PENDING" || get.status === "REJECTED")
-      return { isWorking: true, error: null };
-    return get.value;
-  }, [get]);
+  }));
+
   const send = useCallback(
     async (input: Input) => {
       try {
-        if (get.status === "PENDING" || get.status === "REJECTED")
-          throw new Error("Preparing");
         if (get.value.isWorking) throw new Error("Already working");
         set((prev) => ({ isWorking: true, error: prev?.error ?? null }));
         const raw = await to(policy.model.input.parse(input));
@@ -43,5 +37,5 @@ export const useIntent = <Input, Output>({
     [policy.key],
   );
 
-  return { ...value, send, validator: policy.model.input };
+  return { ...get.value, send, validator: policy.model.input };
 };

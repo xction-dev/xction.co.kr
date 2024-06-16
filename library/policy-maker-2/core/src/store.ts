@@ -10,7 +10,7 @@ export type LifecycleConfig = {
   gcTime: number | null;
 };
 export type LifecycleContext = {
-  lastFreshedAt: number;
+  lastFetchedAt: number;
   gcTimer: number;
 };
 export type StoreConfig = LifecycleConfig;
@@ -20,94 +20,65 @@ export type Subscriber = () => void;
 export type Subscriptions = Map<string, Subscriber>;
 export type Subscribable = { subscriptions: Subscriptions };
 
+export type Fetchable<T> = {
+  from: () => T | Promise<T>;
+};
+
 /* States */
 /**  Dataless State **/
 type Rejected<T> = Subscribable &
-  StoreContext & {
+  StoreContext &
+  Fetchable<T> & {
     status: "REJECTED";
-    value: undefined;
     error: unknown;
-    from: () => T | Promise<T>;
   };
 
 type Pending<T> = Subscribable &
-  StoreContext & {
+  StoreContext &
+  Fetchable<T> & {
     status: "PENDING";
-    value: Promise<T>;
-    error: undefined;
-    from: () => T | Promise<T>;
+    pending: Promise<T>;
+    error: unknown;
   };
 
 /**  Dataful State **/
-type Fresh<T> = Subscribable &
-  StoreContext & {
-    status: "FRESH";
+type Resolved<T> = Subscribable &
+  StoreContext &
+  Fetchable<T> & {
+    status: "RESOLVED";
     value: T;
-    from: () => T | Promise<T>;
     error: unknown;
   };
 
-type Refreshing<T> = Subscribable &
-  StoreContext & {
-    status: "REFRESHING";
+type Updating<T> = Subscribable &
+  StoreContext &
+  Fetchable<T> & {
+    status: "UPDATING";
     value: T;
-    from: () => T | Promise<T>;
+    pending: Promise<T>;
     error: unknown;
-  };
-
-type Stale<T> = Subscribable &
-  StoreContext & {
-    status: "STALE";
-    value: T;
-    from: () => T | Promise<T>;
-    error: unknown;
-  };
-
-type Cached<T> = Subscribable &
-  StoreContext & {
-    status: "CACHED";
-    value: T;
-    from: () => T | Promise<T>;
-    error: unknown;
+    isInvalid: boolean;
   };
 
 /** Stored State **/
-export type StoreStatus =
-  | "REJECTED"
-  | "PENDING"
-  | "FRESH"
-  | "REFRESHING"
-  | "STALE"
-  | "CACHED";
-export type Stored<T> =
-  | Rejected<T>
-  | Pending<T>
-  | Fresh<T>
-  | Refreshing<T>
-  | Stale<T>
-  | Cached<T>;
-export type StoredWithData<T> = Fresh<T> | Refreshing<T> | Stale<T> | Cached<T>;
-
+export type StoreStatus = "REJECTED" | "PENDING" | "RESOLVED" | "UPDATING";
+export type Stored<T> = Rejected<T> | Pending<T> | Resolved<T> | Updating<T>;
+export type StoredSync<T> = Resolved<T> | Updating<T>;
 /*
  * Predicates
  */
-const isWithData = <T>(snapshot?: Stored<T>): snapshot is StoredWithData<T> =>
-  !!snapshot && snapshot.status !== "PENDING" && snapshot.status !== "REJECTED";
+const isCached = <T>(snapshot: Stored<T>) => snapshot.subscriptions.size === 0;
 
-const isStale = <T>(snapshot: Stored<T>): snapshot is Fresh<T> | Stale<T> => {
-  if (!isWithData(snapshot)) return false;
-  if (isBusy(snapshot)) return false;
-  if (snapshot.status === "STALE") return true;
-  if (!snapshot.staleTime || !snapshot.lastFreshedAt) return true;
-  return snapshot.lastFreshedAt + snapshot.staleTime < Date.now();
-};
-const isCached = <T>(snapshot: Stored<T>): snapshot is Cached<T> =>
-  snapshot.status === "CACHED";
-
-const isBusy = <T>(
+const isFetching = <T>(
   snapshot: Stored<T>,
-): snapshot is Pending<T> | Refreshing<T> =>
-  snapshot.status === "PENDING" || snapshot.status === "REFRESHING";
+): snapshot is Pending<T> | Updating<T> =>
+  snapshot.status === "PENDING" || snapshot.status === "UPDATING";
+
+const isStale = <T>(snapshot: Stored<T>) => {
+  if (isFetching(snapshot)) return false;
+  if (!snapshot.staleTime || !snapshot.lastFetchedAt) return true;
+  return snapshot.lastFetchedAt + snapshot.staleTime < Date.now();
+};
 
 /*
  * Store Manupulation
@@ -126,70 +97,99 @@ const _delete = (key: string) => _store.delete(key);
  */
 
 /* PENDING */
+
+// const pendExisting = <T>(key: string, existing: StoredWithData<T>) => {
+//   if (isBusy(snapshot)) return snapshot;
+//   const value = Promise.resolve(snapshot.from());
+//   value.then((resolved) => freshSnapshot(key, resolved));
+//   console.log(value);
+//   return _set<T>(key, {
+//     ...snapshot,
+//     status: "PENDING",
+//     error: undefined,
+//     value,
+//   });
+// };
+
 const pend = <T>(
   key: string,
   from: () => T | Promise<T>,
   subscribers: Subscriber[],
   config: StoreConfig,
 ) => {
-  const value = Promise.resolve(from());
-  value.then((resolved) => freshSnapshot(key, resolved));
-
+  const prev = _get<T>(key);
+  if (prev) return prev;
   const subscriptions = new Map<string, Subscriber>();
   subscribers.forEach((listener) => subscriptions.set(listener.name, listener));
+
+  const promise = Promise.resolve(from());
+  promise
+    .then((resolved) => resolve(key, resolved))
+    .catch((error) => reject(key, error));
 
   return _set<T>(key, {
     status: "PENDING",
     error: undefined,
-    value,
+    pending: promise,
     from,
     subscriptions,
     ...config,
   });
 };
 
-const repend = <T>(key: string, snapshot: StoredWithData<T>) => {
-  if (isBusy(snapshot)) return snapshot;
-  const value = Promise.resolve(snapshot.from());
-  value.then((resolved) => freshSnapshot(key, resolved));
-  return _set<T>(key, {
-    ...snapshot,
-    status: "PENDING",
-    error: undefined,
-    value,
-  });
-};
-
-/* FRESH */
-const freshSnapshot = <T>(key: string, value: T) => {
+const resolve = <T>(key: string, value: T): Resolved<T> | undefined => {
   const prev = _get<T>(key);
   if (!prev) return;
-  return _set<T>(key, {
+  return _set<T, Resolved<T>>(key, {
     ...prev,
-    status: "FRESH",
-    value,
-    lastFreshedAt: Date.now(),
+    status: "RESOLVED",
+    value: value,
+    error: undefined,
+    lastFetchedAt: Date.now(),
   });
 };
 
-const freshCache = <T>(key: string, snapshot: Cached<T>) => {
-  window.clearTimeout(snapshot.gcTimer);
-  return _set(key, {
-    ...snapshot,
-    status: "FRESH" as const,
-    gcTimer: undefined,
+const reject = (key: string, error: unknown) => {
+  const prev = _get(key);
+  if (!prev) return;
+  return _set<unknown, Rejected<unknown>>(key, {
+    ...prev,
+    status: "REJECTED",
+    error,
+    lastFetchedAt: Date.now(),
   });
 };
 
-/* STALE */
+// const freshCached = <T>(key: string) => {
+//   const cached = _get<T>(key);
+//   if (!cached || !isCached(cached)) return;
+//   window.clearTimeout(cached.gcTimer);
+//   if (cached.status === "ERROR_CACHED")
+//     return _set(key, { ...cached, status: "REJECTED" });
+//   return _set(key, {
+//     ...cached,
+//     status: "FRESH",
+//     gcTimer: undefined,
+//   });
+// };
 
-const stale = <T>(key: string) => {
-  const prev = _get<T>(key);
-  if (!prev || isBusy(prev) || !isWithData(prev)) return;
-  return _set<T>(key, { ...prev, status: "STALE" });
-};
+// const refreshExisting = <T>(key: string) => {
+//   const prev = _get<T>(key);
+//   if (!prev || !isWithData(prev) || isFetching(prev)) return prev;
+//   const promise = Promise.resolve(prev.from()).then(
+//     (resolved) => () => resolved,
+//   );
+//   promise.then((resolved) => freshExisting(key, resolved));
+//   return _set<T>(key, {
+//     ...prev,
+//     status: "REFRESHING",
+//     pending: promise,
+//   });
+// };
 
-/* CACHE */
+// /* STALE */
+
+// /* CACHE */
 
 /*
  * Public API
@@ -199,50 +199,95 @@ const stale = <T>(key: string) => {
 const get = <T>(key: string): Stored<T> | undefined => {
   const snapshot = _get<T>(key);
   if (!snapshot) return snapshot;
-  if (isStale(snapshot)) return repend(key, snapshot);
-  if (snapshot.status === "CACHED") return freshCache(key, snapshot);
+  if (isStale(snapshot)) return refresh(key);
   return snapshot;
 };
 
-const initSync = <T>(key: string, initialData: T, config: StoreConfig) => {
-  return _set<T>(key, {
-    status: "FRESH",
-    value: initialData,
+const initSync = <T>(key: string, from: () => T, config: StoreConfig) => {
+  return _set<T, Resolved<T>>(key, {
+    status: "RESOLVED",
+    value: from(),
     error: undefined,
-    from: () => initialData,
+    from,
     subscriptions: new Map(),
     ...config,
-    lastFreshedAt: Date.now(),
+    lastFetchedAt: Date.now(),
   });
 };
+
 const initAsync = <T>(
   key: string,
   from: () => T | Promise<T>,
   config: StoreConfig,
 ) => pend(key, from, [], config);
 
-const setSync = <T>(key: string, updater: (prev?: T) => T) => {
+const setSync = <T>(
+  key: string,
+  updater: (prev?: T) => T,
+  objectKeys?: keyof T,
+) => {
   const prev = _get<T>(key);
-  if (!prev || prev.status === "REJECTED" || isBusy(prev)) return;
-  return _set<T>(key, { ...prev, value: updater(prev.value) });
+  if (!prev || isFetching(prev)) return;
+  const previousValue = prev.status === "REJECTED" ? undefined : prev.value;
+  if (!objectKeys) return resolve<T>(key, updater(previousValue));
+  const empty = objectKeys ? { [objectKeys]: undefined } : {};
+  return resolve<T>(key, { ...empty, ...updater(previousValue) });
 };
 
 const setAsync = <T>(key: string, updater: (prev?: T) => T | Promise<T>) => {
   const prev = _get<T>(key);
-  if (!prev || prev.status === "REJECTED" || isBusy(prev)) return;
-  const value: Promise<T> = Promise.resolve(updater(prev.value));
-  value.then((resolved) => freshSnapshot(key, resolved));
-  return _set<T>(key, { ...prev, status: "REFRESHING" });
+  if (!prev || isFetching(prev)) return;
+  const previousValue = prev.status === "REJECTED" ? undefined : prev.value;
+  const promise = Promise.resolve(updater(previousValue));
+
+  promise.then((resolved) => resolve<T>(key, resolved));
+
+  if (prev.status === "REJECTED")
+    return _set<T>(key, {
+      ...prev,
+      status: "PENDING",
+      pending: promise,
+    });
+
+  return _set<T>(key, {
+    ...prev,
+    status: "UPDATING",
+    pending: promise,
+    isInvalid: false,
+  });
+};
+
+const refresh = <T>(key: string) => {
+  const prev = _get<T>(key);
+  if (!prev || isFetching(prev)) return prev;
+  const promise = Promise.resolve(prev.from());
+  promise.then((resolved) => resolve(key, resolved));
+  if (prev.status === "REJECTED")
+    return _set<T>(key, {
+      ...prev,
+      status: "PENDING",
+      pending: promise,
+    });
+  return _set<T>(key, {
+    ...prev,
+    status: "UPDATING",
+    pending: promise,
+    isInvalid: true,
+  });
+};
+
+const staleCached = <T>(key: string) => {
+  const cached = _get<T>(key);
+  if (!cached || !isCached(cached)) return;
+  return _set<T>(key, { ...cached, staleTime: 0 });
 };
 
 /* Intent Next */
-const invalidate = (key: string) => stale(key);
-
-const map = <T>(key: string, mapper: (prev?: T) => T) => {
-  const prev = _get<T>(key);
-  if (!prev || prev.status === "REJECTED" || isBusy(prev)) return;
-  _set<T>(key, { ...prev, value: mapper(prev.value) });
-  prev.subscriptions.forEach((listener) => listener());
+const invalidate = (key: string) => {
+  const prev = _get(key);
+  if (!prev || isFetching(prev)) return;
+  if (isCached(prev)) return staleCached(key);
+  return refresh(key);
 };
 
 /* subscription */
@@ -251,13 +296,13 @@ const unsubscribe = (key: string, subscriptionKey: string) => {
   if (!prev) return;
 
   prev.subscriptions.delete(subscriptionKey);
-  if (prev.subscriptions.size > 0 || isCached(prev)) return;
+  if (prev.subscriptions.size > 0) return;
 
   if (!prev.gcTime) return _delete(key);
 
   if (!Number.isFinite(prev.gcTime)) return;
-  const timer = window.setTimeout(() => _delete(key), prev.gcTime);
 
+  const timer = window.setTimeout(() => _delete(key), prev.gcTime);
   _set(key, { ...prev, gcTimer: timer });
 };
 
@@ -272,24 +317,27 @@ const subscribe = <T>(
 
   if (!prev || prev.status === "REJECTED") pend(key, from, [listener], config);
   else prev.subscriptions.set(subscriptionKey, listener);
-
-  listener();
+  listener(); // TODO: do we need this?
   return { unsubscribe: () => unsubscribe(key, subscriptionKey) };
 };
 
 const parseIntent = <Next extends IntentNext>(next: Next) => {
-  switch (next.type) {
-    case "SET":
-      typeof next.predicate === "string"
-        ? setSync(next.predicate, next.fn)
-        : null;
-      return;
-    case "INVALIDATE":
-      typeof next.predicate === "string" ? invalidate(next.predicate) : null;
-      return;
-    case "RESET":
-      return;
-  }
+  if (!next) return;
+  _store.forEach((_, key) => {
+    if (next.predicate(key)) {
+      switch (next.type) {
+        case "SET":
+          setSync(key, next.fn);
+          return;
+        case "INVALIDATE":
+          invalidate(key);
+          return;
+        case "RESET":
+          reject(key, new Error("RESET"));
+          return;
+      }
+    }
+  });
 };
 
 export const store = {
@@ -299,7 +347,6 @@ export const store = {
   setSync,
   setAsync,
   invalidate,
-  map,
   subscribe,
   unsubscribe,
   parseIntent,

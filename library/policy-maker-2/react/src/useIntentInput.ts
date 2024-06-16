@@ -3,24 +3,23 @@ import { InputConfig, Validator, useInput } from "./useInput";
 
 export const useIntentInput = <
   Input extends Record<string, unknown>,
-  PartialInput extends Partial<Input>,
+  Slice extends Partial<Input>,
+  Output,
 >({
   policy,
   initialValue,
   config,
 }: {
-  policy: IntentPolicy<Input, any>;
-  initialValue: (prev?: Partial<Input>) => {
-    [key in keyof PartialInput]: NonNullable<PartialInput[key]>;
-  };
+  policy: IntentPolicy<Input, Output>;
+  initialValue: (prev?: Partial<Input>) => Required<Slice>;
   config?: Partial<InputConfig>;
 }) => {
-  const { values, isValid, set, reset } = useInput<Input, PartialInput>({
+  const { values, inputValues, isValid, set, reset } = useInput<Input, Slice>({
     key: policy.key,
     validator: policy.model.input as unknown as Validator<Input>,
     initialValue,
     config,
   });
 
-  return { values: values, isValid, set, reset };
+  return { values, inputValues, isValid, set, reset };
 };

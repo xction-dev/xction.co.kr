@@ -11,22 +11,24 @@ export const useView = <T>({
 }) => {
   const [get, set] = useStore<T>(policy.key, from, policy.config);
 
-  const refresh = useCallback(() => {
+  const update = useCallback(() => {
     set(from);
-  }, [policy.key, from]);
+  }, [policy.key]);
 
-  const reset = useCallback(() => {
+  const refresh = useCallback(() => {
     set(get.from);
   }, [policy.key]);
 
-  if (get.status === "PENDING") throw get.value;
+  if (get.status === "PENDING") throw get.pending;
   if (get.status === "REJECTED") throw get.error;
 
   return {
     status: get.status,
     view: get.value,
+    update,
     refresh,
-    reset,
-    isRefreshing: get.status === "REFRESHING",
+    isUpdating: get.status === "UPDATING",
+    isRefreshing: get.status === "UPDATING" && get.isInvalid,
+    isProceeding: get.status === "UPDATING" && !get.isInvalid,
   };
 };

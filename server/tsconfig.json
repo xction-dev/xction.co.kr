@@ -25,5 +25,5 @@
       "@core/*": ["../core/*"]
     }
   },
-  "include": ["src", "../core/**/*.ts"]
+  "include": ["src"]
 }

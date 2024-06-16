@@ -8,44 +8,29 @@ import {
   Snackbar,
 } from "@mui/material";
 import "./Login.css";
+import { UserApi } from "@core/api/user";
+import { useView } from "library/policy-maker-2/react";
+import { VPMe } from "@core/policy/user/view/me";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
+  const { view } = useView({
+    policy: VPMe(),
+    from: () => UserApi.getMe.client({}).catch(() => null),
+  });
 
   const handleLogin = () => {
-    fetch("/api/mock/user/login/route", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Login failed");
-        }
-      })
+    UserApi.postSignIn
+      .client({ body: { email, password } })
       .then((data) => {
-        if (data.success) {
-          setError("success");
-          setOpenSnackbar(true);
-        } else {
-          switch (data.error_type) {
-            case 2:
-              setError(data.error_fields[0].error_message);
-            default:
-              setError(data.error_message);
-          }
-          setOpenSnackbar(true);
-        }
+        localStorage.setItem("xctoken", data.token);
       })
-      .catch((error) => {
-        console.error("error: ", error);
+      .catch((e) => {
+        setError(e.message);
+        setOpenSnackbar(true);
       });
   };
 

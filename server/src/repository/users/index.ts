@@ -27,6 +27,12 @@ const SELECT = (config?: { name?: string }) => {
   `);
 };
 
+const JOIN = () => {
+  return `
+    LEFT JOIN userTypes ON users.userTypeId = userTypes.id
+  `;
+};
+
 const JOIN_BY_ID = (predicate: string) => {
   return `
     LEFT JOIN users ON ${predicate} = users.id
@@ -36,6 +42,7 @@ const JOIN_BY_ID = (predicate: string) => {
 
 export const users = {
   SELECT,
+  JOIN,
   JOIN_BY_ID,
   schema: UserSchema,
 };

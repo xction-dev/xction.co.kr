@@ -1,94 +1,55 @@
-// import { queryFromRepository } from "@/repository";
-// import { PostRepository } from "@/repository/post";
-import { postCommentLikes } from "@/repository/postCommentLikes";
-import { postComments } from "@/repository/postComments";
-import { postLikes } from "@/repository/postLikes";
-import { posts } from "@/repository/posts";
-import { users } from "@/repository/users";
-import { groupKeys, matchById } from "@/repository/util";
+import { toPostType } from "@/schema/posts/enum";
+import { PostSchema } from "@/schema/posts";
 import { connection } from "@/utils/db/init";
+import { obj } from "@/utils/operator/obj";
+import { sql } from "@/utils/db/sql";
 import wrap from "@/utils/wrap";
 import { PostApi } from "@core/api/post";
+import { UserSummary } from "@core/entity/user/summary";
 import { Router } from "express";
-import { z } from "zod";
+import { arr } from "@/utils/operator/arr";
+import { RowDataPacket } from "mysql2";
+import db from "@/utils/db/manipulate";
 
 const router = Router();
 
 const { getPosts, getPost, getPostComments, postPost } = PostApi;
 
 /*
- * getPosts
+ * GET "/posts"
  */
+
 router.get(
-  getPosts.server.endpoint[1],
+  "/",
   wrap(async (req, res) => {
     const { query } = getPosts.server.parseRequest(req);
     const { pageNumber } = { pageNumber: 1, ...query };
-    /*
-     * TABLE: posts
-     */
-    const postsResult = await (
-      await connection
-    )
-      .execute(
-        `
-        SELECT ${posts.SELECT()}, ${users.SELECT({ name: "createdUser" })}
-        FROM ${posts.FROM()}
-        ${users.JOIN_BY_ID("posts.createdUserId")}
-        LIMIT ${(pageNumber - 1) * 20}, 20
-        `,
-      )
-      .then(([data]) => data as any[])
-      .then((data) => data.map(groupKeys("createdUser")))
-      .then(z.array(posts.schema.extend({ createdUser: users.schema })).parse);
 
-    if (postsResult.length === 0)
-      res.status(404).json({ message: "Not Found" });
+    const posts = await db.select.page<PostSchema>({
+      from: "posts",
+      schema: PostSchema,
+      pageNumber,
+    });
 
-    /*
-     * TABLE: postLikes
-     */
-    const postLikesResult = await (
-      await connection
-    )
-      .execute(
-        postLikes.COUNT_BY_POST_IDS(
-          postsResult.map(({ id }) => id),
-          "likesCount",
-        ),
-      )
-      .then(([data]) => data as any[])
-      .then(
-        z.array(z.object({ id: z.number(), likesCount: z.number() })).parse,
-      );
+    const ids = posts.map(({ id }) => id);
 
-    /*
-     * TABLE: postComments
-     */
-    const postCommentsResult = await (
-      await connection
-    )
-      .execute(
-        postComments.COUNT_BY_POST_IDS(
-          postsResult.map(({ id }) => id),
-          "commentsCount",
-        ),
-      )
-      .then(([data]) => data as any[])
-      .then(
-        z.array(z.object({ id: z.number(), commentsCount: z.number() })).parse,
-      );
+    const postLikesCounts = await db.count.byIds({
+      from: "postLikes",
+      key: "postId",
+      as: "likesCount",
+      targets: ids,
+    });
 
-    /*
-     * Response
-     */
-    const items = matchById(
-      postsResult,
-      [postLikesResult, { likesCount: 0 }],
-      [postCommentsResult, { commentsCount: 0 }],
-    );
-    const parsed = getPosts.server.parseResponse({ items });
-    res.json(parsed);
+    const postCommentsCounts = await db.count.byIds({
+      from: "postComments",
+      key: "postId",
+      as: "commentsCount",
+      targets: ids,
+    });
+
+    const joined = arr.joinById(posts, postLikesCounts, postCommentsCounts);
+
+    res.json(joined);
   }),
 );
 
@@ -96,7 +57,7 @@ router.get(
  * getPost
  */
 router.get(
-  getPost.server.endpoint[1],
+  "/:postId",
   wrap(async (req, res) => {
     const { params } = getPost.server.parseRequest(req);
 
@@ -106,35 +67,32 @@ router.get(
     const postsResult = await (
       await connection
     )
-      .execute(
+      .execute<RowDataPacket[]>(
         `
-        SELECT ${posts.SELECT()}, ${users.SELECT({ name: "createdUser" })}
-        FROM ${posts.FROM()}
-        ${users.JOIN_BY_ID("posts.createdUserId")}
+        SELECT ${sql.pick("posts", Object.keys(PostSchema.shape))}, ${sql.pick("users", Object.keys(UserSummary.shape), "createdUser")}
+        FROM posts
+        ${sql.joinById("users", "posts.createdUserId")}
         WHERE posts.id = ${params.postId}
         `,
       )
-      .then(([data]) => (data as any[])[0])
-      .then(groupKeys("createdUser"))
-      .then(posts.schema.extend({ createdUser: users.schema }).parse);
+      .then(([data]) =>
+        data
+          .map(obj.group("createdUser"))
+          .map((row) =>
+            PostSchema.omit({ createdUserId: true })
+              .extend({ createdUser: UserSummary })
+              .parse(row),
+          ),
+      )
+      .then((data) =>
+        data.map(obj.mapKey("postTypeId", toPostType, "postType")),
+      );
 
-    const postLikesResult = await (
-      await connection
-    )
-      .execute(postLikes.COUNT_BY_POST_ID(postsResult.id, "likesCount"))
-      .then(([data]) => (data as any[])[0])
-      .then(z.object({ id: z.number(), likesCount: z.number() }).parse)
-      .catch(() => ({ id: postsResult.id, likesCount: 0 }));
+    if (postsResult.length === 0) {
+      throw new Error("Post not found");
+    }
 
-    const postCommentsResult = await (
-      await connection
-    )
-      .execute(postComments.COUNT_BY_POST_ID(postsResult.id, "commentsCount"))
-      .then(([data]) => (data as any[])[0])
-      .then(z.object({ id: z.number(), commentsCount: z.number() }).parse)
-      .catch(() => ({ id: postsResult.id, commentsCount: 0 }));
-
-    res.json({ ...postsResult, ...postLikesResult, ...postCommentsResult });
+    res.json({ ...postsResult });
   }),
 );
 
@@ -144,58 +102,15 @@ router.get(
 router.get(
   getPostComments.server.endpoint[1],
   wrap(async (req, res) => {
-    const { params } = getPostComments.server.parseRequest(req);
+    const postId = Number(req.params.postId);
 
-    /*
-     * TABLE: postComments
-     */
-    const postCommentsResult = await (
-      await connection
-    )
-      .execute(
-        `
-        SELECT ${postComments.SELECT()}, ${users.SELECT({ name: "createdUser" })}
-        FROM postComments
-        ${users.JOIN_BY_ID("postComments.createdUserId")}
-        WHERE postComments.postId = ${params.postId}
-        `,
-      )
-      .then(([data]) => data as any[])
-      .then((data) => data.map(groupKeys("createdUser")))
-      .then(
-        z.array(
-          postComments.schema
-            .omit({ postId: true })
-            .extend({ createdUser: users.schema }),
-        ).parse,
-      );
+    const post = await db.select.byId<PostSchema>({
+      from: "postComments",
+      schema: PostSchema,
+      id: postId,
+    });
 
-    /*
-     * TABLE: postLikes
-     */
-    const postCommentLikesResult = await (
-      await connection
-    )
-      .execute(
-        postCommentLikes.COUNT_BY_POST_COMMENT_IDS(
-          postCommentsResult.map(({ id }) => id),
-          "likesCount",
-        ),
-      )
-      .then(([data]) => data as any[])
-      .then(
-        z.array(z.object({ id: z.number(), likesCount: z.number() })).parse,
-      );
-
-    /*
-     * Response
-     */
-    const items = matchById(postCommentsResult, [
-      postCommentLikesResult,
-      { likesCount: 0 },
-    ]);
-    const parsed = getPostComments.server.parseResponse({ items });
-    res.json(parsed);
+    res.json(post);
   }),
 );
 
