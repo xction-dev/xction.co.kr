@@ -3,6 +3,7 @@ import { z } from "zod";
 import { Creatable } from "../utility/creatable";
 import { Tag } from "../tag";
 import { POST_TYPE } from "@core/constant/post/postType";
+import { POST_TEXT } from "@core/constant/post/text";
 
 /**
  * @entity Post
@@ -11,9 +12,9 @@ import { POST_TYPE } from "@core/constant/post/postType";
 export const Post = z
   .object({
     id: ID.POST,
-    title: z.string().min(1).max(100),
-    content: z.string().min(1),
     postType: POST_TYPE,
+    title: POST_TEXT.TITLE,
+    content: POST_TEXT.CONTENT,
     tags: Tag.array(),
     likesCount: z.number().int().nonnegative(),
     viewsCount: z.number().int().nonnegative(),

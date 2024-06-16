@@ -3,12 +3,16 @@
 import Header from "@components/Header";
 import TrendingCardLong from "@components/Card/TrendingCardLong";
 import PostWriteButton from "@components/Button/PostWriteButton";
-import Input from "@components/Input";
 import PostListCard from "@components/Card/PostListCard";
 import Footer from "@components/Footer";
 import "./Community.css";
+import { useEffect } from "react";
+import { PostApi } from "@core/api/post";
 
 export default function Community() {
+  useEffect(() => {
+    PostApi.getPosts.client({}).then(({ items }) => console.log(items.length));
+  }, []);
   return (
     <div className="page">
       <div className="header">

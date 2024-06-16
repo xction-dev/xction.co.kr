@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@policy-maker-2/core": "workspace:^",
     "@pvi/core": "workspace:^",
-    "zod": "^3.22.4"
+    "fetch": "workspace:^",
+    "qs": "^6.12.1",
+    "zod": "^3.23.8"
   }
 }

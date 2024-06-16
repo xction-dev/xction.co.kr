@@ -1,11 +1,8 @@
 import { User } from "@core/entity/user";
-import { VP } from "@core/policy/viewPolicyFactory";
+import { ViewPolicy } from "library/policy-maker-2/core";
+import { z } from "zod";
 
-/**
- * @viewPolicy Me
- * @description 내 정보를 조회합니다.
- */
-export const VPMe = VP(() => ({
+export const VPMe = ViewPolicy(() => ({
   key: ["me"],
-  model: User,
+  model: User.extend({ token: z.string() }).nullable(),
 }));

@@ -21,10 +21,7 @@ const createFetch: CreateFetch = ({ baseUrl, getAuth }) => {
         if (!token) throw Error("no token found");
         res = await fetch(parseUrl(url), {
           ...init,
-          headers: {
-            ...init.headers,
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { ...init.headers, Authorization: `Bearer ${token}` },
         });
       }
 
@@ -49,16 +46,21 @@ const createFetch: CreateFetch = ({ baseUrl, getAuth }) => {
 
   const updater =
     (method: "POST" | "PATCH" | "PUT" | "DELETE", auth: boolean) =>
-    (url: string, body?: Record<string, unknown>, headers: HeadersInit = {}) =>
+    (
+      url: string,
+      body?: Record<string, unknown> | File,
+      headers: HeadersInit = {},
+    ) =>
       base(
         url,
         {
           method: method,
-          body: body ? JSON.stringify(body) : undefined,
-          headers: {
-            ...headers,
-            "Content-Type": "application/json",
-          },
+          body: body
+            ? body instanceof File
+              ? body
+              : JSON.stringify(body)
+            : undefined,
+          headers: { "Content-Type": "application/json", ...headers },
         },
         auth,
       );
