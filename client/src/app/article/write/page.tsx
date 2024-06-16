@@ -8,6 +8,8 @@ import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 
+import typography from "@styles/typography.module.css";
+
 export default function ArticleWrite() {
   const [data, setData] = useState("");
   const router = useRouter();
@@ -35,8 +37,10 @@ export default function ArticleWrite() {
         <Header />
       </div>
       <div className="body">
-        <input value={data} onChange={(e) => setData(e.target.value)} />
-        <button onClick={onSubmit}>전송</button>
+        <div className={typography.h4}>
+          <input value={data} onChange={(e) => setData(e.target.value)} />
+          <button onClick={onSubmit}>전송</button>
+        </div>
       </div>
       <div className="footer">
         <Footer />
