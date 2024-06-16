@@ -8,4 +8,6 @@
 
 .body {
   color: white;
+  padding: 0 24%;
+  margin-bottom: var(--primitives_spacing-10);
 }

@@ -6,6 +6,7 @@ import Header from "@components/Header";
 import Footer from "@components/Footer";
 import { useEffect, useState } from "react";
 import { z } from "zod";
+import typography from "@styles/typography.module.css";
 
 type ArticleDetailProps = {
   params: {
@@ -29,7 +30,9 @@ export default function ArticleDetail(props: ArticleDetailProps) {
       <div className="header">
         <Header />
       </div>
-      <div className="body">{result}</div>
+      <div className="body">
+        <div className={typography.h3}>{result}</div>
+      </div>
       <div className="footer">
         <Footer />
       </div>
