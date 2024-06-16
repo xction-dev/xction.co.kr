@@ -1,0 +1,11 @@
+.page {
+  background-color: black;
+}
+
+.header {
+  margin: 0 0 var(--primitives_spacing-4) 0;
+}
+
+.body {
+  color: white;
+}
