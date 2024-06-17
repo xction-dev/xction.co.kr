@@ -1,18 +1,7 @@
 import { z } from "zod";
-import { Authorization } from "../../utility/Authorization";
-import { PublicId } from "../../utility/Id";
 import { ID } from "@core/constant/common/id";
 import { USER_TYPE } from "@core/constant/user/userType";
-
-/*
- * Old
- */
-export type UserEntity = {
-  id: PublicId;
-  name: string; // required
-  email: string; // required
-  authorization: Authorization;
-};
+import { USER_TEXT } from "@core/constant/user/text";
 
 /**
  * @entity User
@@ -22,8 +11,8 @@ export const User = z.object({
   id: ID.USER,
   type: USER_TYPE.default("USER"),
   email: z.string().email(),
-  name: z.string().min(1).max(30),
-  bio: z.string().nullable(),
+  name: USER_TEXT.NAME,
+  bio: USER_TEXT.BIO.nullable(),
 
   // image
   thumbnailImage: z.string().nullable(),
