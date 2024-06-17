@@ -9,11 +9,12 @@ const page = async <T extends Record<string, unknown>>({
   from,
   schema,
   pageNumber = 1,
+  where,
 }: {
   from: string;
   schema: Schema<T>;
   pageNumber?: number;
-  isNotCreatable?: boolean;
+  where?: string;
 }) => {
   return (await connection)
     .execute<RowDataPacket[]>(
@@ -21,6 +22,7 @@ const page = async <T extends Record<string, unknown>>({
       SELECT ${sql.pick(from, Object.keys(schema.shape))}, ${sql.pick("users", Object.keys(UserSummarySchema.shape), "createdUser")}
       FROM ${from}
       ${sql.joinById("users", `${from}.createdUserId`)}
+      ${where ? `WHERE ${where}` : ""}
       LIMIT ${(pageNumber - 1) * 20}, 20
     `,
     )

@@ -4,7 +4,6 @@ import express from "express";
 import user from "./routers/users";
 import post from "./routers/posts";
 import article from "./routers/articles";
-import test from "./routers/test";
 
 // create express app
 const app = express();
@@ -20,7 +19,6 @@ app.get("/", (_, res) => {
 });
 
 // routes
-app.use("/tests", test);
 app.use("/users", user);
 app.use("/posts", post);
 app.use("/articles", article);

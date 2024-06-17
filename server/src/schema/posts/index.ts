@@ -10,5 +10,12 @@ export const PostSchema = z
     viewsCount: z.number(),
   })
   .merge(CreatableSchema);
-
 export type PostSchema = z.infer<typeof PostSchema>;
+
+export const PostCommentSchema = z
+  .object({
+    id: z.number(),
+    content: z.string(),
+  })
+  .merge(CreatableSchema);
+export type PostCommentSchema = z.infer<typeof PostCommentSchema>;
