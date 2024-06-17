@@ -3,11 +3,14 @@ import { connection } from "@/utils/db/init";
 import wrap from "@/utils/wrap";
 import { UserApi } from "@core/api/user";
 import { Router } from "express";
+import { PostLoginBody } from "@core/dto/user";
 import * as jwt from "jsonwebtoken";
+import db from "@/utils/db/manipulate";
+import { PostRegisterBody } from "../../../../core/dto/user/index";
 
 const router = Router();
 
-const { getMe, getUserById, postSignIn } = UserApi;
+const { getMe, getUserById } = UserApi;
 
 router.get(
   "",
@@ -15,7 +18,7 @@ router.get(
     const [result] = await (
       await connection
     ).execute(`
-      SELECT users.id, name, bio, thumbnailImage, backgroundImage, userTypes.value AS userType
+      SELECT users.id, name, bio, thumbnailImage, userTypes.value AS userType
       FROM users
       LEFT JOIN userTypes ON users.userTypeId = userTypes.id
     `);
@@ -57,25 +60,16 @@ router.get(
 );
 
 router.post(
-  postSignIn.server.endpoint[1],
+  "/login",
   wrap(async (req, res) => {
-    const body = postSignIn.server.parseRequest(req).body;
+    const body = PostLoginBody.parse(req.body);
     if (!body) throw new Error("Body is empty");
     const { email, password } = body;
-    const result = await (
-      await connection
-    )
-      .execute(
-        `
-      SELECT ${users.SELECT()}
-      FROM users
-      ${users.JOIN()}
-      WHERE email = '${email}' AND password = '${password}'
-    `,
-      )
-      .then(([result]) => result as any[])
-      .then(([data]) => data as any[])
-      .then(UserSchema.parse);
+    const result = await db.select.oneRaw<UserSchema>({
+      from: "users",
+      schema: UserSchema,
+      where: `email = "${email}" AND password = "${password}"`,
+    });
 
     if (result) {
       const token = jwt.sign(
@@ -86,6 +80,19 @@ router.post(
     } else {
       res.status(404).json({ message: "Not Found" });
     }
+  }),
+);
+
+router.post(
+  "/register",
+  wrap(async (req, res) => {
+    const { email, password, name } = PostRegisterBody.parse(req.body);
+    await (
+      await connection
+    ).execute(`
+      INSERT INTO users(email, password, name) VALUES ("${email}", "${password}", "${name}")
+    `);
+    res.send("Register Success");
   }),
 );
 

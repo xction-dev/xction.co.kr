@@ -9,24 +9,25 @@ import {
 } from "@mui/material";
 import "./Login.css";
 import { UserApi } from "@core/api/user";
-import { useView } from "library/policy-maker-2/react";
-import { VPMe } from "@core/policy/user/view/me";
+import { UserDto } from "@core/dto/user";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
-  const { view } = useView({
-    policy: VPMe(),
-    from: () => UserApi.getMe.client({}).catch(() => null),
-  });
 
   const handleLogin = () => {
-    UserApi.postSignIn
-      .client({ body: { email, password } })
-      .then((data) => {
-        localStorage.setItem("xctoken", data.token);
+    fetch("http://localhost:8080/users/login", {
+      body: JSON.stringify({ email, password }),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) alert(`로그인 되었습니다`);
+        else alert(`로그인 실패`);
       })
       .catch((e) => {
         setError(e.message);

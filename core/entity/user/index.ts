@@ -16,6 +16,5 @@ export const User = z.object({
 
   // image
   thumbnailImage: z.string().nullable(),
-  backgroundImage: z.string().nullable(),
 });
 export type User = z.infer<typeof User>;

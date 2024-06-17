@@ -69,6 +69,32 @@ const byId = async <T extends Record<string, unknown>>({
     });
 };
 
+const oneRaw = async <T extends Record<string, unknown>>({
+  from,
+  schema,
+  where,
+}: {
+  from: string;
+  schema: SchemaRaw<T>;
+  where: string;
+}) => {
+  return (await connection)
+    .execute<RowDataPacket[]>(
+      `
+      SELECT ${sql.pick(from, Object.keys(schema.shape))}
+      FROM ${from}
+      WHERE ${where}
+    `,
+    )
+    .then(([data]) => {
+      if (data.length === 0) throw new Error("Not found");
+      if (data.length > 2) throw new Error("Too many results");
+      return Promise.resolve(data[0])
+        .then(obj.group("createdUser"))
+        .then(schema.parse);
+    });
+};
+
 const byIdRaw = async <T extends Record<string, unknown>>({
   from,
   schema,
@@ -93,4 +119,4 @@ const byIdRaw = async <T extends Record<string, unknown>>({
     });
 };
 
-export const _db_select = { page, byId, byIdRaw };
+export const _db_select = { page, byId, oneRaw, byIdRaw };
