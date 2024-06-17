@@ -15,10 +15,10 @@ export const Post = z
     postType: POST_TYPE,
     title: POST_TEXT.TITLE,
     content: POST_TEXT.CONTENT,
-    tags: Tag.array(),
-    likesCount: z.number().int().nonnegative(),
-    viewsCount: z.number().int().nonnegative(),
-    commentsCount: z.number().int().nonnegative(),
+    tags: Tag.array().default([]),
+    likesCount: z.number().default(0),
+    viewsCount: z.number().default(0),
+    commentsCount: z.number().default(0),
   })
   .extend(Creatable.shape);
 export type Post = z.infer<typeof Post>;

@@ -1,16 +1,14 @@
 import { ID } from "@core/constant/common/id";
 import { z } from "zod";
 import { as, oneLine } from "../util";
-import { userTypes } from "./userTypes";
 
 export const UserSchema = z.object({
   id: ID.USER,
-  userType: userTypes.schema.shape.value,
+  userTypeId: z.number(),
   email: z.string(),
   name: z.string(),
   bio: z.string().nullable(),
   thumbnailImage: z.string().nullable(),
-  backgroundImage: z.string().nullable(),
 });
 export type UserSchema = z.infer<typeof UserSchema>;
 

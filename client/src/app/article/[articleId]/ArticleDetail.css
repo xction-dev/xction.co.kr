@@ -1,0 +1,13 @@
+.page {
+  background-color: black;
+}
+
+.header {
+  margin: 0 0 var(--primitives_spacing-4) 0;
+}
+
+.body {
+  color: white;
+  padding: 0 24%;
+  margin-bottom: var(--primitives_spacing-10);
+}
