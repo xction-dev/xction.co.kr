@@ -9,6 +9,9 @@ import { PostRegisterBody } from "../../../../core/dto/user/index";
 
 const router = Router();
 
+/*
+ * GET "/users"
+ */
 router.get(
   "",
   wrap(async (_, res) => {
@@ -63,6 +66,9 @@ router.get(
   }),
 );
 
+/*
+ * POST "/users/login"
+ */
 router.post(
   "/login",
   wrap(async (req, res) => {
@@ -86,6 +92,9 @@ router.post(
   }),
 );
 
+/*
+ * POST "/users/register"
+ */
 router.post(
   "/register",
   wrap(async (req, res) => {
