@@ -1,7 +1,6 @@
-import { UserSchema, users } from "@/repository/users";
+import { UserSchema } from "@/repository/users";
 import { connection } from "@/utils/db/init";
 import wrap from "@/utils/wrap";
-import { UserApi } from "@core/api/user";
 import { Router } from "express";
 import { PostLoginBody } from "@core/dto/user";
 import * as jwt from "jsonwebtoken";
@@ -10,52 +9,57 @@ import { PostRegisterBody } from "../../../../core/dto/user/index";
 
 const router = Router();
 
-const { getMe, getUserById } = UserApi;
-
 router.get(
   "",
   wrap(async (_, res) => {
     const [result] = await (
       await connection
     ).execute(`
-      SELECT users.id, name, bio, thumbnailImage, userTypes.value AS userType
+      SELECT id, name, bio, thumbnailImage
       FROM users
-      LEFT JOIN userTypes ON users.userTypeId = userTypes.id
     `);
     res.json({ data: result });
   }),
 );
 
+/*
+ * GET "/users/me"
+ */
 router.get(
-  getMe.server.endpoint[1],
+  "/me",
   wrap(async (req, res) => {
     const token = req.headers.authorization;
-    const sliced = token?.slice(7);
-    const userId = jwt.verify(sliced ?? "", process.env.JWT_SECRET as string);
-    const [result] = await (
-      await connection
-    ).execute(`
-      SELECT ${users.SELECT()}
-      FROM users
-      ${users.JOIN()}
-      WHERE users.id = ${userId}
-    `);
-    res.json({ data: result });
+    if (!token) throw new Error("Token is empty");
+
+    const userId = Number(
+      jwt.verify(token.slice(7), process.env.JWT_SECRET as string),
+    );
+
+    const user = await db.select.byIdRaw<UserSchema>({
+      from: "users",
+      schema: UserSchema,
+      id: userId,
+    });
+
+    res.json(user);
   }),
 );
 
+/*
+ * GET "/users/:userId"
+ */
 router.get(
-  getUserById.server.endpoint[1],
+  "/:userId",
   wrap(async (req, res) => {
-    const [result] = await (
-      await connection
-    ).execute(`
-      SELECT ${users.SELECT()}
-      FROM users
-      ${users.JOIN()}
-      WHERE users.id = ${req.params.userId}
-    `);
-    res.json({ data: result });
+    const userId = Number(req.params.userId);
+
+    const user = await db.select.byIdRaw<UserSchema>({
+      from: "users",
+      schema: UserSchema,
+      id: userId,
+    });
+
+    res.json(user);
   }),
 );
 
@@ -71,15 +75,14 @@ router.post(
       where: `email = "${email}" AND password = "${password}"`,
     });
 
-    if (result) {
-      const token = jwt.sign(
-        result.id.toString(),
-        process.env.JWT_SECRET as string,
-      );
-      res.json({ data: { ...result, token } });
-    } else {
-      res.status(404).json({ message: "Not Found" });
-    }
+    if (!result) throw new Error("User not found");
+
+    const token = jwt.sign(
+      result.id.toString(),
+      process.env.JWT_SECRET as string,
+    );
+
+    res.json({ data: { ...result, token } });
   }),
 );
 
