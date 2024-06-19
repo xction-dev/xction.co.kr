@@ -160,37 +160,6 @@ const reject = (key: string, error: unknown) => {
   });
 };
 
-// const freshCached = <T>(key: string) => {
-//   const cached = _get<T>(key);
-//   if (!cached || !isCached(cached)) return;
-//   window.clearTimeout(cached.gcTimer);
-//   if (cached.status === "ERROR_CACHED")
-//     return _set(key, { ...cached, status: "REJECTED" });
-//   return _set(key, {
-//     ...cached,
-//     status: "FRESH",
-//     gcTimer: undefined,
-//   });
-// };
-
-// const refreshExisting = <T>(key: string) => {
-//   const prev = _get<T>(key);
-//   if (!prev || !isWithData(prev) || isFetching(prev)) return prev;
-//   const promise = Promise.resolve(prev.from()).then(
-//     (resolved) => () => resolved,
-//   );
-//   promise.then((resolved) => freshExisting(key, resolved));
-//   return _set<T>(key, {
-//     ...prev,
-//     status: "REFRESHING",
-//     pending: promise,
-//   });
-// };
-
-// /* STALE */
-
-// /* CACHE */
-
 /*
  * Public API
  */
@@ -321,8 +290,23 @@ const subscribe = <T>(
   return { unsubscribe: () => unsubscribe(key, subscriptionKey) };
 };
 
+const subscribeSync = <T>(
+  key: string,
+  subscriptionKey: string,
+  listener: () => void,
+  from: () => T,
+  config: StoreConfig,
+) => {
+  const prev = _get<T>(key);
+  if (!prev || prev.status === "REJECTED") initSync(key, from, config);
+  prev?.subscriptions.set(subscriptionKey, listener);
+  listener();
+  return { unsubscribe: () => unsubscribe(key, subscriptionKey) };
+};
+
 const parseIntent = <Next extends IntentNext>(next: Next) => {
   if (!next) return;
+  if (next.type === "EXECUTE") return next.callback();
   _store.forEach((_, key) => {
     if (next.predicate(key)) {
       switch (next.type) {
@@ -348,6 +332,7 @@ export const store = {
   setAsync,
   invalidate,
   subscribe,
+  subscribeSync,
   unsubscribe,
   parseIntent,
 };

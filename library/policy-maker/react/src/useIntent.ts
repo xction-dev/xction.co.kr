@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useSyncStore } from "./useStore";
-import { IntentPolicy, store } from "@policy-maker-2/core";
+import { IntentPolicy, store } from "@policy-maker/core";
 
 type IntentMeta = {
   isWorking: boolean;
@@ -26,11 +26,14 @@ export const useIntent = <Input, Output>({
         set((prev) => ({ isWorking: true, error: prev?.error ?? null }));
         const raw = await to(policy.model.input.parse(input));
         const output = policy.model.output.parse(raw);
-        policy.next({ input, output }).forEach(store.parseIntent);
+        policy.next &&
+          policy.next({ input, output }).forEach(store.parseIntent);
         set(() => ({ isWorking: false, error: null }));
         return output;
       } catch (e) {
         set(() => ({ isWorking: false, error: e }));
+        policy.catch &&
+          policy.catch({ input, error: e }).forEach(store.parseIntent);
         return Promise.reject(e);
       }
     },

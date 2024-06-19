@@ -1,4 +1,4 @@
-import { ViewPolicy, store } from "@policy-maker-2/core";
+import { ViewPolicy, store } from "@policy-maker/core";
 
 export const setViewValue = <T>(policy: ViewPolicy<T>, data: T) =>
   Promise.resolve(

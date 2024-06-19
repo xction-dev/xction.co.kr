@@ -1,4 +1,4 @@
-import { StoreConfig, store } from "@policy-maker-2/core";
+import { StoreConfig, store } from "@policy-maker/core";
 import { useMemo, useEffect, useCallback, useState } from "react";
 import { nanoid } from "nanoid";
 
@@ -69,7 +69,7 @@ export const useSyncStore = <T>(key: string, from: (prev?: T) => T) => {
   );
 
   useEffect(() => {
-    const { unsubscribe } = store.subscribe<T>(
+    const { unsubscribe } = store.subscribeSync<T>(
       key,
       subscriptionKey,
       () => {

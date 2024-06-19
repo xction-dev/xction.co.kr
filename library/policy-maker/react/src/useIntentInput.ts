@@ -1,4 +1,4 @@
-import { IntentPolicy } from "@policy-maker-2/core";
+import { IntentPolicy } from "@policy-maker/core";
 import { InputConfig, Validator, useInput } from "./useInput";
 
 export const useIntentInput = <

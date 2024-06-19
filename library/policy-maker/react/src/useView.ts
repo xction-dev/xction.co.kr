@@ -1,13 +1,15 @@
-import { ViewPolicy } from "@policy-maker-2/core";
+import { ViewPolicy } from "@policy-maker/core";
 import { useCallback } from "react";
 import { useStore } from "./useStore";
 
 export const useView = <T>({
   policy,
   from,
+  config,
 }: {
   policy: ViewPolicy<T>;
   from: (prev?: T) => T | Promise<T>;
+  config?: { mapError: (e: unknown) => any };
 }) => {
   const [get, set] = useStore<T>(policy.key, from, policy.config);
 
@@ -20,7 +22,8 @@ export const useView = <T>({
   }, [policy.key]);
 
   if (get.status === "PENDING") throw get.pending;
-  if (get.status === "REJECTED") throw get.error;
+  if (get.status === "REJECTED")
+    throw config?.mapError ? config.mapError(get.error) : get.error;
 
   return {
     status: get.status,

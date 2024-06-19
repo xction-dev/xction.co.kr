@@ -1,4 +1,4 @@
-import { IntentPolicy } from "@policy-maker-2/core";
+import { IntentPolicy } from "@policy-maker/core";
 import { useIntent } from "./useIntent";
 import { useSyncStore } from "./useStore";
 import { useCallback, useMemo } from "react";

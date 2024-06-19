@@ -3,6 +3,7 @@ export const isEmpty = (value: unknown): boolean => {
     case "number":
       return Number.isNaN(value);
     case "object":
+      if (value === null) return false; // TODO: is it okay?
       return (
         value === null ||
         Object.keys(value).filter(
