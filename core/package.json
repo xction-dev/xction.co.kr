@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@policy-maker-2/core": "workspace:^",
+    "@policy-maker/core": "workspace:^",
     "@pvi/core": "workspace:^",
     "fetch": "workspace:^",
     "qs": "^6.12.1",

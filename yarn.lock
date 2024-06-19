@@ -689,9 +689,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@policy-maker-2/core@workspace:^, @policy-maker-2/core@workspace:library/policy-maker-2/core":
+"@policy-maker/core@workspace:^, @policy-maker/core@workspace:library/policy-maker/core":
   version: 0.0.0-use.local
-  resolution: "@policy-maker-2/core@workspace:library/policy-maker-2/core"
+  resolution: "@policy-maker/core@workspace:library/policy-maker/core"
   dependencies:
     nanoid: ^5.0.7
   peerDependencies:
@@ -699,36 +699,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@policy-maker-2/react@workspace:library/policy-maker-2/react":
-  version: 0.0.0-use.local
-  resolution: "@policy-maker-2/react@workspace:library/policy-maker-2/react"
-  peerDependencies:
-    "@policy-maker-2/core": "workspace:*"
-    react: ^18.0.0
-    react-dom: ^18.0.0
-    zod: ^3.23.0
-  languageName: unknown
-  linkType: soft
-
-"@policy-maker/core@workspace:library/policy-maker/core":
-  version: 0.0.0-use.local
-  resolution: "@policy-maker/core@workspace:library/policy-maker/core"
-  peerDependencies:
-    zod: ^3.23.5
-  languageName: unknown
-  linkType: soft
-
 "@policy-maker/react@workspace:library/policy-maker/react":
   version: 0.0.0-use.local
   resolution: "@policy-maker/react@workspace:library/policy-maker/react"
-  dependencies:
-    fast-deep-equal: ^3.1.3
-    use-debounce: ^10.0.0
   peerDependencies:
-    "@policy-maker/core": "workspace:^"
-    "@tanstack/react-query": ^5.28.9
-    react: ^18.2.0
-    zod: ^3.23.5
+    "@policy-maker/core": "workspace:*"
+    react: ^18.0.0
+    react-dom: ^18.0.0
+    zod: ^3.23.0
   languageName: unknown
   linkType: soft
 
@@ -1786,7 +1764,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "core@workspace:core"
   dependencies:
-    "@policy-maker-2/core": "workspace:^"
+    "@policy-maker/core": "workspace:^"
     "@pvi/core": "workspace:^"
     fetch: "workspace:^"
     qs: ^6.12.1
@@ -5746,15 +5724,6 @@ __metadata:
   dependencies:
     punycode: ^2.1.0
   checksum: 7167432de6817fe8e9e0c9684f1d2de2bb688c94388f7569f7dbdb1587c9f4ca2a77962f134ec90be0cc4d004c939ff0d05acc9f34a0db39a3c797dada262633
-  languageName: node
-  linkType: hard
-
-"use-debounce@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "use-debounce@npm:10.0.0"
-  peerDependencies:
-    react: ">=16.8.0"
-  checksum: b296fedba916ca721eeb7117f29a13c252966d03411abccc5e5894ed4de0f32b9cb6f6b150555b8b4cb9b0acf53b84022ad4cd43b89253389e9cd13779eebca7
   languageName: node
   linkType: hard
 
