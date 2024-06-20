@@ -15,9 +15,19 @@ export default function ArticleWrite() {
   const router = useRouter();
 
   const onSubmit = useCallback(() => {
+    // contentEditable로 인해 생기는 styles 속성들을 제거합니다.
+    const cleanStyles = (htmlString: string): string => {
+      const doc = new DOMParser().parseFromString(htmlString, "text/html");
+      doc.body.querySelectorAll("*").forEach((el) => {
+        el.removeAttribute("style");
+      });
+      return doc.body.innerHTML;
+    };
+    const cleanedData = cleanStyles(data);
+
     fetch("http://localhost:8080/articles", {
       method: "POST",
-      body: JSON.stringify({ content: data }),
+      body: JSON.stringify({ content: cleanedData }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -38,7 +48,15 @@ export default function ArticleWrite() {
       </div>
       <div className="body">
         <div className={typography.h4}>
-          <input value={data} onChange={(e) => setData(e.target.value)} />
+          <div
+            contentEditable="true"
+            suppressContentEditableWarning
+            onInput={(e) => {
+              e.target instanceof HTMLDivElement && setData(e.target.innerHTML);
+            }}
+          >
+            텍스트를 입력하세요. . .
+          </div>
           <button onClick={onSubmit}>전송</button>
         </div>
       </div>
