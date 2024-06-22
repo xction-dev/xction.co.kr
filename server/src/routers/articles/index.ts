@@ -32,7 +32,9 @@ router.get(
 router.post(
   "/",
   wrap(async (req, res) => {
+    console.log(req);
     const { content } = z.object({ content: z.string() }).parse(req.body);
+
     const insertedId = await (
       await connection
     )

@@ -1,0 +1,32 @@
+.page {
+  background-color: black;
+}
+
+.header {
+  margin: 0 0 var(--primitives_spacing-4) 0;
+}
+
+.body {
+  color: white;
+  padding: 0 24%;
+  margin-bottom: var(--primitives_spacing-10);
+}
+
+.body input {
+  border: none;
+  outline: none;
+  background-color: var(--surface-primary);
+  padding: 0;
+  height: 50px;
+  margin-right: var(--primitives_spacing-4);
+}
+
+.body button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: var(--surface-primary);
+  color: var(--text-secondary);
+  text-align: left;
+  padding: 10px;
+}
