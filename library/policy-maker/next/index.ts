@@ -19,4 +19,4 @@ export * from "./src/useInput";
 export * from "./src/useIntent";
 export * from "./src/useIntentInput";
 export * from "./src/useIntentSubmit";
-export * from "./src/set";
+export * from "./src/Provider";
