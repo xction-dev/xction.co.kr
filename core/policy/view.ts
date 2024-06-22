@@ -1,9 +1,11 @@
-import { VPPosts } from "./post/view/posts";
-import { VPTrendingPosts } from "./post/view/trendingPosts";
+import { VPMe } from "./user/view/me";
+import { VPUser } from "./user/view/user";
 
-export const viewPolicy = {
-  post: {
-    posts: VPPosts,
-    trendingPosts: VPTrendingPosts,
+const viewPolicy = {
+  user: {
+    me: VPMe,
+    user: VPUser,
   },
 };
+
+export default viewPolicy;

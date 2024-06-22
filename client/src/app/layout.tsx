@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Providers from "@/utils/next-query-resolver/Providers";
 import "./globals.css";
 import "./fonts.css";
+import { Provider } from "@policy-maker/next";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,10 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Providers>
+    <Provider>
       <html lang="en">
         <body>{children}</body>
       </html>
-    </Providers>
+    </Provider>
   );
 }

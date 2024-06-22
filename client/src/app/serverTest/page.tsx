@@ -1,11 +1,15 @@
 "use client";
 
-import { api } from "@/api";
-import { PostApi } from "@core/api/post";
-import { useEffect } from "react";
+import viewPolicy from "@core/policy/view";
+import { UserRepository } from "@core/repository/user";
+import { delay, error } from "library/fetch";
+import { useView } from "library/policy-maker/next";
+
 export default function ServerTest() {
-  useEffect(() => {
-    api.get("/posts").then(console.log);
-  }, []);
-  return <div></div>;
+  const { view } = useView({
+    policy: viewPolicy.user.user(1),
+    from: () => UserRepository.getUser(1).then(delay(1000)).then(error(50)),
+  });
+
+  return <div>{view.name}</div>;
 }

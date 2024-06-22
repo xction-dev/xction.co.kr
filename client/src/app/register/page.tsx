@@ -19,7 +19,7 @@ function Register() {
   //const navigate = useNavigate()
 
   const handleJoin = () => {
-    fetch("../api/mock/user/register/route", {
+    fetch("http://localhost:8080/users/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,8 +28,10 @@ function Register() {
     })
       .then((response) => {
         if (response.ok) {
+          alert(`회원가입 성공`);
           return response.json();
         } else {
+          alert(`회원가입 실패`);
           throw new Error("Register fail");
         }
       })

@@ -1,8 +1,7 @@
 import { User } from "@core/entity/user";
-import { ViewPolicy } from "library/policy-maker-2/core";
-import { z } from "zod";
+import { ViewPolicy } from "@policy-maker/core";
 
 export const VPMe = ViewPolicy(() => ({
   key: ["me"],
-  model: User.extend({ token: z.string() }).nullable(),
+  model: User,
 }));

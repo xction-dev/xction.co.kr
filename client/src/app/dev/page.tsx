@@ -11,8 +11,17 @@ import styled from "@emotion/styled";
 import Lottie from "lottie-react";
 import logoAnimation from "../../../public/logo_animation.json";
 import layout from "../../styles/layout";
+import { useView } from "library/policy-maker/next";
+import viewPolicy from "@core/policy/view";
+import { UserRepository } from "@core/repository/user";
 
 export default function Dev() {
+  const { view } = useView({
+    policy: viewPolicy.user.user(1),
+    from: () => UserRepository.getUser(1),
+  });
+
+  console.log(view);
   return (
     <Main>
       <Title>COMPONENTS</Title>

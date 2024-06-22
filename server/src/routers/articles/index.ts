@@ -13,13 +13,13 @@ router.get(
   wrap(async (req, res) => {
     const articleId = Number(req.params.articleId);
 
-    const article = await db.select.byId({
+    const article = await db.select.byId<ArticleSchema>({
       from: "articles",
       schema: ArticleSchema,
       id: articleId,
     });
 
-    const { content } = await db.select.byIdRaw({
+    const { content } = await db.select.byIdRaw<ArticleContentSchema>({
       from: "articleContents",
       schema: ArticleContentSchema,
       id: articleId,
@@ -32,7 +32,9 @@ router.get(
 router.post(
   "/",
   wrap(async (req, res) => {
+    console.log(req);
     const { content } = z.object({ content: z.string() }).parse(req.body);
+
     const insertedId = await (
       await connection
     )

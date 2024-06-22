@@ -8,25 +8,39 @@ import {
   Snackbar,
 } from "@mui/material";
 import "./Login.css";
-import { UserApi } from "@core/api/user";
-import { useView } from "library/policy-maker-2/react";
-import { VPMe } from "@core/policy/user/view/me";
+
+import { useIntentInput, useIntentSubmit } from "library/policy-maker/next";
+import intentPolicy from "@core/policy/intent";
+import { UserRepository } from "@core/repository/user";
+import { useRouter } from "next/navigation";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
-  const { view } = useView({
-    policy: VPMe(),
-    from: () => UserApi.getMe.client({}).catch(() => null),
+  const { submit, isValid } = useIntentSubmit({
+    policy: intentPolicy.user.login(),
+    to: UserRepository.postLogin,
   });
 
+  const {
+    set,
+    values: { email, password },
+  } = useIntentInput({
+    policy: intentPolicy.user.login(),
+    initialValue: () => ({ email: "", password: "" }),
+  });
+
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
+  const router = useRouter();
+
   const handleLogin = () => {
-    UserApi.postSignIn
-      .client({ body: { email, password } })
-      .then((data) => {
-        localStorage.setItem("xctoken", data.token);
+    if (!isValid) alert("이메일 또는 비밀번호를 확인해주세요");
+
+    submit()
+      .then(({ token }) => {
+        localStorage.setItem("xctoken", token);
+        router.push("/");
       })
       .catch((e) => {
         setError(e.message);
@@ -51,8 +65,8 @@ function Login() {
             fullWidth
             variant="outlined"
             margin="normal"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={email.value}
+            onChange={(e) => set({ email: e.target.value })}
           />
           <TextField
             label="Password"
@@ -60,14 +74,15 @@ function Login() {
             variant="outlined"
             type="password"
             margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={password.value}
+            onChange={(e) => set({ password: e.target.value })}
           />
           <Button
             variant="contained"
             color="primary"
             fullWidth
             onClick={handleLogin}
+            disabled={!isValid}
           >
             Login
           </Button>
