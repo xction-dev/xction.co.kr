@@ -2,10 +2,10 @@ import { UserSchema } from "@/repository/users";
 import { connection } from "@/utils/db/init";
 import wrap from "@/utils/wrap";
 import { Router } from "express";
-import { PostLoginBody } from "@core/dto/user";
+import { PostLoginBody } from "@core/dto/user/request";
 import * as jwt from "jsonwebtoken";
 import db from "@/utils/db/manipulate";
-import { PostRegisterBody } from "../../../../core/dto/user/index";
+import { PostRegisterBody } from "../../../../core/dto/user/request";
 
 const router = Router();
 
@@ -88,7 +88,7 @@ router.post(
       process.env.JWT_SECRET as string,
     );
 
-    res.json({ data: { ...result, token } });
+    res.json({ ...result, token });
   }),
 );
 

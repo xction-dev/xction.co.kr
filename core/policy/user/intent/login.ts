@@ -10,6 +10,6 @@ export const LoginInput = z.object({
 });
 
 export const IPLogin = IntentPolicy(() => ({
-  key: ["me"],
-  model: { input: LoginInput, output: User.extend({ token: z.string() }) },
+  key: ["login"],
+  model: { input: LoginInput, output: z.object({ token: z.string() }) },
 }));
