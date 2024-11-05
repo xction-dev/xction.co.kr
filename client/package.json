@@ -21,14 +21,16 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "core": "workspace:^",
-    "eslint": "8.49.0",
-    "eslint-config-next": "13.4.19",
     "lottie-react": "^2.4.0",
-    "next": "13.4.19",
+    "next": "14.2.16",
     "prettier": "^3.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "5.2.2",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "eslint": "8.57",
+    "eslint-config-next": "14.2.16"
   }
 }
