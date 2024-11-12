@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock ./
-RUN yarn install --non-interactive
+RUN yarn install
 RUN rm -rf ./.next/cache
 
 # Rebuild the source code only when needed
