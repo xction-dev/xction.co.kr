@@ -58,8 +58,31 @@ const config: Config = {
         rounded: "var(--primitives_radius-md)",
         full: "var(--primitives_radius-3xl)",
       },
+      fontSize: {
+        h1: ["5rem", { lineHeight: "1", letterSpacing: "-1.5px" }],
+        h2: ["3rem", { lineHeight: "1", letterSpacing: "-1.5px" }],
+        h3: ["2.5rem", { lineHeight: "1", letterSpacing: "-1.5px" }],
+        h4: ["1.75rem", { lineHeight: "42px", letterSpacing: "-1.5px" }], // px-based line height
+        h5: ["1.25rem", { lineHeight: "30px", letterSpacing: "-0.8px" }],
+        h6: ["1rem", { lineHeight: "24px", letterSpacing: "0.15px" }],
+        subTitle1: ["0.875rem", { lineHeight: "1", letterSpacing: "0.15px" }],
+        subTitle2: ["0.75rem", { lineHeight: "1", letterSpacing: "0.1px" }],
+        body1: ["0.875rem", { lineHeight: "1", letterSpacing: "0.5px" }],
+        body2: ["0.75rem", { lineHeight: "1", letterSpacing: "0.25px" }],
+        button: ["0.66rem", { lineHeight: "1", letterSpacing: "0.4px" }],
+        caption: ["0.75rem", { lineHeight: "1", letterSpacing: "0.4px" }],
+        overline: ["0.625rem", { lineHeight: "1", letterSpacing: "1.5px" }],
+      },
+      fontFamily: {
+        default: ["SUIT-Regular", "sans-serif"],
+      },
+      fontWeight: {
+        bold: "700",
+        normal: "400",
+      },
     },
   },
   plugins: [],
 };
+
 export default config;
