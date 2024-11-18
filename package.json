@@ -1,12 +1,16 @@
 {
   "name": "xction.co.kr",
   "version": "0.0.0",
+  "private": true,
   "scripts": {
     "core": "yarn workspace core",
     "client": "yarn workspace client",
     "server": "yarn workspace server",
     "dev": "concurrently \"yarn server dev\" \"yarn client dev\"",
-    "prettier": "prettier . --write"
+    "prettier": "prettier . --write",
+    "build": "yarn workspace client build",
+    "start": "yarn workspace client start",
+    "lint": "yarn workspace client lint"
   },
   "workspaces": [
     "core",

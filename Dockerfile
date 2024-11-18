@@ -1,34 +1,31 @@
+# 베이스 이미지 설정
 FROM node:18-alpine AS base
 
-# Install dependencies only when needed
+# 의존성 설치 단계
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
-WORKDIR /usr/src/app
+WORKDIR /app
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+RUN yarn install
 
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock ./
-RUN yarn install --production
-RUN rm -rf ./.next/cache
-
-# Rebuild the source code only when needed
+# 빌드 단계 
 FROM base AS builder
-WORKDIR /usr/src/app
-COPY --from=deps /usr/src/app/node_modules ./node_modules
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN yarn build
+RUN NEXT_PUBLIC_IGNORE_ESLINT=true yarn build
 
-# Production image, copy all the files and run next
+# 실행 단계
 FROM base AS runner
-WORKDIR /usr/src/app
-
-ENV NODE_ENV=production
+WORKDIR /app
+ENV NODE_ENV production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /usr/src/app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /usr/src/app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /usr/src/app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
