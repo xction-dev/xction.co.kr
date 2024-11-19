@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss";
 
 const config: Config = {
   content: [
@@ -62,7 +63,7 @@ const config: Config = {
         h1: ["5rem", { lineHeight: "1", letterSpacing: "-1.5px" }],
         h2: ["3rem", { lineHeight: "1", letterSpacing: "-1.5px" }],
         h3: ["2.5rem", { lineHeight: "1", letterSpacing: "-1.5px" }],
-        h4: ["1.75rem", { lineHeight: "42px", letterSpacing: "-1.5px" }], // px-based line height
+        h4: ["1.75rem", { lineHeight: "42px", letterSpacing: "-1.5px" }],
         h5: ["1.25rem", { lineHeight: "30px", letterSpacing: "-0.8px" }],
         h6: ["1rem", { lineHeight: "24px", letterSpacing: "0.15px" }],
         subTitle1: ["0.875rem", { lineHeight: "1", letterSpacing: "0.15px" }],
