@@ -2,7 +2,6 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import typography from "../../../styles/typography.module.css";
 import ArticleCard from "@/components/Card/ArticleCard";
 import "./Article.css";
 

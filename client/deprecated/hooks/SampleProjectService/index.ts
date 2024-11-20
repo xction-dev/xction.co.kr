@@ -4,7 +4,7 @@ import { SampleProjectService } from "@core/usecase/sample/SampleProjectService"
 import {
   getSampleProjectById,
   postSampleProjectById,
-} from "@/api/SampleProjectService";
+} from "client/deprecated/api/SampleProjectService";
 import { GetSampleProjectResponseDto } from "@core/dto/sample/SampleProjectService";
 
 type InjectedUsecase = SampleProjectService<GetSampleProjectResponseDto>; // 의미에 맞는 적절한 DTO를 Generic으로 주입해줍니다.
