@@ -13,21 +13,6 @@
       "@styles/*": ["./client/src/styles/*"]
     }
   },
-  "include": [
-    "src",
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "deprecated/app/paginationSample",
-    "deprecated/app/sample",
-    "deprecated/api/SampleProjectService",
-    "deprecated/api/SampleUserService",
-    "deprecated/api/UserAccessService",
-    "deprecated/app/api",
-    "deprecated/hooks",
-    "deprecated/app/register",
-    "deprecated/app/watch",
-    "deprecated/app/comment",
-    "deprecated/app/layout"
-  ],
+  "include": ["src", "next-env.d.ts", ".next/types/**/*.ts"],
   "exclude": ["node_modules", "deprecated"]
 }

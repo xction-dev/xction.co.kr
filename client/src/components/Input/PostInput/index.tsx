@@ -6,6 +6,7 @@ import styles from "./PostInput.module.css";
 import typography from "@styles/typography.module.css";
 import { Post } from "@core/entity/post";
 import Tag from "@components/Tag";
+import { Tag as TagType } from "@core/entity/tag";
 import { useState } from "react";
 import BasicButton from "@components/Button/BasicButton";
 import Line from "@components/Line";
@@ -18,7 +19,7 @@ type PostInputProps = {
 export default function PostInput() {
   const [body, setBody] = useState(true);
   const [isDropdownOpened, setIsDropdownOpened] = useState(false);
-  const [selectedTag, setSelectedTag] = useState(null);
+  const [selectedTag, setSelectedTag] = useState<TagType | null>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 

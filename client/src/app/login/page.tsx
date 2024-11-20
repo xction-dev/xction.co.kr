@@ -9,18 +9,12 @@ import {
 } from "@mui/material";
 import "./Login.css";
 import { UserApi } from "@core/api/user";
-import { useView } from "library/policy-maker-2/react";
-import { VPMe } from "@core/policy/user/view/me";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
-  const { view } = useView({
-    policy: VPMe(),
-    from: () => UserApi.getMe.client({}).catch(() => null),
-  });
 
   const handleLogin = () => {
     UserApi.postSignIn
