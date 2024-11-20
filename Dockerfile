@@ -5,7 +5,10 @@ FROM node:18-alpine AS base
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY ./.yarn ./.yarn
+COPY ./client/package.json ./client
+RUN corepack enable
 RUN yarn install
 
 # 빌드 단계 
@@ -23,9 +26,10 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder /app/client/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/client/.next/standalone/client ./
+COPY --from=builder --chown=nextjs:nodejs /app/client/.next/standalone/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app/client/.next/static ./.next/static
 
 USER nextjs
 
@@ -33,4 +37,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["node", "server.js"]
+CMD ["node", "./server.js"]
