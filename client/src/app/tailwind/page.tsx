@@ -1,7 +1,8 @@
 export default function Tailwind() {
   return (
     <>
-      <div className="font-default text-h1">Header</div>
+      <div className="text-h1 font-default">H1</div>
+      <div className="text-h2 font-default">H2</div>
     </>
   );
 }
