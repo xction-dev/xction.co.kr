@@ -2,7 +2,6 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import typography from "../../../styles/typography.module.css";
 import ArticleCard from "@/components/Card/ArticleCard";
 import "./Article.css";
 
@@ -24,19 +23,19 @@ export default function Article() {
         <div className="second-title">새로운 아티클</div>
         <div className="second-article-container">
           {articleList.map((article, index) => (
-            <div className="article-small">
-              <ArticleCard key={index} data={article} />
+            <div key={index} className="article-small">
+              <ArticleCard data={article} />
             </div>
           ))}
         </div>
       </div>
 
       <div className="second-container">
-        <div className="second-title">액션's Pick</div>
+        <div className="second-title">액션&apos;s Pick</div>
         <div className="second-article-container">
           {articleList.map((article, index) => (
-            <div className="article-small">
-              <ArticleCard key={index} data={article} />
+            <div key={index} className="article-small">
+              <ArticleCard data={article} />
             </div>
           ))}
         </div>
@@ -46,8 +45,8 @@ export default function Article() {
         <div className="second-title">인기 아티클</div>
         <div className="second-article-container">
           {articleList.map((article, index) => (
-            <div className="article-small">
-              <ArticleCard key={index} data={article} />
+            <div key={index} className="article-small">
+              <ArticleCard data={article} />
             </div>
           ))}
         </div>

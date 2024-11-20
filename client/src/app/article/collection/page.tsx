@@ -17,8 +17,8 @@ export default function Collection() {
         <div className="first-title">아티클 모아보기</div>
         <div className="first-article-container">
           {articleList.map((article, index) => (
-            <div className="article-small">
-              <ArticleCard key={index} data={article} />
+            <div key={index} className="article-small">
+              <ArticleCard data={article} />
             </div>
           ))}
         </div>

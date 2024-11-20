@@ -27,7 +27,7 @@ const TagMockData = [
 
 type TagDropdownProps = {
   setIsDropDownOpened: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedTag: React.Dispatch<React.SetStateAction<TagType>>;
+  setSelectedTag: (tag: TagType) => void;
 };
 
 export default function TagDropdown({

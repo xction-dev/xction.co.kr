@@ -9,6 +9,5 @@ export const ArticleSummary = Article.pick({
   title: true,
   tags: true,
   createdUser: true,
-  isXcticle: true,
 });
 export type ArticleSummary = typeof ArticleSummary;
