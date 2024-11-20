@@ -8,10 +8,9 @@ WORKDIR /app
 COPY . .
 RUN corepack enable
 RUN yarn
-RUN yarn install
 RUN NEXT_PUBLIC_IGNORE_ESLINT=true yarn build
 
-# 실행 단계
+# 실행 단계 1: Client
 FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV production
@@ -31,3 +30,5 @@ EXPOSE 3000
 ENV PORT 3000
 
 CMD ["node", "./server.js"]
+
+# 실행 단계 2: Server
