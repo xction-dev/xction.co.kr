@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 export const TestDb = () => {
   useEffect(() => {
-    fetch(process.env.NEXT_PUBLIC_DB_HOST ?? "no_env")
+    fetch(process.env.NEXT_PUBLIC_SERVER_HOST ?? "no_env")
       .then((res) => {
         console.log("simple success:");
         res.text().then(console.log);
@@ -14,7 +14,7 @@ export const TestDb = () => {
         console.log(err);
       });
 
-    fetch((process.env.NEXT_PUBLIC_DB_HOST ?? "no_env") + "/db")
+    fetch((process.env.NEXT_PUBLIC_SERVER_HOST ?? "no_env") + "/db")
       .then((res) => {
         console.log("db success:");
         res.text().then(console.log);
