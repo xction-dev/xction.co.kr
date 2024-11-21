@@ -11,7 +11,7 @@ RUN yarn
 RUN NEXT_PUBLIC_IGNORE_ESLINT=true yarn build
 
 # 실행 단계 1: Client
-FROM base AS runner
+FROM base AS client
 WORKDIR /app
 ENV NODE_ENV production
 
@@ -32,3 +32,19 @@ ENV PORT 3000
 CMD ["node", "./server.js"]
 
 # 실행 단계 2: Server
+FROM base AS server
+WORKDIR /app
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder --chown=nextjs:nodejs /app/server/dist ./
+
+USER nextjs
+
+EXPOSE 8080
+
+ENV PORT 8080
+
+CMD ["node", "./test.js"]

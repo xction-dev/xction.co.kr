@@ -15,5 +15,7 @@ app.get("/", (_, res) => {
 });
 
 app.listen(8080, () => {
-  console.log(`[server]: Server is running at http://localhost:8080`);
+  console.log(
+    `[server]: Server is running at http://localhost:${process.env.PORT}`,
+  );
 });
