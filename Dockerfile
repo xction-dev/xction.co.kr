@@ -40,6 +40,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder --chown=nextjs:nodejs /app/server/dist ./
+COPY --from=builder --chown=nextjs:nodejs /app/server/.env.production ./
 
 RUN --mount=type=secret,id=secret_1 \
     sed -i "s/DB_HOST=/DB_HOST=$(cat /run/secrets/secret_1)/" .env.production
