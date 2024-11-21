@@ -2,10 +2,14 @@
   "name": "server",
   "packageManager": "yarn@3.6.3",
   "scripts": {
-    "build": "tsc && tsc-alias",
+    "build": "rollup -c",
     "dev": "tsc && (concurrently \"tsc -w\" \"tsc-alias -w\" \"nodemon -q dist/server/src/index.js\")"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-typescript": "^12.1.1",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
@@ -26,6 +30,7 @@
     "mysql2": "^3.9.7",
     "nanoid": "^3.0.0",
     "nodemon": "^3.1.0",
+    "rollup": "^4.27.3",
     "zod": "^3.23.8"
   }
 }
