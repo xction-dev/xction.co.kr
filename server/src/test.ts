@@ -1,5 +1,7 @@
 import cors from "cors";
 import express from "express";
+import wrap from "./utils/wrap";
+import { connection } from "@/utils/db/init";
 
 // create express app
 const app = express();
@@ -13,6 +15,14 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (_, res) => {
   res.send("Xction Server!");
 });
+
+app.get(
+  "/db",
+  wrap(async (_, res) => {
+    const [data] = await (await connection).execute("SELECT * FROM TABLE_NAME");
+    res.send(data);
+  }),
+);
 
 app.listen(8080, () => {
   console.log(

@@ -41,6 +41,17 @@ RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder --chown=nextjs:nodejs /app/server/dist ./
 
+RUN --mount=type=secret,id=secret_1 \
+    sed -i "s/DB_HOST=/DB_HOST=$(cat /run/secrets/secret_1)/" .env.production
+RUN --mount=type=secret,id=secret_2 \
+    sed -i "s/DB_USER=/DB_USER=$(cat /run/secrets/secret_2)/" .env.production
+RUN --mount=type=secret,id=secret_3 \
+    sed -i "s/DB_PASSWORD=/DB_PASSWORD=$(cat /run/secrets/secret_3)/" .env.production
+RUN --mount=type=secret,id=secret_4 \
+    sed -i "s/DB_DATABASE=/DB_DATABASE=$(cat /run/secrets/secret_4)/" .env.production
+RUN --mount=type=secret,id=secret_5 \
+    sed -i "s/DB_PORT=/DB_PORT=$(cat /run/secrets/secret_5)/" .env.production
+
 USER nextjs
 
 EXPOSE 8080
