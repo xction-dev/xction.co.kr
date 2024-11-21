@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import wrap from "./utils/wrap";
-import { connection } from "@/utils/db/init";
+import { connection } from "./utils/db/init";
 
 // create express app
 const app = express();
@@ -19,13 +19,18 @@ app.get("/", (_, res) => {
 app.get(
   "/db",
   wrap(async (_, res) => {
-    const [data] = await (await connection).execute("SELECT * FROM TABLE_NAME");
-    res.send(data);
+    try {
+      const [data] = await (
+        await connection()
+      ).execute("SELECT * FROM TABLE_NAME");
+      res.send(data);
+    } catch (error) {
+      console.log(error);
+      res.send("DB Error");
+    }
   }),
 );
 
 app.listen(8080, () => {
-  console.log(
-    `[server]: Server is running at http://localhost:${process.env.PORT}`,
-  );
+  console.log(`[server]: Server is running at http://localhost:8080`);
 });
