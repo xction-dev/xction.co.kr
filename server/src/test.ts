@@ -22,7 +22,7 @@ app.get(
     try {
       const [data] = await (
         await connection()
-      ).execute("SELECT * FROM TABLE_NAME");
+      ).execute("SELECT * FROM users");
       res.send(data);
     } catch (error) {
       console.log(error);
