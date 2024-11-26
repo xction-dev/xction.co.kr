@@ -22,11 +22,11 @@ app.get(
     try {
       const [data] = await (
         await connection()
-      ).execute("SELECT * FROM TABLE_NAME");
+      ).execute("SELECT * users");
       res.send(data);
     } catch (error) {
       console.log(error);
-      res.send("DB Error");
+      res.status(500).send({ error: "DB Error", details: error.message });
     }
   }),
 );
