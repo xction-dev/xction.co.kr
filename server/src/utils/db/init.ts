@@ -2,9 +2,9 @@ import { createConnection } from "mysql2/promise";
 
 export const connection = () =>
   createConnection({
-    host: "172.19.0.4",
+    host: "xctiondb",
     port: process.env.DB_PORT,
-    user: process.env.DB_USERNAME,
+    user: "root",
     password: process.env.DB_PASSWORD,
-    database: "xctiondb",
+    database: process.env.DB_NAME || 'xctiondb',
   });

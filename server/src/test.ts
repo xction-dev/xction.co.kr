@@ -63,7 +63,7 @@ console.log({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD ? "******" : "(empty)",
-  database: process.env.DB_NAME,
+  database: process.env.DB_NAME || 'xctiondb',
 });
     }
   }),
