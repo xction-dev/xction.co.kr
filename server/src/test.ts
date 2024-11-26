@@ -22,7 +22,7 @@ app.get(
     try {
       const [data] = await (
         await connection()
-      ).execute("SELECT * FROM TABLE_NAME");
+      ).execute("SELECT * users");
       res.send(data);
     } catch (error) {
       const err = error as any; // error를 any 타입으로 단언
