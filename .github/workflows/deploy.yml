@@ -59,4 +59,4 @@ jobs:
             "secret_2=${{ secrets.DB_USERNAME }}"
             "secret_3=${{ secrets.DB_PASSWORD }}"
             "secret_4=${{ secrets.DB_DATABASE_NAME }}"
-            "secret_5=${{ secrets.SERVER_HOST }}"
+            "secret_5=${{ secrets.DB_PORT }}"
