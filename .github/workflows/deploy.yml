@@ -27,12 +27,6 @@ jobs:
           target: client
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/xction-client:latest
-          secrets: |
-            "secret_1=${{ secrets.DB_HOST }}"
-            "secret_2=${{ secrets.DB_USERNAME }}"
-            "secret_3=${{ secrets.DB_PASSWORD }}"
-            "secret_4=${{ secrets.DB_DATABASE_NAME }}"
-            "secret_5=${{ secrets.SERVER_HOST }}"
 
   build-and-deploy-server:
     name: Build and Deploy Server
@@ -53,7 +47,7 @@ jobs:
           context: .
           target: server
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/xction-server:lastest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/xction-server:latest
           secrets: |
             "secret_1=${{ secrets.DB_HOST }}"
             "secret_2=${{ secrets.DB_USERNAME }}"
