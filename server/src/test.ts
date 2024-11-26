@@ -22,21 +22,22 @@ app.get(
     try {
       const [data] = await (
         await connection()
-      ).execute("SELECT * FROM users");
+      ).execute("SELECT * FROM TABLE_NAME");
       res.send(data);
     } catch (error) {
+      const err = error as any; // error를 any 타입으로 단언
+
       const isNetworkError =
-        error.code === "ETIMEDOUT" || error.code === "ECONNREFUSED";
+        err.code === "ETIMEDOUT" || err.code === "ECONNREFUSED";
       const isAuthError =
-        error.code === "ER_ACCESS_DENIED_ERROR" ||
-        error.code === "ER_BAD_DB_ERROR";
+        err.code === "ER_ACCESS_DENIED_ERROR" || err.code === "ER_BAD_DB_ERROR";
 
       console.error("Database connection error details:");
       console.error({
-        message: error.message,
-        code: error.code,
-        sqlState: error.sqlState,
-        stack: error.stack,
+        message: err.message,
+        code: err.code,
+        sqlState: err.sqlState,
+        stack: err.stack,
         ...(isNetworkError && { hint: "Check network connectivity." }),
         ...(isAuthError && {
           hint: "Check username, password, or database name.",
@@ -46,9 +47,9 @@ app.get(
       res.status(500).send({
         error: "DB Error",
         details: {
-          message: error.message,
-          code: error.code,
-          sqlState: error.sqlState,
+          message: err.message,
+          code: err.code,
+          sqlState: err.sqlState,
           type: isNetworkError
             ? "Network Issue"
             : isAuthError
@@ -59,3 +60,6 @@ app.get(
     }
   }),
 );
+app.listen(8080, () => {
+  console.log(`[server]: Server is running at http://localhost:8080`);
+});
