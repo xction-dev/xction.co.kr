@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - feat/deploy-server
 
 jobs:
-  build-and-deploy:
+  build-and-deploy-client:
+    name: Build and Deploy Client
     runs-on: ubuntu-latest
 
     steps:
@@ -18,9 +20,37 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push client Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
+          target: client
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/nextjs-app:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/xction-client:latest
+
+  build-and-deploy-server:
+    name: Build and Deploy Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build and push server Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          target: server
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/xction-server:latest
+          secrets: |
+            "secret_1=${{ secrets.DB_HOST }}"
+            "secret_2=${{ secrets.DB_USERNAME }}"
+            "secret_3=${{ secrets.DB_PASSWORD }}"
+            "secret_4=${{ secrets.DB_DATABASE_NAME }}"
+            "secret_5=${{ secrets.DB_PORT }}"

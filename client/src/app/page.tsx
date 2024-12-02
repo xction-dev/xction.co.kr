@@ -1,3 +1,10 @@
+import { TestDb } from "@/components/Test/TestDb";
+
 export default function Home() {
-  return <main>Home</main>;
+  return (
+    <main>
+      Home
+      <TestDb />
+    </main>
+  );
 }

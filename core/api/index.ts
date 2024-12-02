@@ -1,4 +1,4 @@
-import { createFetch } from "../../library/fetch";
+import { createFetch } from "fetch";
 import { parseQuery } from "./util";
 
 export const { api, authApi } = createFetch({

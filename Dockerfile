@@ -11,7 +11,7 @@ RUN yarn
 RUN NEXT_PUBLIC_IGNORE_ESLINT=true yarn build
 
 # 실행 단계 1: Client
-FROM base AS runner
+FROM base AS client
 WORKDIR /app
 ENV NODE_ENV production
 
@@ -32,3 +32,31 @@ ENV PORT 3000
 CMD ["node", "./server.js"]
 
 # 실행 단계 2: Server
+FROM base AS server
+WORKDIR /app
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder --chown=nextjs:nodejs /app/server/dist ./
+COPY --from=builder --chown=nextjs:nodejs /app/server/.env.production ./
+
+RUN --mount=type=secret,id=secret_1 \
+    sed -i "s/DB_HOST=/DB_HOST=$(cat /run/secrets/secret_1)/" .env.production
+RUN --mount=type=secret,id=secret_2 \
+    sed -i "s/DB_USER=/DB_USER=$(cat /run/secrets/secret_2)/" .env.production
+RUN --mount=type=secret,id=secret_3 \
+    sed -i "s/DB_PASSWORD=/DB_PASSWORD=$(cat /run/secrets/secret_3)/" .env.production
+RUN --mount=type=secret,id=secret_4 \
+    sed -i "s/DB_DATABASE=/DB_DATABASE=$(cat /run/secrets/secret_4)/" .env.production
+RUN --mount=type=secret,id=secret_5 \
+    sed -i "s/DB_PORT=/DB_PORT=$(cat /run/secrets/secret_5)/" .env.production
+
+USER nextjs
+
+EXPOSE 8080
+
+ENV PORT 8080
+
+CMD ["node", "./test.js"]
